@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthContextProvider } from "@/contexts/auth.context";
+import { ThemeProvider } from "@/provider/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className="light" suppressHydrationWarning>
             <head />
             <body
                 className={cn(
@@ -29,10 +30,18 @@ export default function RootLayout({
                     }
                 )}
             >
-                <AuthContextProvider>
-                    <div className="w-full">{children}</div>
-                </AuthContextProvider>
-                <Toaster />
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                    enableColorScheme
+                >
+                    <AuthContextProvider>
+                        <div className="w-full z-0">{children}</div>
+                    </AuthContextProvider>
+                    <Toaster />
+                </ThemeProvider>
             </body>
         </html>
     );

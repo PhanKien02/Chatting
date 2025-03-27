@@ -55,6 +55,7 @@ export function LoginForm({
                     title: "Đăng nhập thất bại",
                     description: error.message,
                     variant: "destructive",
+                    duration: 1000,
                 });
             });
     };
@@ -87,7 +88,7 @@ export function LoginForm({
                                 )}
                             </div>
                             <div className="grid gap-2">
-                                <div className="flex items-center">
+                                <div className="flex items-center flex-wrap">
                                     <Label htmlFor="password">Mật khẩu</Label>
                                     <a
                                         href="#"
