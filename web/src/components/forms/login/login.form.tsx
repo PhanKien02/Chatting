@@ -1,32 +1,32 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { PasswordInput } from "../../ui/password-input";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "./login-schema";
-import SvgLogoGoogle from "@/components/svgs/google-logo";
-import { userService } from "../../../services/user.service";
-import { RoleType } from "@/models/user.model";
-import { useToast } from "@/hooks/use-toast";
-import { useAuthContext } from "@/contexts/auth.context";
-import { setCookie } from "cookies-next/client";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { PasswordInput } from '../../ui/password-input';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginSchema } from './login-schema';
+import SvgLogoGoogle from '@/components/svgs/google-logo';
+import { userService } from '../../../services/user.service';
+import { RoleType } from '@/models/user.model';
+import { useToast } from '@/hooks/use-toast';
+import { useAuthContext } from '@/contexts/auth.context';
+import { setCookie } from 'cookies-next/client';
+import { useRouter } from 'next/navigation';
 
 type LoginPayload = z.infer<typeof LoginSchema>;
 export function LoginForm({
     className,
     ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<'div'>) {
     const { toast } = useToast();
     const router = useRouter();
     const { setUserLogin } = useAuthContext();
@@ -42,26 +42,27 @@ export function LoginForm({
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
                 setUserLogin(data.user);
-                setCookie("accessToken", data.accessToken);
-                setCookie("refreshToken", data.refreshToken);
-                router.push("/");
+                setCookie('accessToken', data.accessToken);
+                setCookie('refreshToken', data.refreshToken);
+                router.push('/');
                 toast({
-                    title: "Đăng nhập thành công",
-                    description: "Chào mừng bạn đến với TaleNet!",
+                    title: 'Đăng nhập thành công',
+                    description: 'Chào mừng bạn đến với TaleNet!',
+                    variant: 'success',
                 });
             })
             .catch((error) => {
                 toast({
-                    title: "Đăng nhập thất bại",
+                    title: 'Đăng nhập thất bại',
                     description: error.message,
-                    variant: "destructive",
+                    variant: 'destructive',
                     duration: 1000,
                 });
             });
     };
 
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card>
                 <CardHeader>
                     <CardTitle className="text-2xl">Đăng nhập</CardTitle>
@@ -77,7 +78,7 @@ export function LoginForm({
                                 <Input
                                     id="login"
                                     type="login"
-                                    {...register("login")}
+                                    {...register('login')}
                                     placeholder="nhập tài khoản"
                                     required
                                 />
@@ -98,7 +99,7 @@ export function LoginForm({
                                     </a>
                                 </div>
                                 <PasswordInput
-                                    {...register("password")}
+                                    {...register('password')}
                                     id="password"
                                     placeholder="Nhập mật khẩu
                                 "
@@ -117,7 +118,7 @@ export function LoginForm({
                             </Button>
                         </div>
                         <div className="mt-4 text-center text-sm">
-                            Bạn chưa có tài khoản?{" "}
+                            Bạn chưa có tài khoản?{' '}
                             <a
                                 href="#"
                                 className="underline underline-offset-4 text-green-500"

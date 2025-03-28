@@ -7,12 +7,16 @@
 - **Net:** Viết tắt của "**Network**" (mạng lưới), thể hiện tính chất của một mạng xã hội nơi kết nối những người yêu thích sách và truyện với nhau.
 
 ### **Ý nghĩa mở rộng:**
+
 **TaleNet** = Mạng lưới những câu chuyện, nơi mọi người có thể kết nối, chia sẻ, viết review sách, hoặc thậm chí sáng tác và đăng tải câu chuyện của riêng mình.
+
 - Gợi cảm giác sáng tạo & kết nối, giúp cộng đồng người đọc tương tác với nhau thông qua những cuốn sách hoặc câu chuyện họ yêu thích.
 - Dễ nhớ & dễ phát âm, giúp thương hiệu dễ dàng được nhận diện.
+
 ## Getting Started
 
 First, run the development server:
+
 ```bash
 npm run dev
 # or

@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 function LogoGoogle(props: SVGProps<SVGSVGElement>) {
     return (

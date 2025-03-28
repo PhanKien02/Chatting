@@ -1,14 +1,4 @@
-import {
-    Calendar,
-    ChevronRight,
-    ChevronUp,
-    Home,
-    Inbox,
-    Search,
-    Settings,
-    User,
-    User2,
-} from "lucide-react";
+import { ChevronRight, ChevronUp, User2 } from 'lucide-react';
 
 import {
     Sidebar,
@@ -24,70 +14,24 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+} from './ui/dropdown-menu';
+import { deleteCookie } from 'cookies-next';
+import { useToast } from '@/hooks/use-toast';
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "./ui/collapsible";
+} from './ui/collapsible';
+import { menus } from '@/lib/menus';
 
 // Menu items.
-const items = [
-    {
-        title: "Home",
-        url: "#",
-        icon: Home,
-        children: [
-            {
-                title: "Dashboad",
-                url: "/admin/dashboard",
-                icon: Home,
-                children: [],
-            },
-            {
-                title: "user",
-                url: "/admin/users",
-                icon: User,
-                children: [],
-            },
-            {
-                title: "setting",
-                url: "#",
-                icon: Home,
-                children: [],
-            },
-        ],
-    },
-    {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
-];
+
 export function AppSidebar() {
     const { toast } = useToast();
     return (
@@ -98,7 +42,7 @@ export function AppSidebar() {
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) =>
+                            {menus.map((item) =>
                                 !item.children ? (
                                     <SidebarMenuItem
                                         key={item.title}
@@ -124,7 +68,7 @@ export function AppSidebar() {
                                                 className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                                             >
                                                 <CollapsibleTrigger>
-                                                    <item.icon className="mr-2" />{" "}
+                                                    <item.icon className="mr-2" />{' '}
                                                     {item.title}
                                                     <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                                                 </CollapsibleTrigger>
@@ -189,12 +133,12 @@ export function AppSidebar() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        deleteCookie("accessToken");
-                                        deleteCookie("refreshToken");
+                                        deleteCookie('accessToken');
+                                        deleteCookie('refreshToken');
                                         toast({
-                                            title: "Đăng Xuất",
-                                            description: "Đăng xuất thành công",
-                                            variant: "success",
+                                            title: 'Đăng Xuất',
+                                            description: 'Đăng xuất thành công',
+                                            variant: 'success',
                                         });
                                     }}
                                 >

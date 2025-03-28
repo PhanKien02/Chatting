@@ -1,12 +1,12 @@
-"use client";
+'use client';
 import React, {
     createContext,
     useContext,
     PropsWithChildren,
     useState,
-} from "react";
+} from 'react';
 
-import { IUser } from "@/models/user.model";
+import { IUser } from '@/models/user.model';
 
 interface AuthContextType {
     user?: IUser;
@@ -34,7 +34,7 @@ export const useAuthContext = (): AuthContextType => {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error(
-            "useAuthContext must be used within a AuthContextProvider"
+            'useAuthContext must be used within a AuthContextProvider'
         );
     }
     return context;

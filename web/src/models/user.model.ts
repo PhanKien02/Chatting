@@ -1,4 +1,4 @@
-import { IBaseModel } from "./base.model";
+import { IBaseModel } from './base.model';
 
 export interface IUser extends IBaseModel {
     id: number;
@@ -16,17 +16,16 @@ export interface IUser extends IBaseModel {
 }
 
 export interface LoginPayload {
-    login: string,
-    password: string,
-    role?: "ROLE-ADMIN"
+    login: string;
+    password: string;
+    role?: 'ROLE-ADMIN';
 }
-
 
 export interface LoginResponse {
     accessToken: string;
     expires: number;
     refreshToken: string;
-    user: IUser
+    user: IUser;
 }
 export enum RoleType {
     USER = 'ROLE-USER',
