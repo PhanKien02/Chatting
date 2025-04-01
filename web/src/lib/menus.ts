@@ -1,19 +1,9 @@
-import {
-    Calendar,
-    Home,
-    Inbox,
-    LucideProps,
-    Search,
-    Settings,
-    User,
-} from 'lucide-react';
+import { Calendar, Home, Inbox, LucideProps, Search, Settings, User } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 type Menu = {
     title: string;
     url: string;
-    icon: ForwardRefExoticComponent<
-        Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-    >;
+    icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
     children?: Menu[];
 };
 export const menus: Menu[] = [
@@ -35,8 +25,8 @@ export const menus: Menu[] = [
                 children: [],
             },
             {
-                title: 'setting',
-                url: '#',
+                title: 'Loại sách',
+                url: '/admin/topics',
                 icon: Home,
                 children: [],
             },

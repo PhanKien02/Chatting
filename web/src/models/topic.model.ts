@@ -5,8 +5,13 @@ export interface ITopic extends IBaseModel {
 }
 
 export interface ITopicsResponse {
-    bookings: ITopic[];
+    data: ITopic[];
     limit: number;
     page: number;
     total: number;
+}
+
+export interface ITopicPayload {
+    name: string;
+    color: string;
 }

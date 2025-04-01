@@ -1,12 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PasswordInput } from '../../ui/password-input';
@@ -23,10 +17,7 @@ import { setCookie } from 'cookies-next/client';
 import { useRouter } from 'next/navigation';
 
 type LoginPayload = z.infer<typeof LoginSchema>;
-export function LoginForm({
-    className,
-    ...props
-}: React.ComponentPropsWithoutRef<'div'>) {
+export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
     const { toast } = useToast();
     const router = useRouter();
     const { setUserLogin } = useAuthContext();
@@ -37,7 +28,7 @@ export function LoginForm({
     } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
     });
-    const onSubmit: SubmitHandler<LoginPayload> = (data) => {
+    const onSubmit: SubmitHandler<LoginPayload> = data => {
         userService
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
@@ -51,7 +42,7 @@ export function LoginForm({
                     variant: 'success',
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 toast({
                     title: 'Đăng nhập thất bại',
                     description: error.message,
@@ -65,64 +56,42 @@ export function LoginForm({
         <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl">Đăng nhập</CardTitle>
-                    <CardDescription>
-                        Nhập tài khoản mật khẩu để đăng nhập
-                    </CardDescription>
+                    <CardTitle className='text-2xl'>Đăng nhập</CardTitle>
+                    <CardDescription>Nhập tài khoản mật khẩu để đăng nhập</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="flex flex-col gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Tài khoản</Label>
-                                <Input
-                                    id="login"
-                                    type="login"
-                                    {...register('login')}
-                                    placeholder="nhập tài khoản"
-                                    required
-                                />
-                                {errors.login && (
-                                    <p className="text-red-500 ml-4">
-                                        {errors.login.message}
-                                    </p>
-                                )}
+                        <div className='flex flex-col gap-6'>
+                            <div className='grid gap-2'>
+                                <Label htmlFor='email'>Tài khoản</Label>
+                                <Input id='login' type='login' {...register('login')} placeholder='nhập tài khoản' required />
+                                {errors.login && <p className='text-red-500 ml-4'>{errors.login.message}</p>}
                             </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center flex-wrap">
-                                    <Label htmlFor="password">Mật khẩu</Label>
-                                    <a
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline hover:text-green-500"
-                                    >
+                            <div className='grid gap-2'>
+                                <div className='flex items-center flex-wrap'>
+                                    <Label htmlFor='password'>Mật khẩu</Label>
+                                    <a href='#' className='ml-auto inline-block text-sm underline-offset-4 hover:underline hover:text-green-500'>
                                         Quên mật khẩu?
                                     </a>
                                 </div>
                                 <PasswordInput
                                     {...register('password')}
-                                    id="password"
-                                    placeholder="Nhập mật khẩu
-                                "
+                                    id='password'
+                                    placeholder='Nhập mật khẩu
+                                '
                                 />
-                                {errors.password && (
-                                    <p className="text-red-500 ml-4">
-                                        {errors.password.message}
-                                    </p>
-                                )}
+                                {errors.password && <p className='text-red-500 ml-4'>{errors.password.message}</p>}
                             </div>
-                            <Button type="submit" className="w-full">
+                            <Button type='submit' className='w-full'>
                                 Đăng nhập
                             </Button>
-                            <Button variant="ghost" className="w-full">
+                            <Button variant='ghost' className='w-full'>
                                 Đăng nhập bằng Google <SvgLogoGoogle />
                             </Button>
                         </div>
-                        <div className="mt-4 text-center text-sm">
+                        <div className='mt-4 text-center text-sm'>
                             Bạn chưa có tài khoản?{' '}
-                            <a
-                                href="#"
-                                className="underline underline-offset-4 text-green-500"
-                            >
+                            <a href='#' className='underline underline-offset-4 text-green-500'>
                                 Đăng ký
                             </a>
                         </div>

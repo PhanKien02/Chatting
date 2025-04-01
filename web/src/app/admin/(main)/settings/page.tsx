@@ -57,8 +57,8 @@ const data: Setting[] = [
 
 export default function SettingsPage({}: Props) {
     return (
-        <div className="flex flex-col gap-5  w-full">
-            <PageTitle title="Settings" />
+        <div className='flex flex-col gap-5  w-full'>
+            <PageTitle title='Settings' />
             <DataTable columns={columns} data={data} />
         </div>
     );

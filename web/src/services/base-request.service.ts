@@ -13,7 +13,7 @@ const baseRequest = axios.create({
     },
 });
 
-baseRequest.interceptors.request.use(async (config) => {
+baseRequest.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
@@ -23,6 +23,14 @@ baseRequest.interceptors.response.use(
         return Promise.resolve(response.data);
     },
     async (error: AxiosError) => {
+        if (error.code === 'ERR_NETWORK') {
+            const data = {
+                error: 'ERR_NETWORK',
+                message: 'Vui lòng kiểm tra kết nối mạng',
+                statusCode: 400,
+            } as ErrorResponse;
+            return Promise.reject(data);
+        }
         const data = error.response?.data as ErrorResponse;
         return Promise.reject(data);
     }

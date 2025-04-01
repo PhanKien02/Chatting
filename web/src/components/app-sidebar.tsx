@@ -15,39 +15,32 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { deleteCookie } from 'cookies-next';
 import { useToast } from '@/hooks/use-toast';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from './ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { menus } from '@/lib/menus';
+import Image from 'next/image';
 
 // Menu items.
 
 export function AppSidebar() {
     const { toast } = useToast();
     return (
-        <Sidebar collapsible="offcanvas">
-            <SidebarHeader></SidebarHeader>
+        <Sidebar collapsible='offcanvas'>
+            <SidebarHeader>
+                <div className='flex justify-center'>
+                    <Image src='https://shadcnblocks.com/images/block/logos/shadcnblockscom-icon.svg' alt='logo' width={70} height={70} />
+                </div>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {menus.map((item) =>
+                            {menus.map(item =>
                                 !item.children ? (
-                                    <SidebarMenuItem
-                                        key={item.title}
-                                        className="ml-2"
-                                    >
+                                    <SidebarMenuItem key={item.title} className='ml-2'>
                                         <SidebarMenuButton asChild>
                                             <a href={item.url}>
                                                 <item.icon />
@@ -56,50 +49,30 @@ export function AppSidebar() {
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ) : (
-                                    <Collapsible
-                                        key={item.title}
-                                        title={item.title}
-                                        defaultOpen
-                                        className="group/collapsible"
-                                    >
+                                    <Collapsible key={item.title} title={item.title} defaultOpen className='group/collapsible'>
                                         <SidebarGroup>
                                             <SidebarGroupLabel
                                                 asChild
-                                                className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                                                className='group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                                             >
                                                 <CollapsibleTrigger>
-                                                    <item.icon className="mr-2" />{' '}
-                                                    {item.title}
-                                                    <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                                                    <item.icon className='mr-2' /> {item.title}
+                                                    <ChevronRight className='ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90' />
                                                 </CollapsibleTrigger>
                                             </SidebarGroupLabel>
                                             <CollapsibleContent>
                                                 <SidebarGroupContent>
                                                     <SidebarMenuSub>
-                                                        {item.children.map(
-                                                            (child) => (
-                                                                <SidebarMenuSubItem
-                                                                    key={
-                                                                        child.title
-                                                                    }
-                                                                >
-                                                                    <SidebarMenuSubButton
-                                                                        asChild
-                                                                    >
-                                                                        <a
-                                                                            href={
-                                                                                child.url
-                                                                            }
-                                                                        >
-                                                                            <child.icon />
-                                                                            {
-                                                                                child.title
-                                                                            }
-                                                                        </a>
-                                                                    </SidebarMenuSubButton>
-                                                                </SidebarMenuSubItem>
-                                                            )
-                                                        )}
+                                                        {item.children.map(child => (
+                                                            <SidebarMenuSubItem key={child.title}>
+                                                                <SidebarMenuSubButton asChild>
+                                                                    <a href={child.url}>
+                                                                        <child.icon />
+                                                                        {child.title}
+                                                                    </a>
+                                                                </SidebarMenuSubButton>
+                                                            </SidebarMenuSubItem>
+                                                        ))}
                                                     </SidebarMenuSub>
                                                 </SidebarGroupContent>
                                             </CollapsibleContent>
@@ -118,13 +91,10 @@ export function AppSidebar() {
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton>
                                     <User2 /> Username
-                                    <ChevronUp className="ml-auto" />
+                                    <ChevronUp className='ml-auto' />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                side="top"
-                                className="w-[--radix-popper-anchor-width]"
-                            >
+                            <DropdownMenuContent side='top' className='w-[--radix-popper-anchor-width]'>
                                 <DropdownMenuItem>
                                     <span>Account</span>
                                 </DropdownMenuItem>
@@ -142,7 +112,7 @@ export function AppSidebar() {
                                         });
                                     }}
                                 >
-                                    <a className="w-full" href="/">
+                                    <a className='w-full' href='/'>
                                         Đăng xuất
                                     </a>
                                 </DropdownMenuItem>

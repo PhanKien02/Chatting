@@ -4,16 +4,11 @@ export function middleware(req: NextRequest) {
     const token = req.cookies.get('accessToken'); // Lấy token từ cookie
     const url = req.nextUrl;
 
-    if (
-        url.pathname.startsWith('/_next/') ||
-        url.pathname.startsWith('/static/') ||
-        url.pathname.startsWith('/api/')
-    ) {
+    if (url.pathname.startsWith('/_next/') || url.pathname.startsWith('/static/') || url.pathname.startsWith('/api/')) {
         return NextResponse.next();
     }
 
-    if (token && ['/auth/login', '/auth/register'].includes(url.pathname))
-        return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+    if (token && ['/auth/login', '/auth/register'].includes(url.pathname)) return NextResponse.redirect(new URL('/admin/dashboard', req.url));
 
     // Nếu không có token và không phải đang truy cập trang login hoặc register
     if (!token && !['/auth/login', '/auth/register'].includes(url.pathname)) {
@@ -21,10 +16,7 @@ export function middleware(req: NextRequest) {
     }
 
     // Nếu đã có token và truy cập trang login hoặc register, chuyển hướng đến dashboard
-    if (
-        token &&
-        ['/auth/login', '/auth/register', '/auth'].includes(url.pathname)
-    ) {
+    if (token && ['/auth/login', '/auth/register', '/auth'].includes(url.pathname)) {
         return NextResponse.redirect(new URL('/admin/dashboard', req.url));
     }
 
