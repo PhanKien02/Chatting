@@ -46,7 +46,7 @@ export function TopicForm({ dataForm, setOpen, refetch }: TopicFormProp) {
                       title: 'Update thành công',
                       description: 'Update loại sách thánh công!',
                       variant: 'success',
-                      duration: 3000,
+                      duration: 2000,
                   });
               });
     };

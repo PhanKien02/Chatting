@@ -3,11 +3,14 @@
 import { useToast } from '@/hooks/use-toast';
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@/components/ui/toast';
 
-export function Toaster() {
+type ToastProps = {
+    duration?: number;
+};
+export function Toaster({ duration }: ToastProps) {
     const { toasts } = useToast();
 
     return (
-        <ToastProvider>
+        <ToastProvider duration={duration}>
             {toasts.map(function ({ id, title, description, action, ...props }) {
                 return (
                     <Toast key={id} {...props}>

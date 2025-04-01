@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <AuthContextProvider>
                         <div className='w-full z-0'>{children}</div>
                     </AuthContextProvider>
-                    <Toaster />
+                    <Toaster duration={2000} />
                 </ThemeProvider>
             </body>
         </html>
