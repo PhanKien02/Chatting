@@ -6,6 +6,7 @@ import { Topic } from './entities/topic.entity';
 import { IPaginated, IQuery } from '@/interfaces/paging.interface';
 import { buildFilterSortAndPaginate, paginateResponse } from '@/utils/buildFilterSortAndPaginate';
 import { InjectModel } from '@nestjs/mongoose';
+import { normalize } from '@/utils/utils';
 
 @Injectable()
 export class TopicService {
@@ -21,13 +22,22 @@ export class TopicService {
 
     async findAllTopic(query: IQuery<Topic>): Promise<IPaginated<Topic>> {
         const { filter, limit, sort, skip } = buildFilterSortAndPaginate(query);
+        if (query.searchKeyword) {
+            filter.$text = { $search: `'\"${normalize(query.searchKeyword)}\"'` };
+        }
         const topics = await this.topicModel.aggregate([
             {
                 $match: {
                     ...filter,
-                    deleted_at: null
+                    deleted_at: { $eq: null }
                 }
-            }, { $sort: sort }, // Ensure `sort` is defined
+            }, {
+                $addFields: {
+                    score: filter.$text ? { $meta: 'textScore' } : 0,
+                },
+            }, {
+                $sort: { ...sort, score: -1 }, // Sort theo textScore
+            }, // Ensure `sort` is defined
             {
                 $group: {
                     _id: null,
@@ -42,12 +52,12 @@ export class TopicService {
                 },
             },
         ]);
-        const totalResultsMenu = topics[0]?.totalResults || 0;
+        const totalResultsTopic = topics[0]?.totalResults || 0;
         return paginateResponse<Topic>({
             data: topics[0]?.data || [],
             page: query.page,
             limit: query.limit,
-            totalResults: totalResultsMenu,
+            totalResults: totalResultsTopic,
         });
     };
 

@@ -8,7 +8,7 @@ export interface ITopicsResponse {
     data: ITopic[];
     limit: number;
     page: number;
-    total: number;
+    totalResults: number;
 }
 
 export interface ITopicPayload {

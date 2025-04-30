@@ -1,4 +1,5 @@
-import { ITopicsResponse } from '@/models/topic.model';
+import { ApiResponse } from '@/models/response';
+import { ITopic, ITopicsResponse } from '@/models/topic.model';
 import { topicService } from '@/services/topic.service';
 import { useQuery } from '@tanstack/react-query';
 

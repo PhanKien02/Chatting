@@ -3,7 +3,7 @@
 import { AppSidebar } from '@/components/app-sidebar';
 import { NavHeader } from '@/components/header';
 import { ScrollBar } from '@/components/ui/scroll-area';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +21,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             </QueryClientProvider>
                             <ScrollBar orientation='vertical' />
                         </ScrollArea>
-                        <div className=''></div>
                     </div>
                 </div>
             </SidebarProvider>

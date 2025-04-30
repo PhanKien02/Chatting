@@ -1,14 +1,14 @@
 import { DataTable } from '@/components/DataTable';
-import { useGetAllTopic } from '@/hooks/useGetAllTopic';
+import { useGetAllTopic } from '@/hooks/queries/useGetAllTopic';
 import { ITopic } from '@/models/topic.model';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import { TopicSheet } from './topic.sheet';
 import { Button } from '../ui/button';
 import { Plus, Search } from 'lucide-react';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
 import { Input } from '../ui/input';
 import useDebounce from '@/hooks/useDebounce';
+import Loading from '../loading';
 
 function TopicPage() {
     const [page, setPage] = useState(1);
@@ -22,6 +22,8 @@ function TopicPage() {
     });
     const [data, setData] = useState<ITopic>();
     const [open, setOpen] = useState(false);
+
+
     const columns: ColumnDef<ITopic>[] = [
         {
             accessorKey: 'name',
@@ -50,41 +52,26 @@ function TopicPage() {
             ),
         },
     ];
-    if (!topics || isError || isFetching || isLoading) return <>Loading</>;
+    if (!topics || isError || isFetching || isLoading) return <Loading />;
     return (
         <>
             <div className='p-2 flex justify-between'>
                 <div className='relative w-80 border-2 rounded-lg ml-3.5'>
                     <Search className='absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 left-3' />
-                    <Input type='text' placeholder='Search' className='pl-12 pr-4' onChange={e => setSearchTerm(e.target.value)} />
+                    <Input type='text' value={searchTerm} placeholder='Search' className='pl-12 pr-4' onChange={e => setSearchTerm(e.target.value)} />
                 </div>
                 <Button
                     onClick={() => {
                         setOpen(true);
+                        setData(undefined);
                     }}
                     variant={'default'}
                 >
-                    Cập nhât <Plus />
+                    Thêm Loại sách <Plus />
                 </Button>
             </div>
-            <DataTable columns={columns} data={topics.data} />
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious onClick={() => setPage(page - 1)} />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink href='#'>1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext onClick={() => setPage(page + 1)} />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
-
+            <DataTable
+                data={topics.data || []} totalCount={topics.totalResults || 0} columns={columns} limit={limit} setLimit={setLimit} page={page} setPage={setPage} />
             <TopicSheet refetch={refetch} data={data} open={open} setOpen={setOpen} />
         </>
     );

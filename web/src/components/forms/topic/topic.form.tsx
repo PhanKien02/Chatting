@@ -31,24 +31,24 @@ export function TopicForm({ dataForm, setOpen, refetch }: TopicFormProp) {
     const onSubmit: SubmitHandler<TopicPayload> = data => {
         !dataForm
             ? topicService.createTopic(data).then(() => {
-                  setOpen(false);
-                  refetch();
-                  toast({
-                      title: 'Thêm mới thành công',
-                      description: 'Thêm mới loại sách thánh công!',
-                      variant: 'success',
-                  });
-              })
+                setOpen(false);
+                refetch();
+                toast({
+                    title: 'Thêm mới thành công',
+                    description: 'Thêm mới loại sách thánh công!',
+                    variant: 'success',
+                });
+            })
             : topicService.updateTopic(dataForm._id, data).then(() => {
-                  setOpen(false);
-                  refetch();
-                  toast({
-                      title: 'Update thành công',
-                      description: 'Update loại sách thánh công!',
-                      variant: 'success',
-                      duration: 2000,
-                  });
-              });
+                setOpen(false);
+                refetch();
+                toast({
+                    title: 'Update thành công',
+                    description: 'Update loại sách thánh công!',
+                    variant: 'success',
+                    duration: 2000,
+                });
+            });
     };
 
     return (

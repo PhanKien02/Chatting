@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PageTitle from '@/components/PageTitle';
-import TopicPage from '@/components/pages/topic.page';
+import TopicPage from '@/components/topic/topic.page';
 
 export default function OrdersPage() {
     return (

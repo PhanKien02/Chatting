@@ -10,13 +10,14 @@ class TopicService {
     }
 
     async getAllopic(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<ITopicsResponse>> {
-        return await this.request.get('/topic', {
+        const data = await this.request.get('/topic', {
             params: {
                 page,
                 limit,
                 searchKeyword,
             },
         });
+        return data.data;
     }
 
     async createTopic(data: ITopicPayload) {

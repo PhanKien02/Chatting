@@ -3,20 +3,33 @@
 import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from './ui/button';
+import { TablePagination } from './pagination';
+import { Dispatch, SetStateAction } from 'react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    pagination?: boolean;
+    limit: number;
+    setLimit: Dispatch<SetStateAction<number>>;
+    page: number;
+    setPage: Dispatch<SetStateAction<number>>;
+    pageSizeOptions?: number[];
+    totalCount: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data, pagination }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, totalCount, limit, setLimit, page, setPage, pageSizeOptions = [5, 10, 20, 50] }: DataTableProps<TData, TValue>) {
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        state: {
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        }
     });
 
     return (
@@ -51,16 +64,7 @@ export function DataTable<TData, TValue>({ columns, data, pagination }: DataTabl
                     </TableBody>
                 </Table>
             </div>
-            {pagination && (
-                <div className='flex items-center justify-end space-x-2 py-4'>
-                    <Button variant='outline' size='sm' onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-                        Previous
-                    </Button>
-                    <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-                        Next
-                    </Button>
-                </div>
-            )}
+            <TablePagination limit={limit} setLimit={setLimit} page={page} setPage={setPage} pageSizeOptions={pageSizeOptions} totalCount={totalCount} />
         </div>
     );
 }
