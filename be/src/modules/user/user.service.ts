@@ -119,4 +119,16 @@ export class UserService {
         const { password, activeKey, resetKey, __v, ...rest } = user;
         return rest;
     }
+
+    async validateToken(
+        payLoad: PayLoadToken): Promise<Omit<User, 'password' | 'activeKey' | 'resetKey'>> {
+        const user = await this.userModel.findOne({
+            _id: payLoad.userId,
+            role: payLoad.role,
+        }).lean();
+
+        if (!user) throw new BadRequestException(errorMessage.TOKEN_NOT_VALID);
+
+        return user;
+    }
 }

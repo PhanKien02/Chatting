@@ -3,14 +3,12 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IResponse } from '@/interfaces/response.interface';
-import { Role } from '../../security';
 import { RoleType } from './entities/role-type';
-import { AuthGuard } from '../../security/guards/auth.guard';
-import { RolesGuard } from '../../security/guards/roles.guard';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponse } from '@/interfaces/user.interface';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { AuthGuard, Role, RolesGuard } from '../../security';
 
 @ApiBearerAuth()
 @Controller('user')

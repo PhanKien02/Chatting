@@ -16,8 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payLoad: PayLoadToken, done: VerifiedCallback): Promise<VerifiedCallback> {
-
-        const user = await this.userService.findOneById(payLoad.userId);
+        const user = await this.userService.validateToken(payLoad);
 
         if (!user) {
             return done(
@@ -30,7 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                 new ForbiddenException({ message: 'Tài khoản người dùng đã bị khoá' }),
                 false,
             );
-
         return done(null, user);
     }
 }
