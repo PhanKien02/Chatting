@@ -80,13 +80,46 @@ export class UserService {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
         });
 
-        const now = new Date();
-
-        const expires = new Date(now);
+        const now = Date.now();;
+        const expires = new Date(now + +process.env.ACCESS_TOKEN_EXPIRESIN).getTime();
         const refreshToken = this.jwtService.sign(
+            payLoadAccessToken,
             {
-                userId: user._id,
+                algorithm: 'HS512',
+                secret: process.env.REFRESH_TOKEN_SCRECT,
+                expiresIn: process.env.REFRESH_TOKEN_EXPIRESIN,
             },
+        );
+
+
+        return {
+            user,
+            accessToken,
+            refreshToken,
+            expires
+        };
+    }
+
+    async refreshToken(token: string): Promise<LoginResponse> {
+        const decode = this.jwtService.verify(token, {
+            secret: process.env.REFRESH_TOKEN_SCRECT,
+        });
+        const user = await this.validateToken(decode)
+        const payLoadToken: PayLoadToken = {
+            role: user.role,
+            userId: user._id,
+        };
+        const now = Date.now();;
+        const expires = new Date(now + +process.env.ACCESS_TOKEN_EXPIRESIN).getTime();
+        const accessToken = this.jwtService.sign(payLoadToken, {
+            algorithm: 'HS256',
+            secret: process.env.ACCESS_TOKEN_SCRECT,
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
+        });
+
+
+        const refreshToken = this.jwtService.sign(
+            payLoadToken,
             {
                 algorithm: 'HS512',
                 secret: process.env.REFRESH_TOKEN_SCRECT,
@@ -98,9 +131,7 @@ export class UserService {
             user,
             accessToken,
             refreshToken,
-            expires: expires.setSeconds(
-                expires.getSeconds() + parseInt(process.env.ACCESS_TOKEN_EXPIRESIN),
-            ),
+            expires
         };
     }
     async validateUser(

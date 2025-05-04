@@ -1,3 +1,4 @@
+'use client'
 import { ChevronRight, ChevronUp, User2 } from 'lucide-react';
 
 import {
@@ -16,16 +17,24 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { deleteCookie } from 'cookies-next';
 import { useToast } from '@/hooks/use-toast';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { menus } from '@/lib/menus';
 import Image from 'next/image';
+import { clearCookies } from '@/utils/cookies';
+import { useAuthContext } from '@/contexts/auth.context';
+import { useEffect, useState } from 'react';
+import { IUser } from '@/models/user.model';
 
 // Menu items.
 
 export function AppSidebar() {
     const { toast } = useToast();
+    const { user } = useAuthContext()
+    const [curentUser, setCurentUser] = useState<IUser | undefined>();
+    useEffect(() => {
+        if (user) setCurentUser(user)
+    }, [user])
     return (
         <Sidebar collapsible='offcanvas'>
             <SidebarHeader>
@@ -90,7 +99,7 @@ export function AppSidebar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton>
-                                    <User2 /> Username
+                                    <User2 /> {curentUser && curentUser?.fullName ? curentUser?.fullName : "userName"}
                                     <ChevronUp className='ml-auto' />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
@@ -103,8 +112,7 @@ export function AppSidebar() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        deleteCookie('accessToken');
-                                        deleteCookie('refreshToken');
+                                        clearCookies()
                                         toast({
                                             title: 'Đăng Xuất',
                                             description: 'Đăng xuất thành công',

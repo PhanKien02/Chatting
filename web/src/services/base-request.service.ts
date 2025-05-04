@@ -1,11 +1,11 @@
 'use client'
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { getCookie } from 'cookies-next';
+import { COOKIES } from '@/lib/cookieName';
+import { clearCookies, getCookie, setCookie } from '@/utils/cookies';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 3000;
-const token = getCookie('asscesToken');
 const baseRequest = axios.create({
     baseURL: BASE_URL,
     timeout: TIMEOUT, // Thời gian chờ (ms)
@@ -14,17 +14,25 @@ const baseRequest = axios.create({
     },
 });
 
-baseRequest.interceptors.request.use(async config => {
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
-
 
 baseRequest.interceptors.request.use(
-    (config) => {
-        const token = getCookie('accessToken');
-        if (token && config.headers) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+    async (config) => {
+        const exp = getCookie(COOKIES.EXPIRES);
+        if (exp && +exp < Date.now()) {
+            const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
+            const response = await axios.post(`${BASE_URL}/user/refresh-token`, { refreshToken });
+            const { data } = response.data;
+            config.headers['Authorization'] = `Bearer ${data.accessToken}`;
+            setCookie(COOKIES.ACCESSTOKEN, data.accessToken,);
+            setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
+            setCookie(COOKIES.EXPIRES, data.expires);
+            return config;
+        }
+        else {
+            const token = getCookie(COOKIES.ACCESSTOKEN);
+            if (token && config.headers) {
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
         }
         return config;
     },
@@ -34,10 +42,9 @@ baseRequest.interceptors.response.use(
     (res) => res,
     (error) => {
         if (error.response && error.response.status === 401) {
-            if (typeof window !== 'undefined') {
-                const router = useRouter();
-                router.push('/login');
-            }
+            const router = useRouter();
+            clearCookies();
+            router.push('/login');
         }
         return Promise.reject(
             (error.response && error.response.data) || 'Something went wrong'
@@ -45,4 +52,8 @@ baseRequest.interceptors.response.use(
     }
 );
 
+async function refreshToken() {
+    const result = await baseRequest.get('/user/refresh-token');
+    return result.data
+}
 export default baseRequest;

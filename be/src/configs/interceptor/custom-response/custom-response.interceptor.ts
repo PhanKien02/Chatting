@@ -22,7 +22,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
                 ) {
                     return {
                         statusCode: context.switchToHttp().getResponse().statusCode || 200,
-                        message: data.message || 'Thành công',
+                        message: data?.message || 'Thành công',
                         data: data,
                     };
                 }

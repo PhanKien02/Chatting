@@ -13,8 +13,9 @@ import { userService } from '../../../services/user.service';
 import { RoleType } from '@/models/user.model';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthContext } from '@/contexts/auth.context';
-import { setCookie } from 'cookies-next/client';
 import { useRouter } from 'next/navigation';
+import { COOKIES } from '@/lib/cookieName';
+import { setCookie } from '@/utils/cookies';
 
 type LoginPayload = z.infer<typeof LoginSchema>;
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
@@ -33,8 +34,10 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
                 setUserLogin(data.user);
-                setCookie('accessToken', data.accessToken);
-                setCookie('refreshToken', data.refreshToken);
+                setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
+                setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
+                setCookie(COOKIES.EXPIRES, data.expires.toString());
+                setCookie(COOKIES.USER, data.user);
                 router.push('/');
                 toast({
                     title: 'Đăng nhập thành công',

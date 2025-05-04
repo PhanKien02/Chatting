@@ -56,4 +56,14 @@ export class UserController {
             message: "Login success"
         }
     }
+
+    @Post('/refresh-token')
+    async refreshToken(@Body() body: { refreshToken: string }): Promise<IResponse<LoginResponse>> {
+        const data = await this.userService.refreshToken(body.refreshToken);
+        this.logger.log(`user ${data.user.email} refresh token success`)
+        return {
+            data,
+            message: "Refresh token success"
+        }
+    }
 }
