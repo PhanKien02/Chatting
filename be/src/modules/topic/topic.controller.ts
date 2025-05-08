@@ -10,7 +10,6 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthGuard, Role, RolesGuard } from '../../security';
 import { RoleType } from '../user/entities/role-type';
-
 @ApiBearerAuth()
 @Controller('topic')
 export class TopicController {
@@ -25,7 +24,6 @@ export class TopicController {
         this.logger.log(`create topic ${createTopicDto.name}`);
         return this.topicService.create(createTopicDto);
     }
-
     @Get()
     @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
     @Role([RoleType.ADMIN])
@@ -37,7 +35,6 @@ export class TopicController {
             message: 'get all topic success'
         }
     }
-
     @Put(':id')
     @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
     @Role([RoleType.ADMIN])
@@ -45,7 +42,6 @@ export class TopicController {
         this.logger.log(`update topic ${id}`);
         return this.topicService.update(convertToObjectId(id), updateTopicDto);
     }
-
     @Delete(':id')
     @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
     @Role([RoleType.ADMIN])

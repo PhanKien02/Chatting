@@ -55,11 +55,11 @@ const data: Setting[] = [
     },
 ];
 
-export default function SettingsPage({}: Props) {
+export default function SettingsPage({ }: Props) {
     return (
         <div className='flex flex-col gap-5  w-full'>
             <PageTitle title='Settings' />
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} limit={0} setLimit={() => { }} page={0} setPage={() => { }} totalCount={0} />
         </div>
     );
 }

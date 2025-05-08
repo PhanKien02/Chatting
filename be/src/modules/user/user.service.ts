@@ -16,7 +16,6 @@ import { paginateResponse } from '@/utils/build-result';
 @Injectable()
 export class UserService {
     constructor(@InjectModel(User.name) private userModel: Model<User>, private readonly jwtService: JwtService) { }
-
     async create(createUserDto: CreateUserDto, userId: number) {
         const validateEmail = await this.userModel.findOne({
             $and: [
@@ -42,7 +41,6 @@ export class UserService {
         });
         return newUser;
     }
-
     async findAll(paginate: IQuery<User>): Promise<IPaginated<User>> {
         const result = await this.userModel.find();
         return paginateResponse({
@@ -52,22 +50,18 @@ export class UserService {
             totalResults: result.length
         })
     }
-
     async findOneById(id: ObjectId): Promise<User> {
         const user = await this.userModel.findOne({
 
         });
         return user
     }
-
     update(id: number, updateUserDto: UpdateUserDto) {
         return `This action updates a #${id} user`;
     }
-
     remove(id: number) {
         return `This action removes a #${id} user`;
     }
-
     async login(payLoad: LoginDto): Promise<LoginResponse> {
         const user = await this.validateUser(payLoad);
         const payLoadAccessToken: PayLoadToken = {
@@ -91,7 +85,6 @@ export class UserService {
             },
         );
 
-
         return {
             user,
             accessToken,
@@ -99,7 +92,6 @@ export class UserService {
             expires
         };
     }
-
     async refreshToken(token: string): Promise<LoginResponse> {
         const decode = this.jwtService.verify(token, {
             secret: process.env.REFRESH_TOKEN_SCRECT,
@@ -116,7 +108,6 @@ export class UserService {
             secret: process.env.ACCESS_TOKEN_SCRECT,
             expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
         });
-
 
         const refreshToken = this.jwtService.sign(
             payLoadToken,
@@ -150,7 +141,6 @@ export class UserService {
         const { password, activeKey, resetKey, __v, ...rest } = user;
         return rest;
     }
-
     async validateToken(
         payLoad: PayLoadToken): Promise<Omit<User, 'password' | 'activeKey' | 'resetKey'>> {
         const user = await this.userModel.findOne({
