@@ -22,13 +22,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang='en' className='light' suppressHydrationWarning>
             <head />
             <body
-                className={cn('min-h-screen w-full', inter.className, {
+                className={cn('min-h-screen', inter.className, {
                     'debug-screens': process.env.NODE_ENV === 'development',
                 })}
             >
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange enableColorScheme themes={['light', 'dark']}>
                     <AuthContextProvider>
-                        <div className='w-full z-0'>{children}</div>
+                        <div className='z-0'>{children}</div>
                     </AuthContextProvider>
                     <Toaster duration={2000} />
                 </ThemeProvider>

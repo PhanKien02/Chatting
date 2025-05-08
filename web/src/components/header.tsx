@@ -1,12 +1,16 @@
-import { Book, Menu, Search, Sunset, Trees, Zap } from 'lucide-react';
-
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+'use client'
 import { ThemeToggle } from './theme-toggle';
 import { SidebarTrigger } from './ui/sidebar';
 import { Input } from './ui/input';
+import { useAuthContext } from '@/contexts/auth.context';
+import { useEffect, useState } from 'react';
+import { IUser } from '@/models/user.model';
+import { toast } from '@/hooks/use-toast';
+import { clearCookies } from '@/utils/cookies';
+import { Search } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Avatar, AvatarImage } from './ui/avatar';
+import { redirect } from 'next/navigation';
 
 interface MenuItem {
     title: string;
@@ -15,98 +19,46 @@ interface MenuItem {
     icon?: React.ReactNode;
     items?: MenuItem[];
 }
-
-interface NavHeaderProps {
-    auth?: {
-        login: {
-            title: string;
-            url: string;
-        };
-        signup: {
-            title: string;
-            url: string;
-        };
-    };
-}
-
-export const NavHeader = ({
-    auth = {
-        login: { title: 'Login', url: '#' },
-        signup: { title: 'Sign up', url: '#' },
-    },
-}: NavHeaderProps) => {
+export const NavHeader = () => {
+    const { user } = useAuthContext()
+    const [curentUser, setCurentUser] = useState<IUser | undefined>();
+    useEffect(() => {
+        if (user) setCurentUser(user)
+    }, [user])
     return (
         <section className='py-4 border-b-2'>
-            <div className='container'>
-                <nav className='justify-between flex'>
-                    <SidebarTrigger className='w-10 h-10' />
-                    <div className='relative w-80 border-2 rounded-lg'>
-                        <Search className='absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 left-3' />
-                        <Input type='text' placeholder='Search' className='pl-12 pr-4' />
-                    </div>
-                    <div className='flex gap-2'>
-                        <ThemeToggle />
-                        <Button asChild variant='outline' size='sm'>
-                            <a href={auth.login.url}>{auth.login.title}</a>
-                        </Button>
-                        <Button asChild size='sm'>
-                            <a href={auth.signup.url}>{auth.signup.title}</a>
-                        </Button>
-                    </div>
-                </nav>
-            </div>
-        </section>
+            <nav className='justify-between flex mr-10'>
+                <SidebarTrigger />
+                <div className='relative w-80 border-2 rounded-lg'>
+                    <Search className='absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 left-3' />
+                    <Input type='text' placeholder='Search' className='pl-12 pr-4' />
+                </div>
+                <div className='flex'>
+                    <ThemeToggle />
+                    <DropdownMenu dir='ltr' >
+                        <DropdownMenuTrigger>
+                            <Avatar>
+                                <AvatarImage src={curentUser?.avatarUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className='cursor-pointer'>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Cá nhân</DropdownMenuItem>
+                            <DropdownMenuItem>Cài đặt</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => {
+                                clearCookies();
+                                toast({ title: 'Đăng xuất', description: 'Đăng xuất thành công', variant: 'success', })
+                                redirect('/auth/login')
+                            }}>
+                                Đăng xuất
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </nav>
+        </section >
     );
 };
-
-// const renderMenuItem = (item: MenuItem) => {
-//     if (item.items) {
-//         return (
-//             <NavigationMenuItem key={item.title}>
-//                 <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-//                 <NavigationMenuContent className='bg-popover text-popover-foreground'>
-//                     {item.items.map(subItem => (
-//                         <NavigationMenuLink asChild key={subItem.title} className='w-80'>
-//                             <SubMenuLink item={subItem} />
-//                         </NavigationMenuLink>
-//                     ))}
-//                 </NavigationMenuContent>
-//             </NavigationMenuItem>
-//         );
-//     }
-
-//     return (
-//         <NavigationMenuItem key={item.title}>
-//             <NavigationMenuLink
-//                 href={item.url}
-//                 className='group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground'
-//             >
-//                 {item.title}
-//             </NavigationMenuLink>
-//         </NavigationMenuItem>
-//     );
-// };
-
-// const renderMobileMenuItem = (item: MenuItem) => {
-//     if (item.items) {
-//         return (
-//             <AccordionItem key={item.title} value={item.title} className='border-b-0'>
-//                 <AccordionTrigger className='text-md py-0 font-semibold hover:no-underline'>{item.title}</AccordionTrigger>
-//                 <AccordionContent className='mt-2'>
-//                     {item.items.map(subItem => (
-//                         <SubMenuLink key={subItem.title} item={subItem} />
-//                     ))}
-//                 </AccordionContent>
-//             </AccordionItem>
-//         );
-//     }
-
-//     return (
-//         <a key={item.title} href={item.url} className='text-md font-semibold'>
-//             {item.title}
-//         </a>
-//     );
-// };
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
     return (
