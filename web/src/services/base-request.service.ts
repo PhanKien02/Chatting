@@ -2,7 +2,7 @@
 import { COOKIES } from '@/lib/cookieName';
 import { clearCookies, getCookie, setCookie } from '@/utils/cookies';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 3000;
@@ -17,22 +17,9 @@ const baseRequest = axios.create({
 
 baseRequest.interceptors.request.use(
     async (config) => {
-        const exp = getCookie(COOKIES.EXPIRES);
-        if (exp && +exp < Date.now()) {
-            const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
-            const response = await axios.post(`${BASE_URL}/user/refresh-token`, { refreshToken });
-            const { data } = response.data;
-            config.headers['Authorization'] = `Bearer ${data.accessToken}`;
-            setCookie(COOKIES.ACCESSTOKEN, data.accessToken,);
-            setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
-            setCookie(COOKIES.EXPIRES, data.expires);
-            return config;
-        }
-        else {
-            const token = getCookie(COOKIES.ACCESSTOKEN);
-            if (token && config.headers) {
-                config.headers['Authorization'] = `Bearer ${token}`;
-            }
+        const token = getCookie(COOKIES.ACCESSTOKEN);
+        if (token && config.headers) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
     },
@@ -40,11 +27,19 @@ baseRequest.interceptors.request.use(
 );
 baseRequest.interceptors.response.use(
     (res) => res,
-    (error) => {
+    async (error) => {
+        const originalRequest = error.config;
         if (error.response && error.response.status === 401) {
-            const router = useRouter();
-            clearCookies();
-            router.push('/login');
+            originalRequest._retry = true;
+            const token = await refreshToken();
+            baseRequest.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${token}`;
+            if (!token) {
+                clearCookies();
+                redirect('/auth/login');
+            }
+            return baseRequest(originalRequest);
         }
         return Promise.reject(
             (error.response && error.response.data) || 'Something went wrong'
@@ -53,7 +48,12 @@ baseRequest.interceptors.response.use(
 );
 
 async function refreshToken() {
-    const result = await baseRequest.get('/user/refresh-token');
-    return result.data
+    const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
+    const response = await baseRequest.post('/user/refresh-token', { refreshToken });
+    const { data } = response.data;
+    setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
+    setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
+    setCookie(COOKIES.EXPIRES, data.expires);
+    return data.accessToken ? data.accessToken : null;
 }
 export default baseRequest;
