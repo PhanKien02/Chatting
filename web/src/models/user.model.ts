@@ -1,4 +1,5 @@
 import { IBaseModel } from './base.model';
+import { IQuery } from './response';
 
 export interface IUser extends IBaseModel {
     id: number;
@@ -32,3 +33,7 @@ export enum RoleType {
     ADMIN = 'ROLE-ADMIN',
     MERCHANT = 'ROLE-MERCHANT',
 }
+
+export interface userQuery extends IQuery<IUser> {
+
+} 

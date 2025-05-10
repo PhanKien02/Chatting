@@ -33,6 +33,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         userService
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
+                console.log({ data });
+
                 setUserLogin(data.user);
                 setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
                 setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);

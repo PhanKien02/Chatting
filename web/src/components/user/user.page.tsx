@@ -1,40 +1,37 @@
 import { DataTable } from '@/components/DataTable';
-import { useGetAllTopic } from '@/hooks/queries/useGetAllTopic';
-import { ITopic } from '@/models/topic.model';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
-import { TopicSheet } from './topic.sheet';
 import { Button } from '../ui/button';
 import { Plus, Search } from 'lucide-react';
 import { Input } from '../ui/input';
 import useDebounce from '@/hooks/useDebounce';
 import Loading from '../loading';
+import { useGetAllUser } from '@/hooks/queries/useGetAllUser';
+import { IUser } from '@/models/user.model';
+import { UserDialog } from './user.dialog';
 
-function TopicPage() {
+function UserPage() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState<string | undefined>();
     const searchText = useDebounce(searchTerm, 500); // Trì hoãn 500ms
-    const { topics, isError, isFetching, isLoading, refetch } = useGetAllTopic({
+    const { users, isError, isFetching, isLoading, refetch } = useGetAllUser({
         page,
         limit,
         searchText,
     });
-    const [data, setData] = useState<ITopic>();
+    const [data, setData] = useState<IUser>();
     const [open, setOpen] = useState(false);
 
 
-    const columns: ColumnDef<ITopic>[] = [
+    const columns: ColumnDef<IUser>[] = [
         {
-            accessorKey: 'name',
-            header: 'Tên Topic',
+            accessorKey: 'fullName',
+            header: 'Họ Tên',
         },
         {
-            accessorKey: 'color',
-            header: 'Màu',
-            cell: ({ row }) => {
-                return <div className={`text-[${row.getValue('color')}]`}>{row.getValue('color')}</div>;
-            },
+            accessorKey: 'email',
+            header: 'Email',
         },
         {
             accessorKey: 'action',
@@ -52,7 +49,7 @@ function TopicPage() {
             ),
         },
     ];
-    if (!topics || isError || isFetching || isLoading) return <Loading />;
+    if (!users || isError || isFetching || isLoading) return <Loading />;
     return (
         <>
             <div className='p-2 flex justify-between'>
@@ -67,14 +64,14 @@ function TopicPage() {
                     }}
                     variant={'default'}
                 >
-                    Thêm Loại sách <Plus />
+                    Thêm người dùng <Plus />
                 </Button>
             </div>
             <DataTable
-                data={topics.datas || []} totalCount={topics.totalResults || 0} columns={columns} limit={limit} setLimit={setLimit} page={page} setPage={setPage} />
-            <TopicSheet refetch={refetch} data={data} open={open} setOpen={setOpen} />
+                data={users.datas || []} totalCount={users.totalResults || 0} columns={columns} limit={limit} setLimit={setLimit} page={page} setPage={setPage} />
+            <UserDialog refetch={refetch} data={data} open={open} setOpen={setOpen} />
         </>
     );
 }
 
-export default TopicPage;
+export default UserPage;

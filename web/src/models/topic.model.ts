@@ -4,13 +4,6 @@ export interface ITopic extends IBaseModel {
     color: string;
 }
 
-export interface ITopicsResponse {
-    data: ITopic[];
-    limit: number;
-    page: number;
-    totalResults: number;
-}
-
 export interface ITopicPayload {
     name: string;
     color: string;

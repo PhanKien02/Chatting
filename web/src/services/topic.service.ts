@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import baseRequest from './base-request.service';
-import { ApiResponse } from '@/models/response';
-import { ITopic, ITopicPayload, ITopicsResponse } from '@/models/topic.model';
+import { ApiResponse, PaginationResponse } from '@/models/response';
+import { ITopic, ITopicPayload } from '@/models/topic.model';
 
 class TopicService {
     private readonly request: AxiosInstance;
@@ -9,7 +9,7 @@ class TopicService {
         this.request = baseRequest;
     }
 
-    async getAllopic(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<ITopicsResponse>> {
+    async getAllopic(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<PaginationResponse<ITopic>>> {
         const data = await this.request.get('/topic', {
             params: {
                 page,
