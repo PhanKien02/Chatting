@@ -1,9 +1,13 @@
 import { IPaginated, IQuery } from "@/interfaces/paging.interface";
 
 export const buildFilterSortAndPaginate = <T>(query: IQuery<T>) => {
-    const filter: { $text?: { $search: string } } = {};
+    const { limit, page, sort, searchKeyword, ...rest } = query;
+    let filter: { $text?: { $search: string } } = {};
     if (query.searchKeyword) {
         filter.$text = { $search: query.searchKeyword };
+    }
+    if (rest) {
+        filter = { ...filter, ...rest };
     }
 
     return {
@@ -15,9 +19,9 @@ export const buildFilterSortAndPaginate = <T>(query: IQuery<T>) => {
     };
 };
 
-export const paginateResponse = <T>({ data, page, limit, totalResults }): IPaginated<T> => {
+export const paginateResponse = <T>({ datas, page, limit, totalResults }): IPaginated<T> => {
     return {
-        data,
+        datas,
         page: page || 1,
         limit: limit || 10,
         totalPages: Math.ceil(totalResults / (limit || 10)),
