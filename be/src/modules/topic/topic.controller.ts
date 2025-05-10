@@ -28,8 +28,8 @@ export class TopicController {
     @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
     @Role([RoleType.ADMIN])
     async findAll(@Query() query: IQuery<Topic>): Promise<IResponse<IPaginated<Topic>>> {
-        this.logger.log(`get all topic`);
         const data = await this.topicService.findAllTopic(query);
+        this.logger.log(`get all topic`);
         return {
             data,
             message: 'get all topic success'

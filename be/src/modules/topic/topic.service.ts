@@ -54,7 +54,7 @@ export class TopicService {
         ]);
         const totalResultsTopic = topics[0]?.totalResults || 0;
         return paginateResponse<Topic>({
-            data: topics[0]?.data || [],
+            datas: topics[0]?.data || [],
             page: query.page,
             limit: query.limit,
             totalResults: totalResultsTopic,
