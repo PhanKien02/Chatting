@@ -8,44 +8,40 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { IUser } from "@/models/user.model";
 import { Dispatch, SetStateAction } from "react";
+import { useForm } from "react-hook-form";
+import UserForm from "../forms/user/user.form";
+import { UserSchema } from "../forms/user/user-schema";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 type DialogProps = {
     data?: IUser;
     refetch: Function;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 };
+type UserPayload = z.infer<typeof UserSchema>;
 export function UserDialog({ open, refetch, setOpen, data }: DialogProps) {
+    const methods = useForm<UserPayload>({
+        resolver: zodResolver(UserSchema),
+        defaultValues: data
+    })
+    const onSubmit = (data: UserPayload) => console.log(data)
+
     return (
         <Dialog open={open} onOpenChange={setOpen} modal>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Edit profile</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Name
-                        </Label>
-                        <Input id="name" value="Pedro Duarte" className="col-span-3" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Username
-                        </Label>
-                        <Input id="username" value="@peduarte" className="col-span-3" />
-                    </div>
-                </div>
+                <UserForm formMethod={methods} onSubmit={onSubmit} dataForm={data} />
                 <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <Button onClick={() => onSubmit(methods.getValues())} type="button">Save changes</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
     )
-}
+} 
