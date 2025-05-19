@@ -1,0 +1,41 @@
+# Stage 1: Build the application
+FROM node:18-alpine AS builder
+
+# Tạo thư mục app và set workdir
+WORKDIR /app
+
+# Copy package files trước để tận dụng layer cache
+COPY package*.json ./
+
+# Cài dependencies
+RUN npm install
+
+# Copy toàn bộ mã nguồn
+COPY . .
+
+# Build ứng dụng Next.js
+RUN npm run build
+
+# Stage 2: Run the application
+FROM node:18-alpine AS runner
+
+# Tạo user không phải root (an toàn hơn)
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+
+WORKDIR /app
+
+# Copy từ stage build
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+# Expose port
+EXPOSE 3000
+
+# Chạy app với non-root user
+USER nextjs
+
+# Command để khởi động app
+CMD ["npm", "start"]
+   

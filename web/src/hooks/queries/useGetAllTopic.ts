@@ -1,5 +1,5 @@
-import { ApiResponse } from '@/models/response';
-import { ITopic, ITopicsResponse } from '@/models/topic.model';
+import { PaginationResponse } from '@/models/response';
+import { ITopic } from '@/models/topic.model';
 import { topicService } from '@/services/topic.service';
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,7 +16,7 @@ export const useGetAllTopic = ({ page, limit, searchText }: Paginate) => {
         isError,
         refetch,
         isFetching,
-    } = useQuery<ITopicsResponse, Error>({
+    } = useQuery<PaginationResponse<ITopic>, Error>({
         queryKey: ['getTopic', page, limit, searchText],
         queryFn: async () => {
             const response = await topicService.getAllopic(page, limit, searchText);

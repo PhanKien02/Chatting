@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nestjs-backend
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/talenet
+      - PORT=3001
+      - ACCESS_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh76trde56y87654@$$$$$$%^^SS
+      - ACCESS_TOKEN_EXPIRESIN=20000
+      - REFRESH_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
+      - REFRESH_TOKEN_EXPIRESIN=7d
+    depends_on:
+      - mongo
+    ports:
+      - "3001:3001" # Hoặc cổng backend bạn expose
+    networks:
+      - app-network
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: nextjs-web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL =http://localhost:3001/api
+    networks:
+      - app-network
+
+volumes:
+  mongo_data:
+
+networks:
+  app-network:
+    driver: bridge
