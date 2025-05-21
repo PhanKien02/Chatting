@@ -39,7 +39,7 @@ export function AppSidebar() {
         <Sidebar collapsible='offcanvas'>
             <SidebarHeader>
                 <div className='flex justify-center'>
-                    <Image src='https://shadcnblocks.com/images/block/logos/shadcnblockscom-icon.svg' alt='logo' width={70} height={70} />
+                    <Image src='https://shadcnblocks.com/images/block/logos/shadcnblockscom-icon.svg' alt='logo' width={70} height={70} priority />
                 </div>
             </SidebarHeader>
             <SidebarContent>

@@ -26,12 +26,34 @@ function UserPage() {
 
     const columns: ColumnDef<IUser>[] = [
         {
+            accessorKey: 'avatarUrl',
+            header: 'Hình ảnh',
+            cell: ({ row }) => (
+                <img
+                    src={row.original.avatarUrl || "https://img.heroui.chat/image/avatar?w=150&h=150&u=2"}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full"
+                />
+            ),
+        },
+        {
             accessorKey: 'fullName',
             header: 'Họ Tên',
         },
         {
             accessorKey: 'email',
             header: 'Email',
+        },
+        {
+            accessorKey: 'phone',
+            header: 'Số Điện Thoại',
+        },
+        {
+            accessorKey: 'isActive',
+            header: 'Trạng Thái',
+            cell: ({ row }) => (
+                <span className={`${row.original.isActive ? "bg-green-500" : "bg-red-500"} p-2 rounded-3xl`} >{row.original.isActive ? 'Kích hoạt' : 'Vô hiệu hóa'}</span>
+            ),
         },
         {
             accessorKey: 'action',

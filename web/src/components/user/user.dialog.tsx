@@ -15,6 +15,7 @@ import UserForm from "../forms/user/user.form";
 import { UserSchema } from "../forms/user/user-schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ScrollArea } from "../ui/scroll-area";
 type DialogProps = {
     data?: IUser;
     refetch: Function;
@@ -23,24 +24,18 @@ type DialogProps = {
 };
 type UserPayload = z.infer<typeof UserSchema>;
 export function UserDialog({ open, refetch, setOpen, data }: DialogProps) {
-    const methods = useForm<UserPayload>({
-        resolver: zodResolver(UserSchema),
-        defaultValues: data
-    })
-    const onSubmit = (data: UserPayload) => console.log(data)
 
     return (
-        <Dialog open={open} onOpenChange={setOpen} modal>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={open} onOpenChange={setOpen} modal >
+            <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>{data ? 'Cập nhật thông tin người dùng' : 'Thêm mới người dùng'}</DialogTitle>
                     <DialogDescription>
                     </DialogDescription>
                 </DialogHeader>
-                <UserForm formMethod={methods} onSubmit={onSubmit} dataForm={data} />
-                <DialogFooter>
-                    <Button onClick={() => onSubmit(methods.getValues())} type="button">Save changes</Button>
-                </DialogFooter>
+                <div className="overflow-y-auto max-h-[500px] p-5">
+                    <UserForm dataForm={data} />
+                </div>
             </DialogContent>
         </Dialog>
     )

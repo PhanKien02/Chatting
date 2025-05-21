@@ -2,17 +2,12 @@ import { IBaseModel } from './base.model';
 import { IQuery } from './response';
 
 export interface IUser extends IBaseModel {
-    id: number;
-    email: string;
-    phone: string;
-    fullName: string;
-    isActive: boolean;
-    activeKey: string;
-    resetKey: string;
-    citizenIdentificationNumber: string;
-    citizenIDFrontUrl: string;
-    citizenIDFrontBack: string;
-    role: string;
+    id?: number;
+    email?: string;
+    phone?: string;
+    fullName?: string;
+    isActive?: boolean;
+    role?: string;
     avatarUrl?: string;
 }
 
