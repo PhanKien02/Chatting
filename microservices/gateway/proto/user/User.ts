@@ -2,11 +2,29 @@
 
 
 export interface User {
-  'id'?: (number);
-  'name'?: (string);
+  'id'?: (string);
+  'email'?: (string);
+  'password'?: (string);
+  'fullName'?: (string);
+  'isActive'?: (boolean);
+  'phone'?: (string);
+  'avatarUrl'?: (string);
+  'role'?: (string);
+  'createdAt'?: (string);
+  'updatedAt'?: (string);
+  'deletedAt'?: (string);
 }
 
 export interface User__Output {
-  'id'?: (number);
-  'name'?: (string);
+  'id'?: (string);
+  'email'?: (string);
+  'password'?: (string);
+  'fullName'?: (string);
+  'isActive'?: (boolean);
+  'phone'?: (string);
+  'avatarUrl'?: (string);
+  'role'?: (string);
+  'createdAt'?: (string);
+  'updatedAt'?: (string);
+  'deletedAt'?: (string);
 }
