@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/proto/user/User';
 import { UserById } from 'src/proto/user/UserById';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 @Controller('user')
 export class UserController {
@@ -20,8 +20,8 @@ export class UserController {
   }
 
   @GrpcMethod('UserService', 'FindAll')
-  findAll() {
-    const users = this.userService.findAll();
+  async findAll(query: any, metadata: Metadata, call: ServerUnaryCall<any, any>): Promise<Observable<User>> {
+    const users = await this.userService.findAll(query);
     return from(users);
   }
 
