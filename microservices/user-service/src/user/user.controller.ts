@@ -4,10 +4,10 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/proto/user/User';
-import { UserById } from 'src/proto/user/UserById';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 import { from, Observable } from 'rxjs';
 
+import { UserEntity } from './entities/user.entity';
 @Controller('user')
 export class UserController {
 
@@ -20,18 +20,14 @@ export class UserController {
   }
 
   @GrpcMethod('UserService', 'FindAll')
-  async findAll(query: any, metadata: Metadata, call: ServerUnaryCall<any, any>): Promise<Observable<User>> {
+  async findAll(query: any, metadata: Metadata, call: ServerUnaryCall<any, any>): Promise<Observable<UserEntity>> {
     const users = await this.userService.findAll(query);
     return from(users);
   }
 
   @GrpcMethod('UserService')
   findOne(data: UserById, metadata: Metadata, call: ServerUnaryCall<any, any>): User | undefined {
-    const items = [
-      { id: 1, name: 'John' },
-      { id: 2, name: 'Doe' },
-    ];
-    return items.find(({ id }) => id === data.id);
+    return undefined;
   }
   @GrpcStreamMethod()
   update(@Payload() updateUserDto: UpdateUserDto) {

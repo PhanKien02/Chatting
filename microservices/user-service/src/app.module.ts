@@ -7,11 +7,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
-    host: 'sql12.freesqldatabase.com',
+    host: 'localhost',
     port: 3306,
-    username: 'sql12781097',
-    password: 'cEHwRvdfu8',
-    database: 'sql12781097',
+    username: 'root',
+    password: 'admin',
+    database: 'taleNet',
     synchronize: true,
     autoLoadEntities: true
   }), UserModule],

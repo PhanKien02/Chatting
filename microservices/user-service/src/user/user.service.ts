@@ -12,16 +12,17 @@ export class UserService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
   ) { }
-  create(createUserDto: CreateUserDto) {
-    return createUserDto;
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.usersRepository.insert(createUserDto);
+    return user;
   }
 
   async findAll(query: any) {
     const { page, limit, ...res } = query
     return await this.usersRepository.find({
       where: res,
-      skip: (page - 1) * limit,
-      take: limit,
+      skip: (page - 1) * limit || 0,
+      take: limit || 10,
       order: {
         id: 'DESC'
       }

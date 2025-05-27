@@ -2,7 +2,9 @@ import { Column, Entity } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { RoleType } from "../enum/role-type";
 
-@Entity()
+@Entity({
+    name: "users",
+})
 export class UserEntity extends BaseEntity {
     @Column({
         unique: true,
