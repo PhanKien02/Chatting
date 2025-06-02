@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsEnum, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsString } from "class-validator";
 import { RoleType } from "../enum/role-type";
 
 export class CreateUserDto {
@@ -12,15 +12,12 @@ export class CreateUserDto {
     @IsString()
     fullName: string;
 
-    @IsBoolean()
-    isActive: boolean;
-
     @IsString()
     phone: string;
+
     @IsString()
     avatarUrl?: string;
-    @IsString()
-    activeKey: string;
+
     @IsString()
     @IsEnum(RoleType)
     role: RoleType;

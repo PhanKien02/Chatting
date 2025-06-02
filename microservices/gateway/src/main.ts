@@ -2,9 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { CustomExceptionFilter } from './configs/interceptor/custom-exception/custom-exception.interceptor';
-import { MicroserviceOptions } from '@nestjs/microservices';
-import { grpcClientOptions } from './grpc-client.options';
+import { ResponseInterceptor } from './configs/interceptor/custom.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -15,7 +13,7 @@ async function bootstrap() {
     },
   });
   app.setGlobalPrefix('api');
-  app.useGlobalFilters(new CustomExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Loại bỏ các trường không có trong DTO
@@ -33,7 +31,7 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/document/swagger', app, documentFactory);
   await app.listen(process.env.POST ?? 3000).then(() => {
-    console.log(`Server is running on http://localhost:${process.env.POST ?? 3000}/api`);
+    console.log(`api gateway is running on http://localhost:${process.env.POST ?? 3000}/api`);
   });
 }
 bootstrap();

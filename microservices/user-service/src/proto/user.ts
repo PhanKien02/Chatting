@@ -16,7 +16,6 @@ export interface ProtoGrpcType {
   user: {
     EmailRequest: MessageTypeDefinition
     Query: MessageTypeDefinition
-    RoleType: MessageTypeDefinition
     User: MessageTypeDefinition
     UserService: SubtypeConstructor<typeof grpc.Client, _user_UserServiceClient> & { service: _user_UserServiceDefinition }
     Users: MessageTypeDefinition

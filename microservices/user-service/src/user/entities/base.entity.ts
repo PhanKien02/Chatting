@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
 
 export abstract class BaseEntity {
     @PrimaryGeneratedColumn({
@@ -7,16 +7,10 @@ export abstract class BaseEntity {
     })
     id: number;
 
-    @Column({
-        type: 'timestamp',
-    })
+    @CreateDateColumn({ type: 'timestamp' })
     created_at?: Date;
-    @Column({
-        type: 'timestamp',
-    })
+    @CreateDateColumn({ type: 'timestamp' })
     updated_at?: Date;
-    @Column({
-        type: 'timestamp',
-    })
+    @Column({ type: 'date', default: null })
     deleted_at?: Date;
 }

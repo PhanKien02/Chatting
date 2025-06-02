@@ -1,32 +1,34 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller } from '@nestjs/common';
 import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/proto/user/User';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
-import { from, Observable } from 'rxjs';
+import { from, Observable, Subject } from 'rxjs';
 
 import { UserEntity } from './entities/user.entity';
+import { Query } from 'src/proto/user/Query';
 @Controller('user')
 export class UserController {
 
   constructor(
     private readonly userService: UserService,
   ) { }
-  @GrpcStreamMethod()
-  create(@Payload() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @GrpcMethod('UserService', 'Create')
+  async create(createUserDto: CreateUserDto, metadata: Metadata, call: ServerUnaryCall<any, any>) {
+    const user = await this.userService.create(createUserDto);
+    return user;
   }
 
   @GrpcMethod('UserService', 'FindAll')
-  async findAll(query: any, metadata: Metadata, call: ServerUnaryCall<any, any>): Promise<Observable<UserEntity>> {
+  async findAll(query: Query, metadata: Metadata, call: ServerUnaryCall<any, any>) {
     const users = await this.userService.findAll(query);
     return from(users);
   }
 
   @GrpcMethod('UserService')
-  findOne(data: UserById, metadata: Metadata, call: ServerUnaryCall<any, any>): User | undefined {
+  findOne(id: number): User | undefined {
     return undefined;
   }
   @GrpcStreamMethod()

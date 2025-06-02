@@ -1,6 +1,8 @@
-import { Column, Entity } from "typeorm";
+import { AfterInsert, BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { RoleType } from "../enum/role-type";
+import { genKeyOTP } from "src/utils/gennerateKey";
+import { hashPassword } from "src/utils/hashPass";
 
 @Entity({
     name: "users",
@@ -18,7 +20,9 @@ export class UserEntity extends BaseEntity {
     @Column()
     fullName: string;
 
-    @Column()
+    @Column({
+        default: false
+    })
     isActive: boolean;
 
     @Column({
@@ -29,7 +33,9 @@ export class UserEntity extends BaseEntity {
     @Column()
     avatarUrl?: string;
 
-    @Column()
+    @Column({
+        default: null
+    })
     resetKey: string;
 
     @Column({

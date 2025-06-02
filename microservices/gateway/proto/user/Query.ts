@@ -1,6 +1,5 @@
 // Original file: proto/user.proto
 
-import type { RoleType as _user_RoleType, RoleType__Output as _user_RoleType__Output } from '../user/RoleType';
 
 export interface Query {
   'searchKeyword'?: (string);
@@ -8,7 +7,7 @@ export interface Query {
   'limit'?: (number);
   'sort'?: (string);
   'isActive'?: (boolean);
-  'role'?: (_user_RoleType | null);
+  'role'?: (string);
 }
 
 export interface Query__Output {
@@ -17,5 +16,5 @@ export interface Query__Output {
   'limit'?: (number);
   'sort'?: (string);
   'isActive'?: (boolean);
-  'role'?: (_user_RoleType__Output);
+  'role'?: (string);
 }
