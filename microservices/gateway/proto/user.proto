@@ -48,7 +48,7 @@ message UserFindAll {
     string deleted_at= 11;
 }
 message PaginationResponse {
-  repeated UserFindAll users = 1;
+  repeated UserFindAll datas = 1;
   int32 page =2;
   int32 limit = 3;
   int32 totalPages = 4;

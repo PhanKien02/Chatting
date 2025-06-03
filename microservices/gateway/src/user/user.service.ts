@@ -25,8 +25,8 @@ export class UserService implements OnModuleInit {
     }
 
     async getAllUsers(query: IQuery<IUser>) {
-        const [data] = await lastValueFrom(this.userService.FindAll(query).pipe(toArray()))
-        return data["users"];
+        const data = await firstValueFrom(this.userService.FindAll(query))
+        return data;
     }
     async createUser(body: CreateUserDto) {
         const data = this.userService.Create(body);

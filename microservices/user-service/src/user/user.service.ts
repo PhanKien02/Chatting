@@ -7,6 +7,7 @@ import { UserEntity } from './entities/user.entity';
 import { genKeyOTP } from 'src/utils/gennerateKey';
 import { hashPassword } from 'src/utils/hashPass';
 import { RpcException } from '@nestjs/microservices';
+import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
 
   async findAll(query: any) {
     const { page, limit, searchKeyword, ...res } = query
-    const datas = await this.usersRepository.find({
+    const [datas, totalResults] = await this.usersRepository.findAndCount({
       where: res,
       skip: (page - 1) * limit || 0,
       take: limit || 10,
@@ -40,7 +41,10 @@ export class UserService {
         id: 'DESC'
       }
     });
-    return datas;
+
+    return paginateResponse({
+      datas, page, limit, totalResults
+    });
   }
 
   findOne(id: number) {
