@@ -18,13 +18,13 @@ export class UserController {
   @GrpcMethod('UserService', 'Create')
   async create(createUserDto: CreateUserDto, metadata: Metadata, call: ServerUnaryCall<any, any>) {
     const user = await this.userService.create(createUserDto);
-    return user;
+    return { user };
   }
 
   @GrpcMethod('UserService', 'FindAll')
   async findAll(query: Query, metadata: Metadata, call: ServerUnaryCall<any, any>) {
     const users = await this.userService.findAll(query);
-    return from(users);
+    return { users };
   }
 
   @GrpcMethod('UserService')

@@ -1,9 +1,9 @@
 import { IUser } from '@/interfaces/user.interface';
 import { IQuery } from '@/utils/buildFilterSortAndPaginate';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { ClientGrpc, GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { ClientGrpc } from '@nestjs/microservices';
 import { User } from 'proto/user/User';
-import { firstValueFrom, from, map, Observable, toArray } from 'rxjs';
+import { firstValueFrom, lastValueFrom, Observable, toArray } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 
 
@@ -25,14 +25,12 @@ export class UserService implements OnModuleInit {
     }
 
     async getAllUsers(query: IQuery<IUser>) {
-        const data = this.userService.FindAll(query);
-        return data;
+        const [data] = await lastValueFrom(this.userService.FindAll(query).pipe(toArray()))
+        return data["users"];
     }
     async createUser(body: CreateUserDto) {
         const data = this.userService.Create(body);
         const result = await firstValueFrom(data);
-        console.log({ result });
-
         return result;
     }
 }

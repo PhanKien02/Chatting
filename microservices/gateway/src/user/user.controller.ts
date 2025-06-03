@@ -11,8 +11,6 @@ export class UserController {
   @Get("/")
   async findALl(@Query() query: IQuery<IUser>) {
     const data = await this.userService.getAllUsers(query);
-    console.log({ data });
-
     return data;
   }
 
