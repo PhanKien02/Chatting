@@ -5,7 +5,7 @@ package user;
 import "google/protobuf/empty.proto";
 
 service UserService {
-  rpc FindAll(Query) returns (UsersResponseFindAll);
+  rpc FindAll(Query) returns (PaginationResponse);
   rpc Create(User) returns (User);
   rpc Update(UserUpdatePayLoad) returns (User);
   rpc Block(UserBlockPayLoad) returns (User);
@@ -47,8 +47,12 @@ message UserFindAll {
     string updated_at= 10;
     string deleted_at= 11;
 }
-message UsersResponseFindAll {
+message PaginationResponse {
   repeated UserFindAll users = 1;
+  int32 page =2;
+  int32 limit = 3;
+  int32 totalPages = 4;
+  int32 totalResults = 5;
 }
 
 message UserUpdatePayLoad {

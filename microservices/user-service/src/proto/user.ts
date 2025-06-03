@@ -14,13 +14,13 @@ export interface ProtoGrpcType {
     }
   }
   user: {
+    PaginationResponse: MessageTypeDefinition
     Query: MessageTypeDefinition
     User: MessageTypeDefinition
     UserBlockPayLoad: MessageTypeDefinition
     UserFindAll: MessageTypeDefinition
     UserService: SubtypeConstructor<typeof grpc.Client, _user_UserServiceClient> & { service: _user_UserServiceDefinition }
     UserUpdatePayLoad: MessageTypeDefinition
-    UsersResponseFindAll: MessageTypeDefinition
   }
 }
 
