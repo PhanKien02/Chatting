@@ -14,11 +14,13 @@ export interface ProtoGrpcType {
     }
   }
   user: {
-    EmailRequest: MessageTypeDefinition
     Query: MessageTypeDefinition
     User: MessageTypeDefinition
+    UserBlockPayLoad: MessageTypeDefinition
+    UserFindAll: MessageTypeDefinition
     UserService: SubtypeConstructor<typeof grpc.Client, _user_UserServiceClient> & { service: _user_UserServiceDefinition }
-    Users: MessageTypeDefinition
+    UserUpdatePayLoad: MessageTypeDefinition
+    UsersResponseFindAll: MessageTypeDefinition
   }
 }
 
