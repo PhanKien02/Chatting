@@ -7,9 +7,6 @@ export class CreateUserDto {
     email: string;
 
     @IsString()
-    password: string;
-
-    @IsString()
     fullName: string;
 
     @IsString()
@@ -17,8 +14,4 @@ export class CreateUserDto {
 
     @IsString()
     avatarUrl?: string;
-
-    @IsString()
-    @IsEnum(RoleType)
-    role: RoleType;
 }

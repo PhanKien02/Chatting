@@ -1,11 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import { genKeyOTP } from 'src/utils/gennerateKey';
-import { hashPassword } from 'src/utils/hashPass';
 import { RpcException } from '@nestjs/microservices';
 import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 
@@ -25,8 +23,6 @@ export class UserService {
     if (hasPhoneOrEmail) {
       throw new RpcException("Email hoặc số điện thoại đã tồn tại")
     }
-    createUserDto["activeKey"] = genKeyOTP();
-    createUserDto.password = await hashPassword(createUserDto.password)
     const user = this.usersRepository.insert(createUserDto);
     return user;
   }

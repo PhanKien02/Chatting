@@ -11,13 +11,20 @@ export class Auth extends BaseEntity {
                 nullable: false,
                 type: "bigint"
         })
-        idUser: number;
+        idUser?: number;
 
         @Column({
                 unique: true,
                 nullable: false
         })
         email: string;
+
+        @Column({
+                unique: true,
+                nullable: false,
+                length: 10
+        })
+        phone: string;
 
         @Column()
         password: string;
