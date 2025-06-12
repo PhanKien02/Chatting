@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { RpcException } from '@nestjs/microservices';
 import argon2 from 'argon2';
 import { genKeyActive } from 'src/utils/gennerate-key';
+import { LoginDto } from './dto/login.dto';
+import { errorMessage } from 'src/common/errorMessage';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
       ]
     });
     if (hasUser) {
-      throw new RpcException("người dùng đã tồn tại");
+      throw new RpcException(errorMessage.USER_EXITS);
     }
     register.password = await argon2.hash(register.password);
     const newUser = this.authRepository.create({
@@ -35,19 +36,16 @@ export class AuthService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async login(login: LoginDto) {
+    const hasUser = await this.authRepository.findOne({
+      where: [
+        { email: login.login },
+        { phone: login.login },
+      ]
+    });
+    if (!hasUser) {
+      throw new RpcException(errorMessage.LOGIN_ERROR);
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

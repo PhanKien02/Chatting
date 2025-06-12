@@ -1,8 +1,8 @@
 import { Controller, Post } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller()
 export class AuthController {
@@ -14,5 +14,9 @@ export class AuthController {
     return result;
   }
 
-
+  @Post('login')
+  async login(@Payload() login: LoginDto) {
+    const result = await this.authService.login(login);
+    return result;
+  }
 }
