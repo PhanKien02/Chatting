@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { ClientsModule } from '@nestjs/microservices';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { grpcClientOptions } from 'src/grpc-client.options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -13,6 +13,15 @@ import { UserEntity } from './entities/user.entity';
       {
         name: 'USER_PACKAGE',
         ...grpcClientOptions,
+      },
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'user_queue',
+          queueOptions: { durable: false },
+        },
       },
     ]),
   ],

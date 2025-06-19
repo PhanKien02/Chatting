@@ -1,14 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import { RpcException } from '@nestjs/microservices';
+import { ClientProxy, ClientProxyFactory, RpcException, Transport } from '@nestjs/microservices';
 import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 
 @Injectable()
 export class UserService {
+  private client: ClientProxy;
+  onModuleInit() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://localhost:5672'],
+        queue: 'user_queue',
+        queueOptions: { durable: false },
+      },
+    });
+  }
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
@@ -23,8 +34,12 @@ export class UserService {
     if (hasPhoneOrEmail) {
       throw new RpcException("Email hoặc số điện thoại đã tồn tại")
     }
-    const user = this.usersRepository.insert(createUserDto);
-    return user;
+
+    const user = this.usersRepository.create(createUserDto);
+    const newUser = await this.usersRepository.save(user);
+    this.client.emit('user-created', newUser);
+
+    return newUser;
   }
 
   async findAll(query: any) {

@@ -12,12 +12,6 @@ export class CreateUserDto {
 
     @IsString()
     @ApiProperty({
-        default: "admin"
-    })
-    password: string;
-
-    @IsString()
-    @ApiProperty({
         default: "admin@gmail.com"
     })
     fullName: string;
@@ -34,12 +28,4 @@ export class CreateUserDto {
         required: false
     })
     avatarUrl?: string;
-
-    @IsString()
-    @IsEnum(RoleType)
-    @ApiProperty({
-        enum: RoleType,
-        default: RoleType.ADMIN
-    })
-    role: RoleType;
 }

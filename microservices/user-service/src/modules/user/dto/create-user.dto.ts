@@ -14,4 +14,7 @@ export class CreateUserDto {
 
     @IsString()
     avatarUrl?: string;
+
+
+    role: RoleType;
 }

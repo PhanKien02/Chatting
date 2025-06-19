@@ -5,9 +5,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/proto/user/User';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
-import { from, Observable, Subject } from 'rxjs';
-
-import { UserEntity } from './entities/user.entity';
 import { Query } from 'src/proto/user/Query';
 @Controller('user')
 export class UserController {
@@ -18,7 +15,7 @@ export class UserController {
   @GrpcMethod('UserService', 'Create')
   async create(createUserDto: CreateUserDto, metadata: Metadata, call: ServerUnaryCall<any, any>) {
     const user = await this.userService.create(createUserDto);
-    return { user };
+    return user;
   }
 
   @GrpcMethod('UserService', 'FindAll')

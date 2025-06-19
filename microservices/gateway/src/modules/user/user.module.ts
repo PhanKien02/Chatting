@@ -26,5 +26,6 @@ import { join } from 'path';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule { }
