@@ -15,8 +15,8 @@ export class UserService {
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
-        queue: 'user_queue',
-        queueOptions: { durable: false },
+        queue: 'user-queue',
+        queueOptions: { durable: true },
       },
     });
   }

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { RpcException } from '@nestjs/microservices';
-import argon2 from 'argon2';
+import * as argon2 from 'argon2';
 import { genKeyActive } from 'src/utils/gennerate-key';
 import { LoginDto } from './dto/login.dto';
 import { errorMessage } from 'src/common/errorMessage';
@@ -16,6 +16,8 @@ export class AuthService {
     private authRepository: Repository<Auth>,
   ) { }
   async create(register: RegisterDto) {
+    console.log({ register });
+
     const hasUser = await this.authRepository.findOne({
       where: [
         { idUser: register.idUser },

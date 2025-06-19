@@ -1,5 +1,5 @@
 import { Controller, Post } from '@nestjs/common';
-import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
@@ -8,11 +8,9 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @MessagePattern('user_created')
+  @EventPattern('user-created')
   async create(@Payload() data: RegisterDto, @Ctx() context: RmqContext) {
-    console.log('Received message:', data);
-    console.log(`Pattern: ${context.getPattern()}`);
-    console.log(context.getMessage());
+    this.authService.create(data);
     return data;
   }
 
