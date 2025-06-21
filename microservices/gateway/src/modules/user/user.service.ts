@@ -3,7 +3,7 @@ import { IQuery } from '@/utils/buildFilterSortAndPaginate';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { User } from 'proto/user/User';
-import { firstValueFrom, lastValueFrom, Observable, toArray } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 
 

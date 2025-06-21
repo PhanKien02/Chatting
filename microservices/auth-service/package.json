@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:gen": "yarn proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=./src/proto ./src/proto/auth.proto"
+    "proto:gen": "node generate-proto.js"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.13.4",

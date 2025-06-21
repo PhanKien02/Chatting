@@ -1,5 +1,5 @@
 import { Controller, Post } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { GrpcMethod, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
@@ -8,8 +8,8 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @EventPattern('user-created')
-  async create(@Payload() data: RegisterDto, @Ctx() context: RmqContext) {
+  @GrpcMethod('AuthService', 'Register')
+  async create(data: RegisterDto) {
     this.authService.create(data);
     return data;
   }

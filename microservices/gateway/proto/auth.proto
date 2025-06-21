@@ -17,6 +17,8 @@ message Register {
      string phone= 3;
      string password = 4;
      string role = 5;
+     string fullName = 6;
+     string avatarUrl = 7;
 }
 
 message Login {

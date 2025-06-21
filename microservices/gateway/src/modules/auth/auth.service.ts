@@ -1,15 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { UserService } from '../user/user.service';
+import { ClientGrpc } from '@nestjs/microservices';
 
+interface GrpcAuthService {
+  Register(body: RegisterDto): Promise<void>;
+}
 @Injectable()
-export class AuthService {
-  constructor(private readonly userService: UserService) { }
+export class AuthService implements OnModuleInit {
+  private authService: GrpcAuthService;
+  constructor(@Inject('AUTH_PACKAGE') private readonly authClient: ClientGrpc,) { }
+  onModuleInit() {
+    this.authService = this.authClient.getService<GrpcAuthService>('AuthService');
+  }
   async register(registerDto: RegisterDto) {
-    const { password, role, ...userDto } = registerDto;
-    const user = await this.userService.createUser(userDto)
-
+    const user = await this.authService.Register(registerDto);
+    return user;
   }
 
   findAll() {

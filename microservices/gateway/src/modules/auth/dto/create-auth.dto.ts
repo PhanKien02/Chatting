@@ -1,28 +1,32 @@
 import { RoleType } from "@/modules/user/enum/role-type";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsEnum, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from "class-validator";
 
 export class RegisterDto {
         @IsString()
         @IsEmail()
+        @IsNotEmpty()
         @ApiProperty({
                 default: "admin@gmail.com"
         })
         email: string;
 
         @IsString()
+        @IsNotEmpty()
         @ApiProperty({
                 default: "admin"
         })
         password: string;
 
         @IsString()
+        @IsNotEmpty()
         @ApiProperty({
                 default: "admin@gmail.com"
         })
         fullName: string;
 
         @IsString()
+        @IsNotEmpty()
         @ApiProperty({
                 default: "0374824645"
         })
@@ -36,6 +40,7 @@ export class RegisterDto {
         avatarUrl?: string;
 
         @IsString()
+        @IsNotEmpty()
         @IsEnum(RoleType)
         @ApiProperty({
                 enum: RoleType,

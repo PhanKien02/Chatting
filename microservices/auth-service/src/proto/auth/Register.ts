@@ -1,4 +1,4 @@
-// Original file: proto/auth.proto
+// Original file: src/proto/auth.proto
 
 import type { Long } from '@grpc/proto-loader';
 
