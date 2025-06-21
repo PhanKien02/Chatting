@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { join } from 'path';
     ]),
     TypeOrmModule.forFeature([Auth])],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtService],
 })
 export class AuthModule { }

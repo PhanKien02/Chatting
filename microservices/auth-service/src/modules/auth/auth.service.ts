@@ -11,6 +11,7 @@ import { errorMessage } from 'src/common/errorMessage';
 import { CreateUserDto } from './dto/create-user.dto';
 import { firstValueFrom, Observable } from 'rxjs';
 import { User } from 'src/proto/user/User';
+import { JwtService } from '@nestjs/jwt';
 
 interface GrpcUserService {
   Create(body: CreateUserDto): Observable<User>
@@ -26,6 +27,7 @@ export class AuthService {
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
     @Inject('USER_PACKAGE') private readonly userClient: ClientGrpc,
+    private readonly jwtService: JwtService
   ) { }
   async create(register: RegisterDto) {
     // * Check if the user already exists
@@ -59,15 +61,50 @@ export class AuthService {
   }
 
   async login(login: LoginDto) {
-    const hasUser = await this.authRepository.findOne({
+    console.log({ login });
+
+    const user = await this.authRepository.findOne({
       where: [
         { email: login.login },
         { phone: login.login },
       ]
     });
-    if (!hasUser) {
+    if (!user) {
       throw new RpcException(errorMessage.LOGIN_ERROR);
     }
+    const isPasswordValid = await argon2.verify(user.password, login.password);
+    if (!isPasswordValid) {
+      throw new RpcException(errorMessage.LOGIN_ERROR);
+    }
+    if (!user.isActive) {
+      throw new RpcException(errorMessage.USER_NOT_ACTIVE);
+    }
+    const payLoadAccessToken = {
+      role: user.role,
+      userId: user.id.toString(),
+    };
+    const expiresInSeconds = 120; // 2ph
+    const expiresAt = Math.floor(Date.now() / 1000) + expiresInSeconds;
+    const accessToken = this.jwtService.sign(payLoadAccessToken, {
+      algorithm: 'HS256',
+      secret: process.env.ACCESS_TOKEN_SCRECT,
+      expiresIn: expiresInSeconds,
+    });
 
+    const refreshToken = this.jwtService.sign(
+      payLoadAccessToken,
+      {
+        algorithm: 'HS512',
+        secret: process.env.REFRESH_TOKEN_SCRECT,
+        expiresIn: '30d', // 30 ngày
+      },
+    );
+
+    return {
+      user,
+      accessToken,
+      refreshToken,
+      expiresAt
+    };
   }
 }

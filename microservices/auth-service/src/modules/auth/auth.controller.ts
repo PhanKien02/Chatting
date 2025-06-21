@@ -14,8 +14,8 @@ export class AuthController {
     return data;
   }
 
-  @Post('login')
-  async login(@Payload() login: LoginDto) {
+  @GrpcMethod('AuthService', 'Login')
+  async login(login: LoginDto) {
     const result = await this.authService.login(login);
     return result;
   }

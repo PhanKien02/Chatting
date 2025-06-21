@@ -1,10 +1,11 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ClientGrpc } from '@nestjs/microservices';
+import { LoginDto } from './dto/login.dto';
 
 interface GrpcAuthService {
   Register(body: RegisterDto): Promise<void>;
+  Login(body: LoginDto): Promise<any>;
 }
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -18,19 +19,8 @@ export class AuthService implements OnModuleInit {
     return user;
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async login(loginDto: LoginDto) {
+    const user = await this.authService.Login(loginDto);
+    return user;
   }
 }
