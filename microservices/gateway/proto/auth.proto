@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/empty.proto";
+
+service AuthService {
+  rpc Register(Register) returns (RegisterResponse);
+  rpc Login(Login) returns (LoginResponse);
+  rpc Logout(Logout) returns (LogoutResponse);
+  rpc RefreshToken(RefreshToken) returns (LoginResponse);
+}
+
+message Register {
+     int64 idUser = 1;
+     string email = 2;
+     string phone= 3;
+     string password = 4;
+     string role = 5;
+}
+
+message Login {
+        string login = 1;
+        string password = 2;
+}
+
+message Logout {
+        int64 idUser =1;
+}
+
+message RefreshToken {
+        int64 idUser = 1;
+} 
+
+message RegisterResponse {
+        int64 idUser = 1;
+        string email = 2;
+        string phone = 3;
+        string isActive = 4;
+        string role = 5;
+}
+
+message LoginResponse {
+        int64  userId = 1;
+        string  accessToken =2;
+        string  refreshToken=3;
+        string  expires=4 ;
+}
+
+message LogoutResponse {
+        bool status = 1;
+}
