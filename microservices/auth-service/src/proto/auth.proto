@@ -44,12 +44,19 @@ message RegisterResponse {
 }
 
 message LoginResponse {
-        int64  userId = 1;
+        User user = 1;
         string  accessToken =2;
         string  refreshToken=3;
-        string  expires=4 ;
+        string  expiresAt=4 ;
 }
 
 message LogoutResponse {
         bool status = 1;
+}
+
+message User {
+        string id = 1;
+        string email =2;
+        string phone = 3;
+        bool isActive = 6;
 }

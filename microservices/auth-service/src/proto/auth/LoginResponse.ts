@@ -1,17 +1,17 @@
 // Original file: src/proto/auth.proto
 
-import type { Long } from '@grpc/proto-loader';
+import type { User as _auth_User, User__Output as _auth_User__Output } from '../auth/User';
 
 export interface LoginResponse {
-  'userId'?: (number | string | Long);
+  'user'?: (_auth_User | null);
   'accessToken'?: (string);
   'refreshToken'?: (string);
-  'expires'?: (string);
+  'expiresAt'?: (string);
 }
 
 export interface LoginResponse__Output {
-  'userId'?: (Long);
+  'user'?: (_auth_User__Output);
   'accessToken'?: (string);
   'refreshToken'?: (string);
-  'expires'?: (string);
+  'expiresAt'?: (string);
 }

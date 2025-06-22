@@ -61,8 +61,6 @@ export class AuthService {
   }
 
   async login(login: LoginDto) {
-    console.log({ login });
-
     const user = await this.authRepository.findOne({
       where: [
         { email: login.login },
@@ -85,6 +83,7 @@ export class AuthService {
     };
     const expiresInSeconds = 120; // 2ph
     const expiresAt = Math.floor(Date.now() / 1000) + expiresInSeconds;
+
     const accessToken = this.jwtService.sign(payLoadAccessToken, {
       algorithm: 'HS256',
       secret: process.env.ACCESS_TOKEN_SCRECT,
@@ -99,9 +98,14 @@ export class AuthService {
         expiresIn: '30d', // 30 ngày
       },
     );
-
     return {
-      user,
+      user: {
+        id: user.idUser,
+        isActive: user.isActive,
+        role: user.role,
+        email: user.email,
+        phone: user.phone,
+      },
       accessToken,
       refreshToken,
       expiresAt

@@ -17,6 +17,7 @@ export interface ProtoGrpcType {
     RefreshToken: MessageTypeDefinition
     Register: MessageTypeDefinition
     RegisterResponse: MessageTypeDefinition
+    User: MessageTypeDefinition
   }
   google: {
     protobuf: {

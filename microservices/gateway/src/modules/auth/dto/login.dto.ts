@@ -13,7 +13,7 @@ export class LoginDto {
 
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ default: "Admin@1234" })
+    @ApiProperty({ default: "admin" })
     password: string;
 
     @IsString()
