@@ -41,6 +41,7 @@ message RegisterResponse {
         string phone = 3;
         string isActive = 4;
         string role = 5;
+       
 }
 
 message LoginResponse {
@@ -59,4 +60,6 @@ message User {
         string email =2;
         string phone = 3;
         bool isActive = 6;
+        string fullName = 7;
+        string avatarUrl = 8;
 }

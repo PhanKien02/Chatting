@@ -1,9 +1,8 @@
-import { Body, Controller } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from 'src/proto/user/User';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 import { Query } from 'src/proto/user/Query';
 @Controller('user')
@@ -24,9 +23,12 @@ export class UserController {
     return result;
   }
 
-  @GrpcMethod('UserService')
-  findOne(id: number): User | undefined {
-    return undefined;
+  @GrpcMethod('UserService', 'FindOne')
+  async findOne(data: { id: string }, metadata: Metadata, call: ServerUnaryCall<any, any>) {
+
+    const result = await this.userService.findOne(+data.id);
+    return result
+
   }
   @GrpcStreamMethod()
   update(@Payload() updateUserDto: UpdateUserDto) {

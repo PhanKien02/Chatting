@@ -6,6 +6,8 @@ export interface User {
   'email'?: (string);
   'phone'?: (string);
   'isActive'?: (boolean);
+  'fullName'?: (string);
+  'avatarUrl'?: (string);
 }
 
 export interface User__Output {
@@ -13,4 +15,6 @@ export interface User__Output {
   'email'?: (string);
   'phone'?: (string);
   'isActive'?: (boolean);
+  'fullName'?: (string);
+  'avatarUrl'?: (string);
 }

@@ -14,7 +14,8 @@ import { User } from 'src/proto/user/User';
 import { JwtService } from '@nestjs/jwt';
 
 interface GrpcUserService {
-  Create(body: CreateUserDto): Observable<User>
+  Create(body: CreateUserDto): Observable<User>,
+  FindOne({ id }): Observable<User>
 }
 @Injectable()
 export class AuthService {
@@ -98,13 +99,19 @@ export class AuthService {
         expiresIn: '30d', // 30 ngày
       },
     );
+    const userLogin = await firstValueFrom(this.userService.FindOne
+      ({ id: user.idUser }))
+    console.log({ userLogin });
+
     return {
       user: {
-        id: user.idUser,
+        id: userLogin.id,
         isActive: user.isActive,
         role: user.role,
         email: user.email,
         phone: user.phone,
+        fullName: userLogin.fullName,
+        avatarUrl: userLogin.avatarUrl
       },
       accessToken,
       refreshToken,
