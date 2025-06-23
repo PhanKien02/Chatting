@@ -10,7 +10,7 @@ class UserService {
     }
 
     async login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-        const result = await this.request.post('/user/login', data);
+        const result = await this.request.post('/auth/login', data);
         return result.data;
     }
 

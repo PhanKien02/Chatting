@@ -101,8 +101,6 @@ export class AuthService {
     );
     const userLogin = await firstValueFrom(this.userService.FindOne
       ({ id: user.idUser }))
-    console.log({ userLogin });
-
     return {
       user: {
         id: userLogin.id,

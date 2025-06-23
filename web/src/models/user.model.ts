@@ -19,7 +19,7 @@ export interface LoginPayload {
 
 export interface LoginResponse {
     accessToken: string;
-    expires: number;
+    expiresAt: number;
     refreshToken: string;
     user: IUser;
 }

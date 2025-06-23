@@ -33,14 +33,13 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         userService
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
-                console.log({ data });
 
                 setUserLogin(data.user);
+                router.push('/');
                 setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
                 setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
-                setCookie(COOKIES.EXPIRES, data.expires.toString());
+                setCookie(COOKIES.EXPIRES, data.expiresAt);
                 setCookie(COOKIES.USER, data.user);
-                router.push('/');
                 toast({
                     title: 'Đăng nhập thành công',
                     description: 'Chào mừng bạn đến với TaleNet!',
