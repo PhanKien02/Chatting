@@ -10,6 +10,7 @@ service UserService {
   rpc Update(UserUpdatePayLoad) returns (User);
   rpc Block(UserBlockPayLoad) returns (User);
   rpc Unblock(User) returns (User);
+  rpc FindOne(UserBlockPayLoad) returns (User);
 }
 
 message User {
