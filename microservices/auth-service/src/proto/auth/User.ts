@@ -8,6 +8,7 @@ export interface User {
   'isActive'?: (boolean);
   'fullName'?: (string);
   'avatarUrl'?: (string);
+  'role'?: (string);
 }
 
 export interface User__Output {
@@ -17,4 +18,5 @@ export interface User__Output {
   'isActive'?: (boolean);
   'fullName'?: (string);
   'avatarUrl'?: (string);
+  'role'?: (string);
 }

@@ -2,10 +2,13 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { ClientGrpc } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
+import { firstValueFrom, Observable } from 'rxjs';
+import { IUser } from '@/interfaces/user.interface';
 
 interface GrpcAuthService {
   Register(body: RegisterDto): Promise<void>;
   Login(body: LoginDto): Promise<any>;
+  FindByUserId({ idUser }): Observable<IUser>;
 }
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -21,6 +24,11 @@ export class AuthService implements OnModuleInit {
 
   async login(loginDto: LoginDto) {
     const user = await this.authService.Login(loginDto);
+    return user;
+  }
+
+  async findByUserId(idUser: number) {
+    const user = await firstValueFrom(this.authService.FindByUserId({ idUser }));
     return user;
   }
 }

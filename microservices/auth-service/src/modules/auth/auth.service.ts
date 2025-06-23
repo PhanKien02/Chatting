@@ -71,6 +71,8 @@ export class AuthService {
     if (!user) {
       throw new RpcException(errorMessage.LOGIN_ERROR);
     }
+    const userLogin = await firstValueFrom(this.userService.FindOne
+      ({ id: user.idUser }))
     const isPasswordValid = await argon2.verify(user.password, login.password);
     if (!isPasswordValid) {
       throw new RpcException(errorMessage.LOGIN_ERROR);
@@ -80,7 +82,8 @@ export class AuthService {
     }
     const payLoadAccessToken = {
       role: user.role,
-      userId: user.id.toString(),
+      userId: userLogin.id,
+      authId: user.id,
     };
     const expiresInSeconds = 120; // 2ph
     const expiresAt = Math.floor(Date.now() / 1000) + expiresInSeconds;
@@ -99,8 +102,7 @@ export class AuthService {
         expiresIn: '30d', // 30 ngày
       },
     );
-    const userLogin = await firstValueFrom(this.userService.FindOne
-      ({ id: user.idUser }))
+
     return {
       user: {
         id: userLogin.id,
@@ -115,5 +117,15 @@ export class AuthService {
       refreshToken,
       expiresAt
     };
+  }
+
+
+  async findByUserId(idUser: number) {
+    const data = await this.authRepository.findOne({
+      where: {
+        idUser: idUser
+      }
+    })
+    return data;
   }
 }

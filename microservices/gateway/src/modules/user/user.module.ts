@@ -3,6 +3,8 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtStrategy } from '@/security/passport.jwt.strategy';
 
 @Module({
   imports: [

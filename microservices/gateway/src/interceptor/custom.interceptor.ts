@@ -39,16 +39,12 @@ export class ResponseInterceptor implements NestInterceptor {
             // ❌ Nếu có lỗi, xử lý tại đây
             catchError((err) => {
                 const timestamp = new Date().toISOString();
-                console.error('❌ Error:', {
-                    message: err.message,
-                    stack: err.stack,
-                });
-
                 if (ctxType === 'http') {
                     const statusCode =
                         err instanceof HttpException
                             ? err.getStatus()
                             : HttpStatus.INTERNAL_SERVER_ERROR;
+                    console.log({ statusCode, err });
 
                     return throwError(() =>
                         new HttpException(

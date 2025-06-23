@@ -9,8 +9,18 @@ import type { LogoutResponse as _auth_LogoutResponse, LogoutResponse__Output as 
 import type { RefreshToken as _auth_RefreshToken, RefreshToken__Output as _auth_RefreshToken__Output } from '../auth/RefreshToken';
 import type { Register as _auth_Register, Register__Output as _auth_Register__Output } from '../auth/Register';
 import type { RegisterResponse as _auth_RegisterResponse, RegisterResponse__Output as _auth_RegisterResponse__Output } from '../auth/RegisterResponse';
+import type { User as _auth_User, User__Output as _auth_User__Output } from '../auth/User';
 
 export interface AuthServiceClient extends grpc.Client {
+  FindByUserId(argument: _auth_RefreshToken, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  FindByUserId(argument: _auth_RefreshToken, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  FindByUserId(argument: _auth_RefreshToken, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  FindByUserId(argument: _auth_RefreshToken, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  findByUserId(argument: _auth_RefreshToken, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  findByUserId(argument: _auth_RefreshToken, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  findByUserId(argument: _auth_RefreshToken, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  findByUserId(argument: _auth_RefreshToken, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  
   Login(argument: _auth_Login, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_LoginResponse__Output>): grpc.ClientUnaryCall;
   Login(argument: _auth_Login, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_LoginResponse__Output>): grpc.ClientUnaryCall;
   Login(argument: _auth_Login, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_LoginResponse__Output>): grpc.ClientUnaryCall;
@@ -50,6 +60,8 @@ export interface AuthServiceClient extends grpc.Client {
 }
 
 export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
+  FindByUserId: grpc.handleUnaryCall<_auth_RefreshToken__Output, _auth_User>;
+  
   Login: grpc.handleUnaryCall<_auth_Login__Output, _auth_LoginResponse>;
   
   Logout: grpc.handleUnaryCall<_auth_Logout__Output, _auth_LogoutResponse>;
@@ -61,6 +73,7 @@ export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
 }
 
 export interface AuthServiceDefinition extends grpc.ServiceDefinition {
+  FindByUserId: MethodDefinition<_auth_RefreshToken, _auth_User, _auth_RefreshToken__Output, _auth_User__Output>
   Login: MethodDefinition<_auth_Login, _auth_LoginResponse, _auth_Login__Output, _auth_LoginResponse__Output>
   Logout: MethodDefinition<_auth_Logout, _auth_LogoutResponse, _auth_Logout__Output, _auth_LogoutResponse__Output>
   RefreshToken: MethodDefinition<_auth_RefreshToken, _auth_LoginResponse, _auth_RefreshToken__Output, _auth_LoginResponse__Output>

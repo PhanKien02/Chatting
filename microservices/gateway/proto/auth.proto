@@ -9,6 +9,7 @@ service AuthService {
   rpc Login(Login) returns (LoginResponse);
   rpc Logout(Logout) returns (LogoutResponse);
   rpc RefreshToken(RefreshToken) returns (LoginResponse);
+  rpc FindByUserId(RefreshToken) returns (User);
 }
 
 message Register {
@@ -62,4 +63,5 @@ message User {
         bool isActive = 6;
         string fullName = 7;
         string avatarUrl = 8;
+        string role = 9;
 }

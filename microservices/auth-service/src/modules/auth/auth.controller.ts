@@ -19,4 +19,10 @@ export class AuthController {
     const result = await this.authService.login(login);
     return result;
   }
+
+  @GrpcMethod('AuthService', 'FindByUserId')
+  async findOne(data: any) {
+    const result = await this.authService.findByUserId(data.idUser.toNumber());
+    return result;
+  }
 }
