@@ -2,6 +2,8 @@
 
 import type * as grpc from '@grpc/grpc-js'
 import type { MethodDefinition } from '@grpc/proto-loader'
+import type { Auth as _auth_Auth, Auth__Output as _auth_Auth__Output } from '../auth/Auth';
+import type { FindOnePayLoad as _auth_FindOnePayLoad, FindOnePayLoad__Output as _auth_FindOnePayLoad__Output } from '../auth/FindOnePayLoad';
 import type { Login as _auth_Login, Login__Output as _auth_Login__Output } from '../auth/Login';
 import type { LoginResponse as _auth_LoginResponse, LoginResponse__Output as _auth_LoginResponse__Output } from '../auth/LoginResponse';
 import type { Logout as _auth_Logout, Logout__Output as _auth_Logout__Output } from '../auth/Logout';
@@ -20,6 +22,15 @@ export interface AuthServiceClient extends grpc.Client {
   findByUserId(argument: _auth_RefreshToken, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
   findByUserId(argument: _auth_RefreshToken, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
   findByUserId(argument: _auth_RefreshToken, callback: grpc.requestCallback<_auth_User__Output>): grpc.ClientUnaryCall;
+  
+  FindOne(argument: _auth_FindOnePayLoad, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  FindOne(argument: _auth_FindOnePayLoad, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  FindOne(argument: _auth_FindOnePayLoad, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  FindOne(argument: _auth_FindOnePayLoad, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  findOne(argument: _auth_FindOnePayLoad, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  findOne(argument: _auth_FindOnePayLoad, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  findOne(argument: _auth_FindOnePayLoad, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
+  findOne(argument: _auth_FindOnePayLoad, callback: grpc.requestCallback<_auth_Auth__Output>): grpc.ClientUnaryCall;
   
   Login(argument: _auth_Login, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_auth_LoginResponse__Output>): grpc.ClientUnaryCall;
   Login(argument: _auth_Login, metadata: grpc.Metadata, callback: grpc.requestCallback<_auth_LoginResponse__Output>): grpc.ClientUnaryCall;
@@ -62,6 +73,8 @@ export interface AuthServiceClient extends grpc.Client {
 export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
   FindByUserId: grpc.handleUnaryCall<_auth_RefreshToken__Output, _auth_User>;
   
+  FindOne: grpc.handleUnaryCall<_auth_FindOnePayLoad__Output, _auth_Auth>;
+  
   Login: grpc.handleUnaryCall<_auth_Login__Output, _auth_LoginResponse>;
   
   Logout: grpc.handleUnaryCall<_auth_Logout__Output, _auth_LogoutResponse>;
@@ -74,6 +87,7 @@ export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
 
 export interface AuthServiceDefinition extends grpc.ServiceDefinition {
   FindByUserId: MethodDefinition<_auth_RefreshToken, _auth_User, _auth_RefreshToken__Output, _auth_User__Output>
+  FindOne: MethodDefinition<_auth_FindOnePayLoad, _auth_Auth, _auth_FindOnePayLoad__Output, _auth_Auth__Output>
   Login: MethodDefinition<_auth_Login, _auth_LoginResponse, _auth_Login__Output, _auth_LoginResponse__Output>
   Logout: MethodDefinition<_auth_Logout, _auth_LogoutResponse, _auth_Logout__Output, _auth_LogoutResponse__Output>
   RefreshToken: MethodDefinition<_auth_RefreshToken, _auth_LoginResponse, _auth_RefreshToken__Output, _auth_LoginResponse__Output>

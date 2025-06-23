@@ -12,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { firstValueFrom, Observable } from 'rxjs';
 import { User } from 'src/proto/user/User';
 import { JwtService } from '@nestjs/jwt';
+import { LoginResponse } from 'src/proto/auth/LoginResponse';
 
 interface GrpcUserService {
   Create(body: CreateUserDto): Observable<User>,
@@ -61,7 +62,7 @@ export class AuthService {
     return newUser;
   }
 
-  async login(login: LoginDto) {
+  async login(login: LoginDto): Promise<LoginResponse> {
     const user = await this.authRepository.findOne({
       where: [
         { email: login.login },
@@ -115,7 +116,7 @@ export class AuthService {
       },
       accessToken,
       refreshToken,
-      expiresAt
+      expiresAt: expiresAt.toString()
     };
   }
 

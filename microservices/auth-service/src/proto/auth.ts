@@ -9,7 +9,9 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 
 export interface ProtoGrpcType {
   auth: {
+    Auth: MessageTypeDefinition
     AuthService: SubtypeConstructor<typeof grpc.Client, _auth_AuthServiceClient> & { service: _auth_AuthServiceDefinition }
+    FindOnePayLoad: MessageTypeDefinition
     Login: MessageTypeDefinition
     LoginResponse: MessageTypeDefinition
     Logout: MessageTypeDefinition

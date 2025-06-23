@@ -10,7 +10,7 @@ service AuthService {
   rpc Logout(Logout) returns (LogoutResponse);
   rpc RefreshToken(RefreshToken) returns (LoginResponse);
   rpc FindByUserId(RefreshToken) returns (User);
-  rpc CheckToken()
+  rpc FindOne(FindOnePayLoad) returns (Auth) ;
 }
 
 message Register {
@@ -65,4 +65,16 @@ message User {
         string fullName = 7;
         string avatarUrl = 8;
         string role = 9;
+}
+
+message Auth {
+        string id= 1;
+        string idUser = 2;
+        string email = 3;
+        string phone= 4;
+        string password = 5;
+        string role = 6;
+}
+message FindOnePayLoad {
+        string id = 1;
 }

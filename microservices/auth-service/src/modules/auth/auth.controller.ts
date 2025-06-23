@@ -3,6 +3,7 @@ import { GrpcMethod, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
+import { LoginResponse } from 'src/proto/auth/LoginResponse';
 
 @Controller()
 export class AuthController {
@@ -15,13 +16,13 @@ export class AuthController {
   }
 
   @GrpcMethod('AuthService', 'Login')
-  async login(login: LoginDto) {
+  async login(login: LoginDto): Promise<LoginResponse> {
     const result = await this.authService.login(login);
     return result;
   }
 
   @GrpcMethod('AuthService', 'FindByUserId')
-  async findOne(data: any) {
+  async FindByUserId(data: any) {
     const result = await this.authService.findByUserId(data.idUser.toNumber());
     return result;
   }
