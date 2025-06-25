@@ -1,14 +1,19 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { ClientGrpc } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IUser } from '@/interfaces/user.interface';
+import { RegisterResponse } from 'proto/auth/RegisterResponse';
+import { LoginResponse } from 'proto/auth/LoginResponse';
+import { Register } from 'proto/auth/Register';
+import { Login } from 'proto/auth/Login';
+import { RefreshToken } from 'proto/auth/RefreshToken';
 
 interface GrpcAuthService {
-  Register(body: RegisterDto): Promise<void>;
-  Login(body: LoginDto): Promise<any>;
-  FindByUserId({ idUser }): Observable<IUser>;
+  Register(body: Register): Observable<RegisterResponse>;
+  Login(body: Login): Observable<LoginResponse>;
+  FindByUserId(data: RefreshToken): Observable<IUser>;
 }
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -18,8 +23,13 @@ export class AuthService implements OnModuleInit {
     this.authService = this.authClient.getService<GrpcAuthService>('AuthService');
   }
   async register(registerDto: RegisterDto) {
-    const user = await this.authService.Register(registerDto);
-    return user;
+    try {
+      const user = await firstValueFrom(this.authService.Register(registerDto));
+      return user;
+
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   async login(loginDto: LoginDto) {
