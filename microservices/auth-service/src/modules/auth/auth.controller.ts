@@ -11,8 +11,8 @@ export class AuthController {
 
   @GrpcMethod('AuthService', 'Register')
   async create(data: RegisterDto) {
-    this.authService.create(data);
-    return data;
+    const result = await this.authService.create(data);
+    return result;
   }
 
   @GrpcMethod('AuthService', 'Login')

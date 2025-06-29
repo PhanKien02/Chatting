@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
+import { GrpcMethod, GrpcStreamMethod, MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,8 +11,9 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
   ) { }
-  @GrpcMethod('UserService', 'Create')
+  @MessagePattern('user_create')
   async create(createUserDto: CreateUserDto, metadata: Metadata, call: ServerUnaryCall<any, any>) {
+    console.log({ metadata, call });
     const user = await this.userService.create(createUserDto);
     return user;
   }

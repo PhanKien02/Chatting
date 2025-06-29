@@ -23,17 +23,12 @@ export class AuthService implements OnModuleInit {
     this.authService = this.authClient.getService<GrpcAuthService>('AuthService');
   }
   async register(registerDto: RegisterDto) {
-    try {
-      const user = await firstValueFrom(this.authService.Register(registerDto));
-      return user;
-
-    } catch (err) {
-      throw new InternalServerErrorException(err.message);
-    }
+    const user = await firstValueFrom(this.authService.Register(registerDto));
+    return user;
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.authService.Login(loginDto);
+    const user = await firstValueFrom(this.authService.Login(loginDto));
     return user;
   }
 

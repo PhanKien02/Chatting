@@ -1,11 +1,11 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import { ClientProxy, ClientProxyFactory, RpcException, Transport } from '@nestjs/microservices';
 import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
+import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 
 @Injectable()
 export class UserService {
@@ -20,8 +20,10 @@ export class UserService {
         { phone: createUserDto.phone }
       ],
     });
+    console.log("aaaaa");
+
     if (hasPhoneOrEmail) {
-      throw new RpcException("Email hoặc số điện thoại đã tồn tại")
+      throw new BadRequestException('User already exists');
     }
 
     const user = this.usersRepository.create(createUserDto);

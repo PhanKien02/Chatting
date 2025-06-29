@@ -3,7 +3,7 @@ import { RegisterDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
-import { ClientGrpc, RpcException } from '@nestjs/microservices';
+import { RpcException, ClientProxy } from '@nestjs/microservices';
 import * as argon2 from 'argon2';
 import { genKeyActive } from 'src/utils/gennerate-key';
 import { LoginDto } from './dto/login.dto';
@@ -13,6 +13,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { User } from 'src/proto/user/User';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from 'src/proto/auth/LoginResponse';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 interface GrpcUserService {
   Create(body: CreateUserDto): Observable<User>,
@@ -22,13 +23,10 @@ interface GrpcUserService {
 export class AuthService {
   private userService: GrpcUserService;
 
-  onModuleInit() {
-    this.userService = this.userClient.getService<GrpcUserService>('UserService');
-  }
   constructor(
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
-    @Inject('USER_PACKAGE') private readonly userClient: ClientGrpc,
+    private readonly amqpConnection: AmqpConnection,
     private readonly jwtService: JwtService
   ) { }
   async create(register: RegisterDto) {
@@ -40,9 +38,8 @@ export class AuthService {
         { phone: register.phone },
       ]
     });
-    if (hasUser) {
-      throw new RpcException(errorMessage.USER_EXITS);
-    }
+    if (hasUser) throw new RpcException('User already exists');
+
     register.password = await argon2.hash(register.password);
     const newUser = this.authRepository.create({
       ...register,
@@ -55,10 +52,14 @@ export class AuthService {
       phone: register.phone,
       avatarUrl: register.avatarUrl,
     };
-    const data = await firstValueFrom(this.userService.Create(createUser));
-    if (data && data.id) {
-      await this.authRepository.save({ ...newUser, idUser: +data.id });
-    }
+    const data = await this.amqpConnection.request({
+      exchange: 'user_exchange',
+      routingKey: 'user.create',
+      payload: Buffer.from(JSON.stringify(createUser)),
+      // timeout: 5000, // ms
+    });
+    console.log({ data });
+
     return newUser;
   }
 
