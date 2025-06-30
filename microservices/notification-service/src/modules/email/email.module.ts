@@ -12,7 +12,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         secure: true,
         auth: {
           user: 'kien1st02@gmail.com',
-          pass: 'mldbemznrssiierp', // Không dùng mật khẩu Gmail thường
+          pass: '', // Không dùng mật khẩu Gmail thường
         },
       },
     }),
