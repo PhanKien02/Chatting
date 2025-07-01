@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { JwtService } from '@nestjs/jwt';
-import { AmqpConnection, RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { AmqpConnection, RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
         },
       ],
       uri: 'amqp://guest:guest@localhost:5672',
-      connectionInitOptions: { wait: true },
+      connectionInitOptions: { wait: true, },
     }),],
   controllers: [AuthController],
   providers: [AuthService, JwtService],

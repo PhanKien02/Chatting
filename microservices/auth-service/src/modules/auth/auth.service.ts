@@ -1,27 +1,23 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
-import { RpcException, ClientProxy } from '@nestjs/microservices';
 import * as argon2 from 'argon2';
 import { genKeyActive } from 'src/utils/gennerate-key';
 import { LoginDto } from './dto/login.dto';
 import { errorMessage } from 'src/common/errorMessage';
-import { CreateUserDto } from './dto/create-user.dto';
-import { firstValueFrom, Observable } from 'rxjs';
-import { User } from 'src/proto/user/User';
+import { firstValueFrom } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from 'src/proto/auth/LoginResponse';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-
-interface GrpcUserService {
-  Create(body: CreateUserDto): Observable<User>,
-  FindOne({ id }): Observable<User>
-}
+import { RpcException } from '@nestjs/microservices';
+import { IResponseRabbitmq } from 'src/interfaces/rabbitmq.interface';
+import { IUser } from 'src/interfaces/user.interface';
+import { status } from '@grpc/grpc-js';
+import { randomUUID } from 'crypto';
 @Injectable()
 export class AuthService {
-  private userService: GrpcUserService;
 
   constructor(
     @InjectRepository(Auth)
@@ -56,11 +52,16 @@ export class AuthService {
       exchange: 'user_exchange',
       routingKey: 'user.create',
       payload: Buffer.from(JSON.stringify(createUser)),
-      // timeout: 5000, // ms
-    });
-    console.log({ data });
-
-    return newUser;
+    }) as IResponseRabbitmq<IUser>;
+    if (data.success == true) {
+      const user = data.message as IUser;
+      return await this.authRepository.save({ ...newUser, idUser: +user.id });
+    }
+    else
+      throw new RpcException({
+        message: data.message,
+        code: status.ALREADY_EXISTS
+      })
   }
 
   async login(login: LoginDto): Promise<LoginResponse> {
@@ -73,18 +74,26 @@ export class AuthService {
     if (!user) {
       throw new RpcException(errorMessage.LOGIN_ERROR);
     }
-    const userLogin = await firstValueFrom(this.userService.FindOne
-      ({ id: user.idUser }))
+    if (!user.isActive) {
+      throw new RpcException(errorMessage.USER_NOT_ACTIVE);
+    }
     const isPasswordValid = await argon2.verify(user.password, login.password);
     if (!isPasswordValid) {
       throw new RpcException(errorMessage.LOGIN_ERROR);
     }
-    if (!user.isActive) {
-      throw new RpcException(errorMessage.USER_NOT_ACTIVE);
-    }
+    const data = await this.amqpConnection.request({
+      exchange: 'user_exchange',
+      routingKey: 'user.find.one',
+      payload: Buffer.from(JSON.stringify({ id: user.idUser })),
+      correlationId: randomUUID(),
+    }) as IResponseRabbitmq<IUser>;
+    if (data.success == false)
+      throw new RpcException({ code: status.NOT_FOUND, message: errorMessage.USER_NOT_FOUND })
+    const userLogin = data.message as IUser;
+
     const payLoadAccessToken = {
       role: user.role,
-      userId: userLogin.id,
+      userId: user.idUser,
       authId: user.id,
     };
     const expiresInSeconds = 120; // 2ph
@@ -107,7 +116,7 @@ export class AuthService {
 
     return {
       user: {
-        id: userLogin.id,
+        id: userLogin.id.toString(),
         isActive: user.isActive,
         role: user.role,
         email: user.email,

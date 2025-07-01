@@ -11,12 +11,6 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
   ) { }
-  @MessagePattern('user_create')
-  async create(createUserDto: CreateUserDto, metadata: Metadata, call: ServerUnaryCall<any, any>) {
-    console.log({ metadata, call });
-    const user = await this.userService.create(createUserDto);
-    return user;
-  }
 
   @GrpcMethod('UserService', 'FindAll')
   async findAll(query: Query, metadata: Metadata, call: ServerUnaryCall<any, any>) {

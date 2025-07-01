@@ -4,15 +4,17 @@ import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { UserRabbitMQHandler } from './user.rabbitmq'
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity]),
   RabbitMQModule.forRoot({
     uri: 'amqp://guest:guest@localhost:5672',
     exchanges: [{ name: 'user_exchange', type: 'topic', }],
-    queues: [{ name: 'user_queue', }]
+    connectionInitOptions: { wait: true, },  // bắt buộc chờ kết nối RabbitMQ ổn định
+    enableControllerDiscovery: true, // để discover @RabbitRPC
   }),],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, UserRabbitMQHandler],
 })
 export class UserModule { }

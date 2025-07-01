@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
-import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import { IResponseRabbitmq } from './user.rabbitmq';
 
 @Injectable()
 export class UserService {
@@ -13,22 +13,20 @@ export class UserService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
   ) { }
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<IResponseRabbitmq<UserEntity>> {
     const hasPhoneOrEmail = await this.usersRepository.findOne({
       where: [
         { email: createUserDto.email },
         { phone: createUserDto.phone }
       ],
     });
-    console.log("aaaaa");
-
     if (hasPhoneOrEmail) {
-      throw new BadRequestException('User already exists');
+      return { success: false, message: 'User already exists' }
     }
 
     const user = this.usersRepository.create(createUserDto);
     const newUser = await this.usersRepository.save(user);
-    return newUser;
+    return { success: true, message: newUser };
   }
 
   async findAll(query: any) {
@@ -47,12 +45,21 @@ export class UserService {
     });
   }
 
-  findOne(id: number) {
-    return this.usersRepository.findOne({
+  async findOne(id: number): Promise<IResponseRabbitmq<UserEntity | null>> {
+    const user = await this.usersRepository.findOne({
       where: {
         id: id
       }
     })
+    if (!user)
+      return {
+        success: false,
+        message: null
+      }
+    return {
+      message: user,
+      success: true
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
