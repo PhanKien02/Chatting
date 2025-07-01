@@ -1,7 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { GrpcMethod, GrpcStreamMethod, MessagePattern, Payload } from '@nestjs/microservices';
+import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 import { Query } from 'src/proto/user/Query';

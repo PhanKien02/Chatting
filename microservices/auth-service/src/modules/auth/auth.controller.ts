@@ -1,5 +1,5 @@
-import { Controller, Post } from '@nestjs/common';
-import { GrpcMethod, Payload } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { GrpcMethod } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';

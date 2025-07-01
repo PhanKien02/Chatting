@@ -17,7 +17,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
         },
       ],
       uri: 'amqp://guest:guest@localhost:5672',
-      connectionInitOptions: { wait: true, },
+      connectionInitOptions: { wait: true },
     }),],
   controllers: [AuthController],
   providers: [AuthService, JwtService],

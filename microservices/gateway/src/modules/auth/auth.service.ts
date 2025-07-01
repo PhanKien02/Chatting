@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { ClientGrpc } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
