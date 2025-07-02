@@ -34,11 +34,11 @@ export class AuthService {
       ]
     });
     if (hasUser) throw new RpcException('User already exists');
-
+    const otp = genKeyActive();
     register.password = await argon2.hash(register.password);
     const newUser = this.authRepository.create({
       ...register,
-      activeKey: genKeyActive(),
+      activeKey: otp,
       isActive: false,
     });
     const createUser = {
@@ -54,7 +54,26 @@ export class AuthService {
     }) as IResponseRabbitmq<IUser>;
     if (data.success == true) {
       const user = data.message as IUser;
-      return await this.authRepository.save({ ...newUser, idUser: +user.id });
+      const tokenActive = this.jwtService.sign({
+        otp,
+        id: +user.id
+      }, {
+        algorithm: 'HS256',
+        secret: process.env.ACTIVE_TOKEN,
+        expiresIn: '5m'
+      })
+      const emailData = {
+        email: register.email,
+        fullName: register.fullName,
+        otp,
+        tokenActive
+      }
+      const [response] = await Promise.all([
+        this.authRepository.save({ ...newUser, idUser: +user.id }),
+        this.amqpConnection.publish('notification_exchanges', 'email_active', Buffer.from(JSON.stringify(emailData)))
+      ]);
+
+      return { ...response, tokenActive }
     }
     else
       throw new RpcException({

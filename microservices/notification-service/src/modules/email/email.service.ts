@@ -9,7 +9,7 @@ export class EmailService {
                 await this.mailerService.sendMail({
                         to: data.email,
                         subject: 'Chào mừng bạn đến với ứng dụng!',
-                        template: './welcome', // tên file trong thư mục templates
+                        template: `mailActive`, // tên file trong thư mục templates
                         context: data,
                 });
         }
