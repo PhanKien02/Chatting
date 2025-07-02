@@ -70,7 +70,7 @@ export class AuthService {
       }
       const [response] = await Promise.all([
         this.authRepository.save({ ...newUser, idUser: +user.id }),
-        this.amqpConnection.publish('notification_exchanges', 'email_active', Buffer.from(JSON.stringify(emailData)))
+        this.amqpConnection.publish('notification_exchange', 'notification.email.active', Buffer.from(JSON.stringify(emailData)))
       ]);
 
       return { ...response, tokenActive }
