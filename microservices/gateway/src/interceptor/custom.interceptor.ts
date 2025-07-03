@@ -9,6 +9,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { IResponse } from '@/interfaces/response.interface';
+import { mapGrpcCodeToHttpStatus } from '@/utils/mappingerror';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -39,34 +40,20 @@ export class ResponseInterceptor implements NestInterceptor {
             // ❌ Nếu có lỗi, xử lý tại đây
             catchError((err) => {
                 const timestamp = new Date().toISOString();
-                if (ctxType === 'http') {
-                    const statusCode =
-                        err instanceof HttpException
-                            ? err.getStatus()
-                            : HttpStatus.INTERNAL_SERVER_ERROR;
-                    console.log({ statusCode, err });
+                const statusCode = mapGrpcCodeToHttpStatus(err.code)
 
-                    return throwError(() =>
-                        new HttpException(
-                            {
-                                success: false,
-                                statusCode,
-                                message: err.message || 'Internal server error',
-                                timestamp,
-                            },
-                            statusCode,
-                        ),
-                    );
-                }
+                return throwError(() =>
+                    new HttpException(
+                        {
+                            success: false,
+                            statusCode: statusCode,
+                            message: err.message || 'Internal server error',
+                            timestamp,
+                        },
+                        statusCode,
+                    ),
+                );
 
-                if (ctxType === 'rpc') {
-                    return throwError(() =>
-                        new RpcException({
-                            code: err.code || status.INTERNAL,
-                            message: err.message || 'Internal gRPC error',
-                        }),
-                    );
-                }
 
                 return throwError(() => err);
             }),

@@ -33,7 +33,10 @@ export class AuthService {
         { phone: register.phone },
       ]
     });
-    if (hasUser) throw new RpcException('User already exists');
+    if (hasUser) throw new RpcException({
+      code: status.ALREADY_EXISTS,
+      message: errorMessage.USER_NOT_FOUND
+    });
     const otp = genKeyActive();
     register.password = await argon2.hash(register.password);
     const newUser = this.authRepository.create({
@@ -90,14 +93,23 @@ export class AuthService {
       ]
     });
     if (!user) {
-      throw new RpcException(errorMessage.LOGIN_ERROR);
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: errorMessage.LOGIN_ERROR
+      });
     }
     if (!user.isActive) {
-      throw new RpcException(errorMessage.USER_NOT_ACTIVE);
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: errorMessage.USER_NOT_ACTIVE
+      });
     }
     const isPasswordValid = await argon2.verify(user.password, login.password);
     if (!isPasswordValid) {
-      throw new RpcException(errorMessage.LOGIN_ERROR);
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: errorMessage.LOGIN_ERROR
+      });
     }
     const data = await this.amqpConnection.request({
       exchange: 'user_exchange',
