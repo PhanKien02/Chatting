@@ -11,6 +11,8 @@ service AuthService {
   rpc RefreshToken(RefreshToken) returns (LoginResponse);
   rpc FindByUserId(RefreshToken) returns (User);
   rpc FindOne(FindOnePayLoad) returns (Auth) ;
+  rpc VerifyOTP (VeryfyOTP) returns (Empty);
+  rpc ResendOtp (RefreshToken) returns (ResendOtpResponse);
 }
 
 message Register {
@@ -43,7 +45,7 @@ message RegisterResponse {
         string phone = 3;
         string isActive = 4;
         string role = 5;
-       
+       string tokenActive =6;
 }
 
 message LoginResponse {
@@ -77,4 +79,13 @@ message Auth {
 }
 message FindOnePayLoad {
         string id = 1;
+}
+
+message VeryfyOTP {
+        string token =1;
+        string otp = 2;
+}
+
+message ResendOtpResponse {
+       string token =1;
 }

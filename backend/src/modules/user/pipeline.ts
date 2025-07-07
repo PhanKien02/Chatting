@@ -11,8 +11,6 @@ export const getAllUser = (query: IQuery<User>) => {
         {
             $project: {
                 password: 0,
-                activeKey: 0,
-                resetKey: 0,
                 __v: 0
             }
         },

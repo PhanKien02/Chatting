@@ -132,7 +132,7 @@ export class UserService {
     }
     async validateUser(
         payLoad: LoginDto,
-    ): Promise<Omit<User, 'password' | 'activeKey' | 'resetKey'>> {
+    ): Promise<Omit<User, 'password'>> {
 
         const user = await this.userModel.findOne({
             role: payLoad.role,
@@ -143,11 +143,11 @@ export class UserService {
         if (!compareSync(payLoad.password, user.password)) {
             throw new BadRequestException(errorMessage.LOGIN_ERROR);
         }
-        const { password, activeKey, resetKey, __v, ...rest } = user;
+        const { password, __v, ...rest } = user;
         return rest;
     }
     async validateToken(
-        payLoad: PayLoadToken): Promise<Omit<User, 'password' | 'activeKey' | 'resetKey'>> {
+        payLoad: PayLoadToken): Promise<Omit<User, 'password'>> {
         const user = await this.userModel.findOne({
             _id: payLoad.userId,
             role: payLoad.role,

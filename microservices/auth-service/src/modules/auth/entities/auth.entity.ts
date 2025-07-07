@@ -45,16 +45,6 @@ export class Auth extends BaseEntity {
         isActive: boolean;
 
         @Column({
-                default: null
-        })
-        resetKey: string;
-
-        @Column({
-                nullable: false,
-        })
-        activeKey: string;
-
-        @Column({
                 type: "enum",
                 enum: RoleType,
                 default: RoleType.USER,

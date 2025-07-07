@@ -26,4 +26,14 @@ export class AuthController {
     const result = await this.authService.findByUserId(data.idUser.toNumber());
     return result;
   }
+  @GrpcMethod('AuthService', 'VerifyOTP')
+  async verifyOTP(data: { token: string, otp: string }) {
+    const result = await this.authService.ativeAccount(data.token, data.otp);
+    return result;
+  }
+  @GrpcMethod('AuthService', 'ResendOtp')
+  async resendOtp(data: { idUser: string }) {
+    const result = await this.authService.resendOtp(+data.idUser);
+    return result;
+  }
 }

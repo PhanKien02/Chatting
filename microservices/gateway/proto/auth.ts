@@ -19,7 +19,9 @@ export interface ProtoGrpcType {
     RefreshToken: MessageTypeDefinition
     Register: MessageTypeDefinition
     RegisterResponse: MessageTypeDefinition
+    ResendOtpResponse: MessageTypeDefinition
     User: MessageTypeDefinition
+    VeryfyOTP: MessageTypeDefinition
   }
   google: {
     protobuf: {

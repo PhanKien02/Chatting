@@ -6,13 +6,11 @@ import { IResponse } from '@/interfaces/response.interface';
 import { RoleType } from './entities/role-type';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponse } from '@/interfaces/user.interface';
-import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { AuthGuard, Role, RolesGuard } from '../../security';
 import { IPaginated, IQuery } from '@/interfaces/paging.interface';
 import { UserQueryDto } from './dto/user-query.dto';
 
-@ApiBearerAuth()
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) { }

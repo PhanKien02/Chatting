@@ -6,4 +6,5 @@ export const errorMessage = {
     USER_NOT_ACTIVE: 'Tài khoản chưa được kích hoạt',
     USER_NOT_FOUND: 'Người dùng không tồn tại',
     USER_NOT_PERMISSION: 'Người dùng không có quyền truy cập',
+    OTP_INCORRECT: "OTP không đúng hoặc quá hạn"
 };

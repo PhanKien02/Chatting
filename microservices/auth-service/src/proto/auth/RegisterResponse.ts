@@ -8,6 +8,7 @@ export interface RegisterResponse {
   'phone'?: (string);
   'isActive'?: (string);
   'role'?: (string);
+  'tokenActive'?: (string);
 }
 
 export interface RegisterResponse__Output {
@@ -16,4 +17,5 @@ export interface RegisterResponse__Output {
   'phone'?: (string);
   'isActive'?: (string);
   'role'?: (string);
+  'tokenActive'?: (string);
 }

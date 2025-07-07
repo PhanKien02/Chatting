@@ -6,7 +6,7 @@ export interface PayLoadToken {
 }
 
 export interface LoginResponse {
-    user: Omit<User, "password" | "resetKey" | "activeKey">;
+    user: Omit<User, "password">;
     accessToken: string;
     refreshToken: string;
     expires: number;

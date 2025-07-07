@@ -25,12 +25,6 @@ export class User extends BaseEntity {
     @Prop()
     avatarUrl?: string;
 
-    @Prop()
-    resetKey: string;
-
-    @Prop()
-    activeKey: string;
-
     @Prop({
         enum: RoleType,
         default: RoleType.USER,
