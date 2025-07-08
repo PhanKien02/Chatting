@@ -99,12 +99,7 @@ export class AuthService {
         message: errorMessage.LOGIN_ERROR
       });
     }
-    if (!user.isActive) {
-      throw new RpcException({
-        code: status.INVALID_ARGUMENT,
-        message: errorMessage.USER_NOT_ACTIVE
-      });
-    }
+
     const isPasswordValid = await argon2.verify(user.password, login.password);
     if (!isPasswordValid) {
       throw new RpcException({
@@ -121,7 +116,19 @@ export class AuthService {
     if (data.success == false)
       throw new RpcException({ code: status.NOT_FOUND, message: errorMessage.USER_NOT_FOUND })
     const userLogin = data.message as IUser;
-
+    if (!user.isActive) {
+      return {
+        user: {
+          id: userLogin.id.toString(),
+          isActive: user.isActive,
+          role: user.role,
+          email: user.email,
+          phone: user.phone,
+          fullName: userLogin.fullName,
+          avatarUrl: userLogin.avatarUrl
+        }
+      }
+    }
     const payLoadAccessToken = {
       role: user.role,
       userId: user.idUser,
@@ -221,5 +228,47 @@ export class AuthService {
     }
     this.amqpConnection.publish('notification_exchange', 'notification.email.active', Buffer.from(JSON.stringify(emailData)))
     return { token: tokenActive }
+  }
+
+  async refreshToken(idUser: number) {
+    const expiresInSeconds = 120; // 2ph
+    const user = await this.authRepository.findOne({
+      where: {
+        idUser: idUser
+      }
+    })
+    if (!user)
+      throw new RpcException({
+        message: errorMessage.USER_NOT_FOUND,
+        code: status.INVALID_ARGUMENT
+      });
+    const payLoadAccessToken = {
+      role: user.role,
+      userId: user.idUser,
+      authId: user.id,
+    };
+
+    //* tạo access token
+    const accessToken = this.jwtService.sign(payLoadAccessToken, {
+      algorithm: 'HS256',
+      secret: process.env.ACCESS_TOKEN_SCRECT,
+      expiresIn: expiresInSeconds,
+    });
+    const expiresAt = Math.floor(Date.now() / 1000) + expiresInSeconds;
+
+    //* tạo refresh token
+    const refreshToken = this.jwtService.sign(
+      payLoadAccessToken,
+      {
+        algorithm: 'HS512',
+        secret: process.env.REFRESH_TOKEN_SCRECT,
+        expiresIn: '30d', // 30 ngày
+      },
+    );
+    return {
+      accessToken,
+      refreshToken,
+      expiresAt
+    }
   }
 }

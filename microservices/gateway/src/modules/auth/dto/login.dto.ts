@@ -29,3 +29,9 @@ export interface PayLoadToken {
     userId: number;
     role: string;
 }
+
+export class RefreshTokenDto {
+    @ApiProperty()
+    @IsString()
+    token: string;
+}

@@ -36,4 +36,9 @@ export class AuthController {
     const result = await this.authService.resendOtp(+data.idUser);
     return result;
   }
+  @GrpcMethod('AuthService', 'RefreshToken')
+  async refreshToken(data: { idUser: string }) {
+    const result = await this.authService.refreshToken(+data.idUser);
+    return result;
+  }
 }

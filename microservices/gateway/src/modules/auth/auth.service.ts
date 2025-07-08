@@ -11,6 +11,7 @@ import { Login } from 'proto/auth/Login';
 import { RefreshToken } from 'proto/auth/RefreshToken';
 import { JwtService } from '@nestjs/jwt';
 import { ActiveOTPDto } from './dto/active-account';
+import { status } from '@grpc/grpc-js';
 
 interface GrpcAuthService {
   Register(body: Register): Observable<RegisterResponse>;
@@ -18,6 +19,7 @@ interface GrpcAuthService {
   FindByUserId(data: RefreshToken): Observable<IUser>;
   VerifyOTP(data: { token: string, otp: string }): Observable<IUser>
   ResendOtp(data: RefreshToken): Observable<{ token: string }>
+  RefreshToken(data: RefreshToken): Observable<LoginResponse>
 }
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -49,42 +51,18 @@ export class AuthService implements OnModuleInit {
   }
 
 
-  // async refreshToken(token: string): Promise<LoginResponse> {
-  //   const decode = this.jwtService.verify(token, {
-  //     secret: process.env.REFRESH_TOKEN_SCRECT,
-  //   });
-  //   const user = await this.validateToken(decode)
-  //   const payLoadToken = {
-  //     role: user.role,
-  //     userId: user._id,
-  //   };
-  //   const now = Date.now();
-  //   const accessTokenExpiresIn = process.env.ACCESS_TOKEN_EXPIRESIN ? +process.env.ACCESS_TOKEN_EXPIRESIN : 0;
-  //   if (!accessTokenExpiresIn) {
-  //     throw new Error('ACCESS_TOKEN_EXPIRESIN environment variable is not set');
-  //   }
-  //   const expiresAt = new Date(now + accessTokenExpiresIn).getTime();
-
-  //   const accessToken = this.jwtService.sign(payLoadToken, {
-  //     algorithm: 'HS256',
-  //     secret: process.env.ACCESS_TOKEN_SCRECT,
-  //     expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
-  //   });
-
-  //   const refreshToken = this.jwtService.sign(
-  //     payLoadToken,
-  //     {
-  //       algorithm: 'HS512',
-  //       secret: process.env.REFRESH_TOKEN_SCRECT,
-  //       expiresIn: process.env.REFRESH_TOKEN_EXPIRESIN,
-  //     },
-  //   );
-
-  //   return {
-  //     user,
-  //     accessToken,
-  //     refreshToken,
-  //     expiresAt: expiresAt.toString()
-  //   };
-  // }
+  async refreshToken(token: string): Promise<LoginResponse> {
+    try {
+      const decode = await this.jwtService.verify(token, {
+        secret: process.env.REFRESH_TOKEN_SCRECT,
+        ignoreExpiration: false,
+      });
+      return await firstValueFrom(this.authService.RefreshToken({ idUser: decode.userId }));
+    } catch (error) {
+      throw new RpcException({
+        message: error,
+        code: status.INVALID_ARGUMENT
+      })
+    }
+  }
 }

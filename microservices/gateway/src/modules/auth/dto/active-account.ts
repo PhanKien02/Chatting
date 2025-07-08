@@ -17,5 +17,5 @@ export class ReActive {
         @IsString()
         @IsNotEmpty()
         @ApiProperty()
-        idUser: number
+        idUser: string
 }

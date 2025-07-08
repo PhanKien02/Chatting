@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto, RefreshTokenDto } from './dto/login.dto';
 import { ActiveOTPDto, ReActive } from './dto/active-account';
 
 @Controller('auth')
@@ -24,6 +24,13 @@ export class AuthController {
   }
   @Post('/resend-active')
   resendOtpActive(@Body() body: ReActive) {
-    return this.authService.reSendOtp(body.idUser);
+    return this.authService.reSendOtp(+body.idUser);
   }
+
+  @Post('/refresh-token')
+  refreshToken(@Body() body: RefreshTokenDto) {
+    return this.authService.refreshToken(body.token);
+  }
+
+
 }
