@@ -10,12 +10,22 @@ services:
       - mongo_data:/data/db
     networks:
       - app-network
-
-  backend:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"       # Cổng AMQP (ứng dụng sử dụng)
+      - "15672:15672"     # Cổng quản trị web
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+  gateway:
     build:
-      context: ./backend
+      context: ./microservices/gateway
       dockerfile: Dockerfile
-    container_name: nestjs-backend
+    container_name: microservice-gateway
     environment:
       - MONGO_URL=mongodb://mongo:27017/talenet
       - PORT=3001
@@ -29,7 +39,25 @@ services:
       - "3001:3001" # Hoặc cổng backend bạn expose
     networks:
       - app-network
-
+  auth-service:
+    build:
+      context: ./microservices/auth-service
+      dockerfile: Dockerfile
+    container_name: microservice-auth
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/talenet
+      - PORT=3001
+      - ACCESS_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh76trde56y87654@$$$$$$%^^SS
+      - ACCESS_TOKEN_EXPIRESIN=20000
+      - REFRESH_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
+      - ACTIVE_TOKEN=23fsdgsdfg345345edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
+      - REFRESH_TOKEN_EXPIRESIN=7d
+    depends_on:
+      - mongo
+    ports:
+      - "3001:3001" # Hoặc cổng backend bạn expose
+    networks:
+      - app-network
   web:
     build:
       context: ./web
@@ -46,6 +74,7 @@ services:
 
 volumes:
   mongo_data:
+  rabbitmq_data:
 
 networks:
   app-network:
