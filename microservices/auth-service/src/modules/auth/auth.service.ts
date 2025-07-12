@@ -15,7 +15,6 @@ import { IResponseRabbitmq } from 'src/interfaces/rabbitmq.interface';
 import { IUser } from 'src/interfaces/user.interface';
 import { status } from '@grpc/grpc-js';
 import { randomUUID } from 'crypto';
-import { agent } from 'supertest';
 @Injectable()
 export class AuthService {
 
