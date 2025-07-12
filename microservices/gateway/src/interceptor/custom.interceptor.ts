@@ -14,8 +14,6 @@ import { mapGrpcCodeToHttpStatus } from '@/utils/mappingerror';
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        const ctxType = context.getType();
-
         return next.handle().pipe(
             // ✅ Nếu thành công, bạn có thể chỉnh sửa format response tại đây
             map((data: IResponse<unknown> | any) => {
@@ -40,8 +38,7 @@ export class ResponseInterceptor implements NestInterceptor {
             // ❌ Nếu có lỗi, xử lý tại đây
             catchError((err) => {
                 const timestamp = new Date().toISOString();
-                const statusCode = mapGrpcCodeToHttpStatus(err.code)
-
+                const statusCode = err?.status || mapGrpcCodeToHttpStatus(err?.error?.code)
                 return throwError(() =>
                     new HttpException(
                         {
@@ -53,9 +50,6 @@ export class ResponseInterceptor implements NestInterceptor {
                         statusCode,
                     ),
                 );
-
-
-                return throwError(() => err);
             }),
         );
     }
