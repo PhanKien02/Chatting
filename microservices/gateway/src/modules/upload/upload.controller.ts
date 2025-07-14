@@ -28,7 +28,7 @@ export class UploadController {
     },
   })
   @Post()
-  // @UseGuards(AuthGuard) // Bảo vệ bằng JWT
+  @UseGuards(AuthGuard) // Bảo vệ bằng JWT
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async uploadImage(@UploadedFile() file: Express.Multer.File, @Body() body: { forder: string }) {
     const result = await this.uploadService.uploadImage(file, body.forder);
