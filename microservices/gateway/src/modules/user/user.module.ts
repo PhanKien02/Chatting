@@ -27,7 +27,7 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService,],
   exports: [UserService]
 })
 export class UserModule { }
