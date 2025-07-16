@@ -3,8 +3,6 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { JwtStrategy } from '@/security/passport.jwt.strategy';
 
 @Module({
   imports: [
@@ -27,7 +25,7 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService,],
+  providers: [UserService],
   exports: [UserService]
 })
 export class UserModule { }

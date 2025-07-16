@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
@@ -19,13 +19,16 @@ import { redisOptions } from './configs/redisOptions';
           ],
         };
       },
+      isGlobal: true,
     }),
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
-    }), UserModule,
+    }),
+    UserModule,
     AuthModule,
-    UploadModule,],
+    UploadModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
