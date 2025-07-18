@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ResponseInterceptor } from './interceptor/custom.interceptor';
 
 async function bootstrap() {
@@ -21,6 +21,11 @@ async function bootstrap() {
       transform: true, // Tự động chuyển đổi payload thành instance của DTO
     }),
   );
+  // version api config
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1'
+  });
   const config = new DocumentBuilder()
     .setTitle('API example')
     .setDescription('The API description')
