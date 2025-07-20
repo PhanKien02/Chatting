@@ -7,6 +7,7 @@ import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { REDIS_KEY } from '@/common/redis-key';
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payLoad: PayLoadToken): Promise<any> {
-        const key = `user:${payLoad.userId}`;
+        const key = REDIS_KEY.USER.SIGN + payLoad.userId;
         const cacheUser = await this.cacheManager.get(key);
         console.log({ key, cacheUser });
         const user = await this.authService.findByUserId(+payLoad.userId);

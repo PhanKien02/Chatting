@@ -12,6 +12,9 @@ import { RefreshToken } from 'proto/auth/RefreshToken';
 import { JwtService } from '@nestjs/jwt';
 import { ActiveOTPDto } from './dto/active-account';
 import { status } from '@grpc/grpc-js';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { buildRedisKey, REDIS_KEY } from '@/common/redis-key';
 
 interface GrpcAuthService {
   Register(body: Register): Observable<RegisterResponse>;
@@ -24,7 +27,10 @@ interface GrpcAuthService {
 @Injectable()
 export class AuthService implements OnModuleInit {
   private authService: GrpcAuthService;
-  constructor(@Inject('AUTH_PACKAGE') private readonly authClient: ClientGrpc, private readonly jwtService: JwtService) { }
+  constructor(
+    @Inject('AUTH_PACKAGE') private readonly authClient: ClientGrpc,
+    private readonly jwtService: JwtService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache) { }
   onModuleInit() {
     this.authService = this.authClient.getService<GrpcAuthService>('AuthService');
   }
@@ -35,6 +41,16 @@ export class AuthService implements OnModuleInit {
 
   async login(loginDto: LoginDto) {
     const user = await firstValueFrom(this.authService.Login(loginDto));
+    if (user.user?.id !== undefined) {
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.USER.SIGN, user.user.id), user.user);
+    }
+    if (user.accessToken !== undefined) {
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.ACCESS, user.accessToken), user.accessToken);
+    }
+    if (user.refreshToken !== undefined) {
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, user.refreshToken), user.refreshToken);
+    }
+
     return user;
   }
 
@@ -49,7 +65,6 @@ export class AuthService implements OnModuleInit {
   async activeAccout(body: ActiveOTPDto) {
     return await firstValueFrom(this.authService.VerifyOTP(body))
   }
-
 
   async refreshToken(token: string): Promise<LoginResponse> {
     try {
