@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
@@ -42,13 +42,13 @@ export class AuthService implements OnModuleInit {
   async login(loginDto: LoginDto) {
     const user = await firstValueFrom(this.authService.Login(loginDto));
     if (user.user?.id !== undefined) {
-      await this.cacheManager.set(buildRedisKey(REDIS_KEY.USER.SIGN, user.user.id), user.user);
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.USER.SIGN, user.user.id), user.user, 120 * 1000);
     }
     if (user.accessToken !== undefined) {
-      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.ACCESS, user.accessToken), user.accessToken);
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.ACCESS, user.accessToken), user.accessToken, 120 * 1000);
     }
     if (user.refreshToken !== undefined) {
-      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, user.refreshToken), user.refreshToken);
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, user.refreshToken), user.refreshToken, 7 * 24 * 3600 * 1000);
     }
 
     return user;
@@ -72,6 +72,10 @@ export class AuthService implements OnModuleInit {
         secret: process.env.REFRESH_TOKEN_SCRECT,
         ignoreExpiration: false,
       });
+      const key = REDIS_KEY.TOKEN.REFRESH + token;
+      const hasToken = await this.cacheManager.get(key) as IUser;
+      if (!hasToken)
+        throw new UnauthorizedException("Token không tồn tại")
       return await firstValueFrom(this.authService.RefreshToken({ idUser: decode.userId }));
     } catch (error) {
       throw new RpcException({

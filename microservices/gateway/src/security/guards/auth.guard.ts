@@ -1,11 +1,34 @@
-import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
+import { buildRedisKey, REDIS_KEY } from '@/common/redis-key';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { ExecutionContext, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard as NestAuthGuard } from '@nestjs/passport';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AuthGuard extends NestAuthGuard('jwt') {
-    logger = new Logger('authGuard');
+    constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache) {
+        super();
+    }
 
-    canActivate(context: ExecutionContext): any {
-        return super.canActivate(context);
+    async canActivate(context: ExecutionContext): Promise<any> {
+        const request = context.switchToHttp().getRequest();
+        const token = this.extractTokenFromHeader(request);
+        if (!token) {
+            throw new UnauthorizedException();
+        }
+        try {
+            const hasToken = await this.cacheManager.get(buildRedisKey(REDIS_KEY.TOKEN.ACCESS, token))
+            if (!hasToken) throw new UnauthorizedException();
+            return super.canActivate(context);
+        } catch {
+            throw new UnauthorizedException();
+        }
+    }
+    private extractTokenFromHeader(request: any): string | undefined {
+        const authHeader = request.headers['authorization'];
+        const [type, token] = authHeader?.split(' ') ?? [];
+        return type === 'Bearer' ? token : undefined;
     }
 }

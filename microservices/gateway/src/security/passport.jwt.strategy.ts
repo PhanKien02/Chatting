@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Inject, Injectable } from '@nestjs/common';
-import { PayLoadToken } from '@/interfaces/user.interface';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { IUser, PayLoadToken } from '@/interfaces/user.interface';
 import { AuthService } from '@/modules/auth/auth.service';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
@@ -22,16 +22,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payLoad: PayLoadToken): Promise<any> {
+        let user: IUser;
         const key = REDIS_KEY.USER.SIGN + payLoad.userId;
-        const cacheUser = await this.cacheManager.get(key);
-        console.log({ key, cacheUser });
-        const user = await this.authService.findByUserId(+payLoad.userId);
-
+        const cacheUser = await this.cacheManager.get(key) as IUser;
+        if (cacheUser)
+            return cacheUser
+        else
+            user = await this.authService.findByUserId(+payLoad.userId);
         if (!user) {
-            throw new RpcException({ code: status.UNAUTHENTICATED, message: 'Người dùng không tồn tại trong hệ thống' });
+            throw new BadRequestException('Người dùng không tồn tại trong hệ thống');
         }
         if (!user.isActive) {
-            throw new RpcException({ code: status.INVALID_ARGUMENT, message: 'Tài khoản người dùng đã bị khoá' });
+            throw new BadRequestException('Tài khoản người dùng đã bị khoá');
         }
         return user;
     }
