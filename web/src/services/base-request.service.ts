@@ -23,7 +23,7 @@ baseRequest.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error || "Có lỗi hệ thống vui lòng thử lại")
 );
 baseRequest.interceptors.response.use(
     (res) => res,

@@ -10,16 +10,16 @@ class UserService {
     }
 
     async login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-        const result = await this.request.post('/auth/login', data);
+        const result = await this.request.post('/v1/auth/login', data);
         return result.data;
     }
 
     async logout(): Promise<void> {
-        await this.request.post('/user/logout');
+        await this.request.post('/v1/user/logout');
     }
 
     async getAllUser(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<PaginationResponse<IUser>>> {
-        const data = await this.request.get('/user', {
+        const data = await this.request.get('/v1/user', {
             params: {
                 page,
                 limit,

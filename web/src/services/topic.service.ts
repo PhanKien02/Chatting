@@ -10,7 +10,7 @@ class TopicService {
     }
 
     async getAllopic(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<PaginationResponse<ITopic>>> {
-        const data = await this.request.get('/topic', {
+        const data = await this.request.get('/v1/topic', {
             params: {
                 page,
                 limit,
@@ -21,10 +21,10 @@ class TopicService {
     }
 
     async createTopic(data: ITopicPayload) {
-        return await this.request.post('/topic', data);
+        return await this.request.post('/v1/topic', data);
     }
     async updateTopic(id: string, data: ITopicPayload) {
-        return await this.request.put(`/topic/${id}`, data);
+        return await this.request.put(`/v1/topic/${id}`, data);
     }
 }
 export const topicService = new TopicService();
