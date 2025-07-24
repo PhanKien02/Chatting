@@ -7,14 +7,14 @@ export interface IUser extends IBaseModel {
     phone?: string;
     fullName?: string;
     isActive?: boolean;
-    role?: string;
+    role?: RoleType;
     avatarUrl?: string;
 }
 
 export interface LoginPayload {
     login: string;
     password: string;
-    role?: 'ROLE-ADMIN';
+    role?: RoleType.USER;
 }
 
 export interface LoginResponse {
@@ -26,7 +26,6 @@ export interface LoginResponse {
 export enum RoleType {
     USER = 'ROLE-USER',
     ADMIN = 'ROLE-ADMIN',
-    MERCHANT = 'ROLE-MERCHANT',
 }
 
 export interface userQuery extends IQuery<IUser> {

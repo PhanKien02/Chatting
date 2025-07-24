@@ -1,3 +1,4 @@
+import { RoleType } from '@/models/user.model';
 import { z } from 'zod';
 
 export const UserSchema = z.object({
@@ -13,4 +14,6 @@ export const UserSchema = z.object({
     email: z.string().email({
         message: 'Email phải là một địa chỉ email hợp lệ',
     }),
+    isActive: z.boolean(),
+    role: z.enum(["ROLE-USER", "ROLE-ADMIN"])
 });

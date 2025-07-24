@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    if (token && ['/auth/login', '/auth/register'].includes(url.pathname)) return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+    if (token && ['/auth/login', '/auth/register'].includes(url.pathname)) return NextResponse.redirect(new URL('/', req.url));
 
     // Nếu không có token và không phải đang truy cập trang login hoặc register
     if (!token && !['/auth/login', '/auth/register'].includes(url.pathname)) {
@@ -17,15 +17,11 @@ export function middleware(req: NextRequest) {
 
     // Nếu đã có token và truy cập trang login hoặc register, chuyển hướng đến dashboard
     if (token && ['/auth/login', '/auth/register', '/auth'].includes(url.pathname)) {
-        return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
     if (url.pathname === '/auth') {
         return NextResponse.redirect(new URL('/auth/login', req.url));
-    }
-
-    if (url.pathname === '/') {
-        return NextResponse.redirect(new URL('/admin/dashboard', req.url));
     }
 
     // Cho phép tiếp tục với các request hợp lệ
