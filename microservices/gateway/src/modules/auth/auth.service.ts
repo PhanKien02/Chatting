@@ -47,8 +47,8 @@ export class AuthService implements OnModuleInit {
     if (user.accessToken !== undefined) {
       await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.ACCESS, user.accessToken), user.accessToken, 120 * 1000);
     }
-    if (user.refreshToken !== undefined) {
-      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, user.refreshToken), user.refreshToken, 7 * 24 * 3600 * 1000);
+    if (user.refreshToken !== undefined && user.user?.id !== undefined) {
+      await this.cacheManager.set(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, user.user?.id), user.refreshToken, 7 * 24 * 3600 * 1000);
     }
 
     return user;
@@ -72,7 +72,7 @@ export class AuthService implements OnModuleInit {
         secret: process.env.REFRESH_TOKEN_SCRECT,
         ignoreExpiration: false,
       });
-      const key = REDIS_KEY.TOKEN.REFRESH + token;
+      const key = REDIS_KEY.TOKEN.REFRESH + decode["userId"];
       const hasToken = await this.cacheManager.get(key) as IUser;
       if (!hasToken)
         throw new UnauthorizedException("Token không tồn tại")
@@ -83,5 +83,12 @@ export class AuthService implements OnModuleInit {
         code: status.INVALID_ARGUMENT
       })
     }
+  }
+
+
+  async logout(id: number) {
+    await this.cacheManager.del(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, id));
+
+    return true;
   }
 }

@@ -25,7 +25,8 @@ import { clearCookies } from '@/utils/cookies';
 import { useAuthContext } from '@/contexts/auth.context';
 import { useEffect, useState } from 'react';
 import { IUser } from '@/models/user.model';
-
+import { userService } from '@/services/user.service';
+import { redirect } from 'next/navigation';
 // Menu items.
 
 export function AppSidebar() {
@@ -35,6 +36,18 @@ export function AppSidebar() {
     useEffect(() => {
         if (user) setCurentUser(user)
     }, [user])
+    const logout = async () => {
+        if (user?.id)
+            await userService.logout(user?.id).then(() => {
+                clearCookies()
+                toast({
+                    title: 'Đăng Xuất',
+                    description: 'Đăng xuất thành công',
+                    variant: 'success',
+                });
+                redirect('/auth/login')
+            })
+    }
     return (
         <Sidebar collapsible='offcanvas'>
             <SidebarHeader>
@@ -110,19 +123,10 @@ export function AppSidebar() {
                                 <DropdownMenuItem>
                                     <span>Billing</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        clearCookies()
-                                        toast({
-                                            title: 'Đăng Xuất',
-                                            description: 'Đăng xuất thành công',
-                                            variant: 'success',
-                                        });
-                                    }}
-                                >
-                                    <a className='w-full' href='/'>
+                                <DropdownMenuItem onClick={logout}>
+                                    <span>
                                         Đăng xuất
-                                    </a>
+                                    </span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

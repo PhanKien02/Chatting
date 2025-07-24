@@ -14,8 +14,8 @@ class UserService {
         return result.data;
     }
 
-    async logout(): Promise<void> {
-        await this.request.post('/v1/user/logout');
+    async logout(id: number): Promise<void> {
+        await this.request.delete(`/v1/auth/logout/${id}`);
     }
 
     async getAllUser(page = 1, limit = 10, searchKeyword = ''): Promise<ApiResponse<PaginationResponse<IUser>>> {

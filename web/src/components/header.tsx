@@ -11,6 +11,7 @@ import { Search } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { redirect } from 'next/navigation';
+import { userService } from '@/services/user.service';
 
 interface MenuItem {
     title: string;
@@ -22,6 +23,14 @@ interface MenuItem {
 export const NavHeader = () => {
     const { user } = useAuthContext()
     const [curentUser, setCurentUser] = useState<IUser | undefined>();
+    const logout = async () => {
+        if (user?.id)
+            await userService.logout(user?.id).then(() => {
+                clearCookies();
+                toast({ title: 'Đăng xuất', description: 'Đăng xuất thành công', variant: 'success', })
+                redirect('/auth/login')
+            })
+    }
     useEffect(() => {
         if (user) setCurentUser(user)
     }, [user])
@@ -45,11 +54,7 @@ export const NavHeader = () => {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Cá nhân</DropdownMenuItem>
                             <DropdownMenuItem>Cài đặt</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => {
-                                clearCookies();
-                                toast({ title: 'Đăng xuất', description: 'Đăng xuất thành công', variant: 'success', })
-                                redirect('/auth/login')
-                            }}>
+                            <DropdownMenuItem onClick={logout}>
                                 Đăng xuất
                             </DropdownMenuItem>
                         </DropdownMenuContent>
