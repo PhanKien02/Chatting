@@ -19,7 +19,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
-import { menus } from '@/lib/menus';
+import { Menu } from '@/lib/menus';
 import Image from 'next/image';
 import { clearCookies } from '@/utils/cookies';
 import { useAuthContext } from '@/contexts/auth.context';
@@ -29,7 +29,7 @@ import { userService } from '@/services/user.service';
 import { redirect } from 'next/navigation';
 // Menu items.
 
-export function AppSidebar() {
+export function AppSidebar({ menu }: { menu: Menu[] }) {
     const { toast } = useToast();
     const { user } = useAuthContext()
     const [curentUser, setCurentUser] = useState<IUser | undefined>();
@@ -60,7 +60,7 @@ export function AppSidebar() {
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {menus.map(item =>
+                            {menu.map(item =>
                                 !item.children ? (
                                     <SidebarMenuItem key={item.title} className='ml-2'>
                                         <SidebarMenuButton asChild>

@@ -1,12 +1,12 @@
-import { Calendar, Home, Inbox, LucideProps, Search, Settings, User } from 'lucide-react';
+import { Calendar, Home, Inbox, LayoutDashboard, LucideProps, Search, Settings, User } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
-type Menu = {
+export type Menu = {
     title: string;
     url: string;
     icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
     children?: Menu[];
 };
-export const menus: Menu[] = [
+export const adminMenus: Menu[] = [
     {
         title: 'Home',
         url: '#',
@@ -53,3 +53,44 @@ export const menus: Menu[] = [
         icon: Settings,
     },
 ];
+
+export const clientMenus: Menu[] = [
+    {
+        title: "Overview",
+        url: "/",
+        icon: LayoutDashboard
+    },
+    {
+        title: "Project",
+        url: "/",
+        icon: LayoutDashboard,
+        children: [
+            {
+                title: "Task",
+                url: "/",
+                icon: LayoutDashboard
+            },
+            {
+                title: "Schedule",
+                url: "/",
+                icon: LayoutDashboard
+            },
+            {
+                title: "Document",
+                url: "/",
+                icon: LayoutDashboard
+            },
+        ]
+    },
+    {
+        title: "Chat",
+        url: "/",
+        icon: LayoutDashboard
+    },
+    {
+        title: "Meeting",
+        url: "/",
+        icon: LayoutDashboard
+    },
+
+]
