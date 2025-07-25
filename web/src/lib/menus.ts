@@ -57,12 +57,12 @@ export const adminMenus: Menu[] = [
 export const clientMenus: Menu[] = [
     {
         title: "Overview",
-        url: "/",
+        url: "/overview",
         icon: LayoutDashboard
     },
     {
         title: "Project",
-        url: "/",
+        url: "/project",
         icon: LayoutDashboard,
         children: [
             {
@@ -83,13 +83,13 @@ export const clientMenus: Menu[] = [
         ]
     },
     {
-        title: "Chat",
-        url: "/",
+        title: "Message",
+        url: "/message",
         icon: LayoutDashboard
     },
     {
         title: "Meeting",
-        url: "/",
+        url: "/meeting",
         icon: LayoutDashboard
     },
 

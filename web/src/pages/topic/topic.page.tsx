@@ -4,11 +4,11 @@ import { ITopic } from '@/models/topic.model';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import { TopicSheet } from './topic.sheet';
-import { Button } from '../ui/button';
+import { Button } from '../../components/ui/button';
 import { Plus, Search } from 'lucide-react';
-import { Input } from '../ui/input';
+import { Input } from '../../components/ui/input';
 import useDebounce from '@/hooks/useDebounce';
-import Loading from '../loading';
+import Loading from '../../components/loading';
 
 function TopicPage() {
     const [page, setPage] = useState(1);

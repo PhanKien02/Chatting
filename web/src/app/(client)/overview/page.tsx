@@ -2,13 +2,11 @@
 
 import React from 'react';
 import PageTitle from '@/components/PageTitle';
-import TopicPage from '@/pages/topic/topic.page';
 
 export default function Topic() {
     return (
         <div className='h-full'>
-            <PageTitle title='Loại sách' />
-            <TopicPage />
+            <PageTitle title='Overview' />
         </div>
     );
 }

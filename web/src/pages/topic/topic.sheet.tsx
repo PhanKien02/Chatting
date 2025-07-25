@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ITopic } from '@/models/topic.model';
-import { TopicForm } from '../forms/topic/topic.form';
+import { TopicForm } from '../../components/forms/topic/topic.form';
 import { Dispatch, SetStateAction } from 'react';
 
 type DrawProps = {

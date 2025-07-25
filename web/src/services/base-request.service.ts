@@ -49,7 +49,7 @@ baseRequest.interceptors.response.use(
 
 async function refreshToken() {
     const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
-    const response = await baseRequest.post('/user/refresh-token', { refreshToken });
+    const response = await baseRequest.post('/auth/refresh-token', { refreshToken });
     const { data } = response.data;
     setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
     setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);

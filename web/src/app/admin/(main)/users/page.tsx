@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PageTitle from '@/components/PageTitle';
-import UserPage from '@/components/user/user.page';
+import UserPage from '@/pages/user/user.page';
 
 export default function Users() {
     return (
