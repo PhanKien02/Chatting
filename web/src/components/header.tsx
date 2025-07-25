@@ -22,7 +22,6 @@ interface MenuItem {
 }
 export const NavHeader = () => {
     const { user } = useAuthContext()
-    const [curentUser, setCurentUser] = useState<IUser | undefined>();
     const logout = async () => {
         if (user?.id)
             await userService.logout(user?.id).then(() => {
@@ -31,9 +30,7 @@ export const NavHeader = () => {
                 redirect('/auth/login')
             })
     }
-    useEffect(() => {
-        if (user) setCurentUser(user)
-    }, [user])
+
     return (
         <section className='py-4 border-b-2'>
             <nav className='justify-between flex mr-10'>
@@ -47,7 +44,11 @@ export const NavHeader = () => {
                     <DropdownMenu dir='ltr' >
                         <DropdownMenuTrigger>
                             <Avatar>
-                                <AvatarImage src={curentUser?.avatarUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
+                                {
+                                    user && user.avatarUrl
+                                        ? <AvatarImage src={user.avatarUrl} alt="@shadcn" />
+                                        : <AvatarImage src={"https://github.com/shadcn.png"} alt="@shadcn" />
+                                }
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className='cursor-pointer'>

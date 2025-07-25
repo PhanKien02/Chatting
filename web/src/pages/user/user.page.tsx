@@ -1,14 +1,14 @@
 import { DataTable } from '@/components/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
-import { Button } from '../ui/button';
 import { Plus, Search } from 'lucide-react';
-import { Input } from '../ui/input';
 import useDebounce from '@/hooks/useDebounce';
-import Loading from '../loading';
 import { useGetAllUser } from '@/hooks/queries/useGetAllUser';
 import { IUser } from '@/models/user.model';
 import { UserDialog } from './user.dialog';
+import { Button } from '@/components/ui/button';
+import Loading from '@/components/loading';
+import { Input } from '@/components/ui/input';
 
 function UserPage() {
     const [page, setPage] = useState(1);

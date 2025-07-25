@@ -3,26 +3,18 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { IUser } from "@/models/user.model";
 import { Dispatch, SetStateAction } from "react";
-import { useForm } from "react-hook-form";
-import UserForm from "../forms/user/user.form";
-import { UserSchema } from "../forms/user/user-schema";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ScrollArea } from "../ui/scroll-area";
+import UserForm from "@/components/forms/user/user.form";
 type DialogProps = {
     data?: IUser;
     refetch: Function;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 };
-type UserPayload = z.infer<typeof UserSchema>;
 export function UserDialog({ open, refetch, setOpen, data }: DialogProps) {
 
     return (
