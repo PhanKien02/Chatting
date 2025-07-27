@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, LayoutDashboard, LucideProps, Search, Settings, User } from 'lucide-react';
+import { Calendar, CalendarCheck, FileStack, Home, Inbox, LayoutDashboard, ListTodo, LucideProps, Search, Send, Settings, SquareKanban, User, Video } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 export type Menu = {
     title: string;
@@ -63,34 +63,34 @@ export const clientMenus: Menu[] = [
     {
         title: "Project",
         url: "/project",
-        icon: LayoutDashboard,
+        icon: SquareKanban,
         children: [
             {
                 title: "Task",
                 url: "/",
-                icon: LayoutDashboard
+                icon: ListTodo
             },
             {
                 title: "Schedule",
                 url: "/",
-                icon: LayoutDashboard
+                icon: CalendarCheck
             },
             {
                 title: "Document",
                 url: "/",
-                icon: LayoutDashboard
+                icon: FileStack
             },
         ]
     },
     {
         title: "Message",
         url: "/message",
-        icon: LayoutDashboard
+        icon: Send
     },
     {
         title: "Meeting",
         url: "/meeting",
-        icon: LayoutDashboard
+        icon: Video
     },
 
 ]
