@@ -12,9 +12,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     return (
         <div>
             <SidebarProvider>
-                <div className='relative flex  min-h-screen w-screen'>
+                <div className=' flex  min-h-screen w-screen bg-[#E2E2E2]' >
                     <AppSidebar menu={clientMenus} />
-                    <div className='flex-1 p-2 '>
+                    <div className='flex-1'>
                         <NavHeader />
                         <ScrollArea className='rounded-md border'>
                             <QueryClientProvider client={queryClient}>
