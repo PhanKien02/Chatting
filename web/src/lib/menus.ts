@@ -1,4 +1,4 @@
-import { Calendar, CalendarCheck, FileStack, Home, Inbox, LayoutDashboard, ListTodo, LucideProps, Search, Send, Settings, SquareKanban, User, Video } from 'lucide-react';
+import { Calendar, CalendarCheck, FileStack, Home, HomeIcon, Inbox, LayoutDashboard, ListTodo, LucideProps, Search, Send, Settings, SquareKanban, User, Video } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 export type Menu = {
     title: string;
@@ -56,9 +56,9 @@ export const adminMenus: Menu[] = [
 
 export const clientMenus: Menu[] = [
     {
-        title: "Overview",
-        url: "/overview",
-        icon: LayoutDashboard
+        title: "Home",
+        url: "/home",
+        icon: HomeIcon
     },
     {
         title: "Project",
