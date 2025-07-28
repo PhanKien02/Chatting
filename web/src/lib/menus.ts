@@ -68,27 +68,7 @@ export const clientMenus: Menu[] = [
             {
                 title: "Task",
                 url: "/",
-                icon: ListTodo,
-                children: [
-                    {
-                        title: 'Dashboad',
-                        url: '/admin/dashboard',
-                        icon: Home,
-                        children: [],
-                    },
-                    {
-                        title: 'user',
-                        url: '/admin/users',
-                        icon: User,
-                        children: [],
-                    },
-                    {
-                        title: 'Loại sách',
-                        url: '/admin/topics',
-                        icon: Home,
-                        children: [],
-                    },
-                ],
+                icon: ListTodo
             },
             {
                 title: "Schedule",

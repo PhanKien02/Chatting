@@ -32,7 +32,7 @@ export const NavHeader = () => {
     }
 
     return (
-        <section className='py-4 border-b-2 bg-white'>
+        <section className='py-4 border-b-2'>
             <nav className='justify-between flex mr-10'>
                 <SidebarTrigger />
                 <div className='relative w-80 border-2 rounded-lg'>
