@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package project;
+
+import "google/protobuf/empty.proto";
+
+service ProjectService {
+  rpc FindAll(Query) returns (PaginationResponse);
+  rpc Create(Project) returns (Project);
+  rpc Update(ProjectUpdatePayLoad) returns (Project);
+  rpc Block(ProjectBlockPayLoad) returns (Project);
+  rpc Unblock(Project) returns (Project);
+  rpc FindOne(ProjectBlockPayLoad) returns (Project);
+}
+
+message Project {
+    string id = 1;
+    string name = 2;
+    bool status = 3;
+    string idUser = 4;
+    bool isDefault = 5;
+    string created_at= 6;
+    string updated_at= 7;
+    string deleted_at=8;
+}
+
+message Query {
+    string searchKeyword =1;
+    int32 page =2;
+    int32 limit =3;
+    string sort =4;
+    bool isActive =5;
+}
+
+message ProjectFindAll {
+    string id = 1;
+    string name = 2;
+    bool status = 3;
+    string idUser = 4;
+    string created_at= 5;
+    string updated_at= 6;
+    string deleted_at=7;
+}
+message PaginationResponse {
+  repeated ProjectFindAll datas = 1;
+  int32 page =2;
+  int32 limit = 3;
+  int32 totalPages = 4;
+  int32 totalResults = 5;
+}
+
+message ProjectUpdatePayLoad {
+    string id =1;
+    Project body = 2;
+}
+
+message ProjectBlockPayLoad {
+  string id = 1;
+}
+
+message GetProjectByUserPayload {
+  string idUser = 1;
+}
