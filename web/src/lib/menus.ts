@@ -57,7 +57,7 @@ export const adminMenus: Menu[] = [
 export const clientMenus: Menu[] = [
     {
         title: "Home",
-        url: "/home",
+        url: "/",
         icon: HomeIcon
     },
     {
