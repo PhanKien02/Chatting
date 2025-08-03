@@ -1,20 +1,6 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Dispatch, SetStateAction } from "react";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usePagination } from "@/hooks/usePagination";
 
 interface ServerSidePaginationProps {
@@ -26,15 +12,7 @@ interface ServerSidePaginationProps {
     totalCount: number;
 }
 
-export function TablePagination({
-    totalCount,
-    pageSizeOptions = [5, 10, 20, 50],
-    setLimit,
-    limit,
-    page,
-    setPage,
-
-}: ServerSidePaginationProps) {
+export function TablePagination({ totalCount, pageSizeOptions = [5, 10, 20, 50], setLimit, limit, page, setPage }: ServerSidePaginationProps) {
     const paginationRange = usePagination({
         page,
         totalCount,
@@ -48,14 +26,14 @@ export function TablePagination({
     const lastPage = paginationRange[paginationRange.length - 1] as number;
 
     return (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4">
-            <div className="flex items-center gap-4">
+        <div className='flex flex-col sm:flex-row items-center justify-between gap-4 p-4'>
+            <div className='flex items-center gap-4'>
                 <Select value={limit.toString()} onValueChange={value => setLimit(+value)}>
-                    <SelectTrigger className="w-[100px]">
+                    <SelectTrigger className='w-[100px]'>
                         <SelectValue placeholder={limit} />
                     </SelectTrigger>
                     <SelectContent>
-                        {pageSizeOptions.map((option) => (
+                        {pageSizeOptions.map(option => (
                             <SelectItem key={option} value={option.toString()}>
                                 {option}
                             </SelectItem>
@@ -68,7 +46,7 @@ export function TablePagination({
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious
-                            onClick={(e) => {
+                            onClick={e => {
                                 e.preventDefault();
                                 setPage(page - 1);
                             }}
@@ -83,7 +61,7 @@ export function TablePagination({
                         return (
                             <PaginationItem key={index}>
                                 <PaginationLink
-                                    onClick={(e) => {
+                                    onClick={e => {
                                         e.preventDefault();
                                         setPage(pageNumber as number);
                                     }}
@@ -96,7 +74,7 @@ export function TablePagination({
                     })}
                     <PaginationItem>
                         <PaginationNext
-                            onClick={(e) => {
+                            onClick={e => {
                                 e.preventDefault();
                                 setPage(page + 1);
                             }}

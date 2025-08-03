@@ -3,7 +3,7 @@ const glob = require("glob");
 const path = require("path");
 const { execSync } = require("child_process");
 
-const files = glob.sync("./proto/**/*.proto");
+const files = glob.sync("./src/proto/**/*.proto");
 
 files.forEach((file) => {
         const dir = path.dirname(file);

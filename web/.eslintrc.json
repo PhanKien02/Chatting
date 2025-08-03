@@ -4,25 +4,24 @@
         "prettier/prettier": [
             "error",
             {
-                "singleQuote": true,
+                "singleQuote": false,
                 "trailingComma": "es5",
-                "printWidth": 80,
+                "printWidth": 180,
                 "tabWidth": 4,
                 "useTabs": false,
                 "semi": true,
                 "quoteProps": "as-needed",
-                "jsxSingleQuote": false,
+                "jsxSingleQuote": true,
                 "bracketSpacing": true,
                 "bracketSameLine": false,
-                "arrowParens": "always",
-                "proseWrap": "preserve",
-                "endOfLine": "auto"
+                "arrowParens": "avoid",
+                "proseWrap": "preserve"
+                
             }
         ],
-        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-empty-object-type": "warn",
         "@typescript-eslint/no-unused-vars": "warn",
-        "@typescript-eslint/no-unsafe-function-type": "none",
-        "no-unused-expressions": "off",
-        "@typescript-eslint/no-unused-expressions": "error"
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-unused-expressions": "off"
     }
 }

@@ -1,81 +1,157 @@
-version: "3.8"
-
 services:
-  mongo:
-    image: mongo:7.0
-    container_name: mongo
+  # RabbitMQ
+  rabbitmq-service:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-service
     ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
       - app-network
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"       # Cổng AMQP (ứng dụng sử dụng)
-      - "15672:15672"     # Cổng quản trị web
+
+  # MySQL cho Auth Service
+  auth-db:
+    image: mysql:8
+    container_name: auth-db
+    restart: always
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin123
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: auth_user
+      MYSQL_PASSWORD: auth_pass
+    ports:
+      - "3307:3306"
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - auth-db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  # MySQL cho User Service
+  user-db:
+    image: mysql:8
+    container_name: user-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: user_user
+      MYSQL_PASSWORD: user_pass
+    ports:
+      - "3308:3306"
+    volumes:
+      - user-db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  # Gateway Service
   gateway:
     build:
       context: ./microservices/gateway
       dockerfile: Dockerfile
     container_name: microservice-gateway
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/talenet
-      - PORT=3001
-      - ACCESS_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh76trde56y87654@$$$$$$%^^SS
-      - ACCESS_TOKEN_EXPIRESIN=20000
-      - REFRESH_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
-      - REFRESH_TOKEN_EXPIRESIN=7d
-    depends_on:
-      - mongo
+    restart: always
     ports:
-      - "3001:3001" # Hoặc cổng backend bạn expose
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      ACCESS_TOKEN_SCRECT: "19234dbec0f033ad72c1812514e00ec3462b3ed7168411f9c7eaf8c3c131e0f37e74c64457df5229cae41797eca1e71640488adc5e2953d6b7699e026479dfe6"
+      REFRESH_TOKEN_SCRECT: "bd1518c046be2ed14b01fbe3e1d34ce47f53a7474340c7f5590536e9ad214f39b35e1fef737eb82724848962a57a71b340409a5375a9f4673fd0f4166ae7669a"
+      ACTIVE_TOKEN: 'bd1518c046be2ed14b01fbe3e1d34ce47f53a7474340c7f5590536e9ad214f39b35e1fef737eb82724848962a57a71b340409a5375a9f4673fd0f4166ae7669aw3'
+      CLOUDINARY_CLOUD_NAME: dosiulhpc
+      CLOUDINARY_API_KEY: 458171876984153
+      CLOUDINARY_API_SECRET: t9FD5xnNf_NI596c-96HG1UGTdo
+      REDIS_URL: redis://default:mIvPPHG4R6u2mF2j7nCZd8LiNHGEKaiG@redis-13544.c44.us-east-1-2.ec2.redns.redis-cloud.com:13544
     networks:
       - app-network
+    depends_on:
+      - auth-service
+      - user-service
+
+  # Auth Service
   auth-service:
     build:
       context: ./microservices/auth-service
       dockerfile: Dockerfile
     container_name: microservice-auth
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/talenet
-      - PORT=3001
-      - ACCESS_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh76trde56y87654@$$$$$$%^^SS
-      - ACCESS_TOKEN_EXPIRESIN=20000
-      - REFRESH_TOKEN_SCRECT=23edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
-      - ACTIVE_TOKEN=23fsdgsdfg345345edft6yhhujyg98ugbytgh7e6trde56y87654@$$$$$$%^^SS
-      - REFRESH_TOKEN_EXPIRESIN=7d
-    depends_on:
-      - mongo
+    restart: always
     ports:
-      - "3001:3001" # Hoặc cổng backend bạn expose
+      - "3002:3002"
+    environment:
+      ACCESS_TOKEN_SCRECT: "19234dbec0f033ad72c1812514e00ec3462b3ed7168411f9c7eaf8c3c131e0f37e74c64457df5229cae41797eca1e71640488adc5e2953d6b7699e026479dfe6"
+      REFRESH_TOKEN_SCRECT: "..."
+      ACTIVE_TOKEN: bd1518c046be2ed14b01fbe3e1d34ce47f53a7474340c7f5590536e9ad214f39b35e1fef737eb82724848962a57a71b340409a5375a9f4673fd0f4166ae7669a"
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      DB_HOST: auth-db
+      DB_PORT: 3307
+      DB_USER: auth_user
+      DB_PASS: auth_pass
+      DB_NAME: auth_db
+    depends_on:
+      - rabbitmq-service
+      - auth-db
     networks:
       - app-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./microservices/user-service
+      dockerfile: Dockerfile
+    container_name: microservice-user
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      DB_HOST: user-db
+      DB_PORT: 3308
+      DB_USER: user_user
+      DB_PASS: user_pass
+      DB_NAME: user_db
+    depends_on:
+      - rabbitmq-service
+      - user-db
+    networks:
+      - app-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./microservices/notification-service
+      dockerfile: Dockerfile
+    container_name: microservice-notification
+    restart: always
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      EMAIL_PASSWORD: 'mrinytnnsjxiyzdt'
+      EMAIL: 'kien1st02@gmail.com'
+    depends_on:
+      - rabbitmq-service
+    networks:
+      - app-network
+      
+  # Web Frontend (Next.js)
   web:
     build:
       context: ./web
       dockerfile: Dockerfile
     container_name: nextjs-web
+    restart: always
     ports:
-      - "3000:3000"
-    depends_on:
-      - backend
+      - "3003:3000"
     environment:
-      - NEXT_PUBLIC_API_URL =http://localhost:3001/api
+      NEXT_PUBLIC_API_URL: http://gateway:3000/api
+    depends_on:
+      - gateway
     networks:
       - app-network
 
 volumes:
-  mongo_data:
-  rabbitmq_data:
-
+  auth-db-data:
+  user-db-data:
 networks:
   app-network:
     driver: bridge

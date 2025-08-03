@@ -1,8 +1,8 @@
-'use client'
-import { COOKIES } from '@/lib/cookieName';
-import { clearCookies, getCookie, setCookie } from '@/utils/cookies';
-import axios from 'axios';
-import { redirect } from 'next/navigation';
+"use client";
+import { COOKIES } from "@/lib/cookieName";
+import { clearCookies, getCookie, setCookie } from "@/utils/cookies";
+import axios from "axios";
+import { redirect } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 3000;
@@ -10,46 +10,41 @@ const baseRequest = axios.create({
     baseURL: BASE_URL,
     timeout: TIMEOUT, // Thời gian chờ (ms)
     headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
     },
 });
 
-
 baseRequest.interceptors.request.use(
-    async (config) => {
+    async config => {
         const token = getCookie(COOKIES.ACCESSTOKEN);
         if (token && config.headers) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => Promise.reject(error || "Có lỗi hệ thống vui lòng thử lại")
+    error => Promise.reject(error || "Có lỗi hệ thống vui lòng thử lại")
 );
 baseRequest.interceptors.response.use(
-    (res) => res,
-    async (error) => {
+    res => res,
+    async error => {
         const originalRequest = error.config;
         if (error.response && error.response.status === 401) {
             originalRequest._retry = true;
             const token = await refreshToken();
-            baseRequest.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${token}`;
+            baseRequest.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             if (!token) {
                 clearCookies();
-                redirect('/auth/login');
+                redirect("/auth/login");
             }
             return baseRequest(originalRequest);
         }
-        return Promise.reject(
-            (error.response && error.response.data) || 'Something went wrong'
-        );
+        return Promise.reject((error.response && error.response.data) || "Something went wrong");
     }
 );
 
 async function refreshToken() {
     const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
-    const response = await baseRequest.post('/auth/refresh-token', { refreshToken });
+    const response = await baseRequest.post("/auth/refresh-token", { refreshToken });
     const { data } = response.data;
     setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
     setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);

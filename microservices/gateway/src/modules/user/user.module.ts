@@ -12,10 +12,10 @@ import { join } from 'path';
         transport: Transport.GRPC,
         options: {
           package: 'user',
-          protoPath: './proto/user.proto',
+          protoPath: join(__dirname, '../../proto/user.proto'),
           loader: {
             includeDirs: [
-              join(__dirname, './proto'),
+              join(__dirname, '../proto'),
               join(__dirname, '../node_modules/google-proto-files'),
             ],
           },

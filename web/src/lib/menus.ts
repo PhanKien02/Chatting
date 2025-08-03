@@ -1,55 +1,55 @@
-import { Calendar, CalendarCheck, FileStack, Home, HomeIcon, Inbox, LayoutDashboard, ListTodo, LucideProps, Search, Send, Settings, SquareKanban, User, Video } from 'lucide-react';
-import { ForwardRefExoticComponent, RefAttributes } from 'react';
+import { Calendar, CalendarCheck, FileStack, Home, HomeIcon, Inbox, ListTodo, LucideProps, Search, Send, Settings, SquareKanban, User, Video } from "lucide-react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 export type Menu = {
     title: string;
     url: string;
-    icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+    icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
     children?: Menu[];
 };
 export const adminMenus: Menu[] = [
     {
-        title: 'Home',
-        url: '#',
+        title: "Home",
+        url: "#",
         icon: Home,
         children: [
             {
-                title: 'Dashboad',
-                url: '/admin/dashboard',
+                title: "Dashboad",
+                url: "/admin/dashboard",
                 icon: Home,
                 children: [],
             },
             {
-                title: 'user',
-                url: '/admin/users',
+                title: "user",
+                url: "/admin/users",
                 icon: User,
                 children: [],
             },
             {
-                title: 'Loại sách',
-                url: '/admin/topics',
+                title: "Loại sách",
+                url: "/admin/topics",
                 icon: Home,
                 children: [],
             },
         ],
     },
     {
-        title: 'Inbox',
-        url: '#',
+        title: "Inbox",
+        url: "#",
         icon: Inbox,
     },
     {
-        title: 'Calendar',
-        url: '#',
+        title: "Calendar",
+        url: "#",
         icon: Calendar,
     },
     {
-        title: 'Search',
-        url: '#',
+        title: "Search",
+        url: "#",
         icon: Search,
     },
     {
-        title: 'Settings',
-        url: '#',
+        title: "Settings",
+        url: "#",
         icon: Settings,
     },
 ];
@@ -58,7 +58,7 @@ export const clientMenus: Menu[] = [
     {
         title: "Home",
         url: "/",
-        icon: HomeIcon
+        icon: HomeIcon,
     },
     {
         title: "Project",
@@ -68,29 +68,28 @@ export const clientMenus: Menu[] = [
             {
                 title: "Task",
                 url: "/",
-                icon: ListTodo
+                icon: ListTodo,
             },
             {
                 title: "Schedule",
                 url: "/",
-                icon: CalendarCheck
+                icon: CalendarCheck,
             },
             {
                 title: "Document",
                 url: "/",
-                icon: FileStack
+                icon: FileStack,
             },
-        ]
+        ],
     },
     {
         title: "Message",
         url: "/message",
-        icon: Send
+        icon: Send,
     },
     {
         title: "Meeting",
         url: "/meeting",
-        icon: Video
+        icon: Video,
     },
-
-]
+];

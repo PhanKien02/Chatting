@@ -1,6 +1,4 @@
-import { SVGProps } from 'react';
-
-function LogoGoogle(props: SVGProps<SVGSVGElement>) {
+function LogoGoogle() {
     return (
         <svg viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>

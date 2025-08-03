@@ -1,5 +1,4 @@
-import { IBaseModel } from './base.model';
-import { IQuery } from './response';
+import { IBaseModel } from "./base.model";
 
 export interface IUser extends IBaseModel {
     id?: number;
@@ -14,7 +13,7 @@ export interface IUser extends IBaseModel {
 export interface LoginPayload {
     login: string;
     password: string;
-    role?: RoleType.USER;
+    role?: RoleType;
 }
 
 export interface LoginResponse {
@@ -24,10 +23,6 @@ export interface LoginResponse {
     user: IUser;
 }
 export enum RoleType {
-    USER = 'ROLE-USER',
-    ADMIN = 'ROLE-ADMIN',
+    USER = "ROLE-USER",
+    ADMIN = "ROLE-ADMIN",
 }
-
-export interface userQuery extends IQuery<IUser> {
-
-} 

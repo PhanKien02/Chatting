@@ -20,10 +20,10 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
         transport: Transport.GRPC,
         options: {
           package: 'auth',
-          protoPath: './proto/auth.proto',
+          protoPath: join(__dirname, '../../proto/auth.proto'),
           loader: {
             includeDirs: [
-              join(__dirname, './proto'),
+              join(__dirname, '../proto'),
               join(__dirname, '../node_modules/google-proto-files'),
             ],
           },

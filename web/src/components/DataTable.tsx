@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { TablePagination } from './pagination';
-import { Dispatch, SetStateAction } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TablePagination } from "./pagination";
+import { Dispatch, SetStateAction } from "react";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -18,7 +18,6 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data, totalCount, limit, setLimit, page, setPage, pageSizeOptions = [5, 10, 20, 50] }: DataTableProps<TData, TValue>) {
-
     const table = useReactTable({
         data,
         columns,
@@ -29,7 +28,7 @@ export function DataTable<TData, TValue>({ columns, data, totalCount, limit, set
                 pageIndex: 0,
                 pageSize: 10,
             },
-        }
+        },
     });
 
     return (
@@ -48,7 +47,7 @@ export function DataTable<TData, TValue>({ columns, data, totalCount, limit, set
                     <TableBody className='h-full'>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map(row => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map(cell => (
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}

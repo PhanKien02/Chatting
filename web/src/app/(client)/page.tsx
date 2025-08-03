@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import PageTitle from '@/components/PageTitle';
-import IndexPage from '@/pages/client/index-page/index.page';
+import IndexPage from "@/components/pages/client/index-page/index.page";
+import React from "react";
 
-export default function Topic() {
+export default function HomePage() {
     return (
         <div className='h-full'>
             <IndexPage />
         </div>
-    )
+    );
 }

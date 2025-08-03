@@ -20,7 +20,6 @@ export interface PaginationResponse<T> {
 }
 
 export interface IQuery<T> {
-
     searchKeyword?: string;
 
     page?: number;

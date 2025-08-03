@@ -4,7 +4,7 @@ const nextConfig = {
         turbo: {},
     },
     images: {
-        domains: ['api.dicebear.com', 'shadcnblocks.com'],
+        domains: ["api.dicebear.com", "shadcnblocks.com"],
     },
 };
 

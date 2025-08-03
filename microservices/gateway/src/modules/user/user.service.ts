@@ -2,14 +2,13 @@ import { IUser } from '@/interfaces/user.interface';
 import { IQuery } from '@/utils/buildFilterSortAndPaginate';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { User } from 'proto/user/User';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 
 
 interface GrpcUserService {
-    FindAll(query: IQuery<IUser>): Observable<User[]>;
-    Create(body: CreateUserDto): Observable<User>
+    FindAll(query: IQuery<IUser>): Observable<IUser[]>;
+    Create(body: CreateUserDto): Observable<IUser>
 }
 
 @Injectable()

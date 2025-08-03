@@ -1,8 +1,7 @@
-import { ApiResponse, PaginationResponse } from '@/models/response';
-import { IUser } from '@/models/user.model';
-import { topicService } from '@/services/topic.service';
-import { userService } from '@/services/user.service';
-import { useQuery } from '@tanstack/react-query';
+import { PaginationResponse } from "@/models/response";
+import { IUser } from "@/models/user.model";
+import { userService } from "@/services/user.service";
+import { useQuery } from "@tanstack/react-query";
 
 type Paginate = {
     page?: number;
@@ -18,7 +17,7 @@ export const useGetAllUser = ({ page, limit, searchText }: Paginate) => {
         refetch,
         isFetching,
     } = useQuery<PaginationResponse<IUser>, Error>({
-        queryKey: ['getTopic', page, limit, searchText],
+        queryKey: ["getTopic", page, limit, searchText],
         queryFn: async () => {
             const response = await userService.getAllUser(page, limit, searchText);
             return response.data;

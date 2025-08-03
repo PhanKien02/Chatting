@@ -1,5 +1,5 @@
-'use client'
-import { ChevronRight, ChevronUp, User2 } from 'lucide-react';
+"use client";
+import { ChevronRight, ChevronUp, User2 } from "lucide-react";
 
 import {
     Sidebar,
@@ -15,39 +15,39 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-} from '@/components/ui/sidebar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { useToast } from '@/hooks/use-toast';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
-import { Menu } from '@/lib/menus';
-import Image from 'next/image';
-import { clearCookies } from '@/utils/cookies';
-import { useAuthContext } from '@/contexts/auth.context';
-import { useEffect, useState } from 'react';
-import { IUser } from '@/models/user.model';
-import { userService } from '@/services/user.service';
-import { redirect } from 'next/navigation';
+} from "@/components/ui/sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
+import { Menu } from "@/lib/menus";
+import Image from "next/image";
+import { clearCookies } from "@/utils/cookies";
+import { useAuthContext } from "@/contexts/auth.context";
+import { useEffect, useState } from "react";
+import { IUser } from "@/models/user.model";
+import { userService } from "@/services/user.service";
+import { redirect } from "next/navigation";
 // Menu items.
 
 export function AppSidebar({ menu }: { menu: Menu[] }) {
     const { toast } = useToast();
-    const { user } = useAuthContext()
+    const { user } = useAuthContext();
     const [curentUser, setCurentUser] = useState<IUser | undefined>();
     useEffect(() => {
-        if (user) setCurentUser(user)
-    }, [user])
+        if (user) setCurentUser(user);
+    }, [user]);
     const logout = async () => {
         if (user?.id)
             await userService.logout(user?.id).then(() => {
-                clearCookies()
+                clearCookies();
                 toast({
-                    title: 'Đăng Xuất',
-                    description: 'Đăng xuất thành công',
-                    variant: 'success',
+                    title: "Đăng Xuất",
+                    description: "Đăng xuất thành công",
+                    variant: "success",
                 });
-                redirect('/auth/login')
-            })
-    }
+                redirect("/auth/login");
+            });
+    };
     return (
         <Sidebar collapsible='offcanvas'>
             <SidebarHeader>
@@ -124,9 +124,7 @@ export function AppSidebar({ menu }: { menu: Menu[] }) {
                                     <span>Billing</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={logout}>
-                                    <span>
-                                        Đăng xuất
-                                    </span>
+                                    <span>Đăng xuất</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

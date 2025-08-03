@@ -1,7 +1,7 @@
-'use strict'
+"use strict";
 import Cookies from "js-cookie";
 
-export function setCookie(cookieName: string, data: any) {
+export function setCookie(cookieName: string, data: unknown) {
     Cookies.set(cookieName, JSON.stringify(data));
 }
 

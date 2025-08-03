@@ -28,7 +28,8 @@
             "@/decorators": ["./src/decorators/*"],
             "@/configs": ["./src/configs/*"],
             "@/modules": ["./src/modules/*"],
-            "@/utils": ["./src/utils/*"]
+            "@/utils": ["./src/utils/*"],
+            "@/proto": ["./src/proto/*"]
         }
   }
 }
