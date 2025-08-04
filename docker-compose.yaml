@@ -55,7 +55,7 @@ services:
     container_name: microservice-gateway
     restart: always
     ports:
-      - "3000:3001"
+      - 3000:3000
     networks:
       - app-network
     depends_on:
@@ -69,8 +69,6 @@ services:
       dockerfile: Dockerfile
     container_name: microservice-auth
     restart: always
-    ports:
-      - "3002:3000" 
     depends_on:
       - rabbitmq-service
       - auth-db
@@ -84,8 +82,6 @@ services:
       dockerfile: Dockerfile
     container_name: microservice-user
     restart: always
-    ports:
-      - "3001:3000"
     depends_on:
       - rabbitmq-service
       - user-db
@@ -111,7 +107,7 @@ services:
     container_name: nextjs-web
     restart: always
     ports:
-      - "3003:3000"
+      - "3001:3000"
     depends_on:
       - gateway
     networks:

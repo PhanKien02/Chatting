@@ -27,7 +27,7 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
               join(__dirname, '../node_modules/google-proto-files'),
             ],
           },
-          url: '0.0.0.0:3002',
+          url: 'auth-service:3000',
         },
       },
     ]), UserModule],

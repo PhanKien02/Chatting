@@ -19,7 +19,7 @@ import { join } from 'path';
               join(__dirname, '../node_modules/google-proto-files'),
             ],
           },
-          url: '0.0.0.0:3001',
+          url: 'user-service:3000',
         },
       },
     ]),

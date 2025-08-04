@@ -8,11 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || "3306"),
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    host: "auth-db",
+    port: 3306,
+    username: "auth_user",
+    password: "auth_pass",
+    database: "auth_db",
     synchronize: true,
     autoLoadEntities: true
   }), AuthModule, ConfigModule.forRoot({

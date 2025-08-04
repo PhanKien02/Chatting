@@ -16,6 +16,6 @@ export const grpcClientOptions: GrpcOptions = {
         onLoadPackageDefinition: (pkg, server) => {
             new ReflectionService(pkg).addToServer(server);
         },
-        url: '0.0.0.0:3001',
+        url: '0.0.0.0:3000',
     },
 };
