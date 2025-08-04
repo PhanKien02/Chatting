@@ -30,16 +30,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
       }),
     }),
-    RabbitMQModule.forRoot({
-      exchanges: [
-        {
-          name: 'notification_exchange',
-          type: 'topic',
-        },
-      ],
-      uri: process.env.AMQP_URL || "amqp://guest:guest@localhost:5672",
-      connectionInitOptions: { wait: true },
-    })
   ],
   providers: [EmailService, EmailRabbitMQHandler],
 })
