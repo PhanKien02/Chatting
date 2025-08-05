@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { EmailRabbitMQHandler } from './email.rabbitmq';
 import { ConfigModule, ConfigService } from '@nestjs/config';
