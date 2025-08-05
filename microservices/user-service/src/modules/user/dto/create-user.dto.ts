@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsString } from "class-validator";
+import { IsEmail, IsString } from "class-validator";
 import { RoleType } from "../enum/role-type";
 
 export class CreateUserDto {
