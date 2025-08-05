@@ -6,7 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from './modules/project/project.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [ConfigModule.forRoot({
+    envFilePath: '.env',
+    isGlobal: true,
+  }), TypeOrmModule.forRoot({
     type: 'mysql',
     host: 'localhost',
     port: 3308,

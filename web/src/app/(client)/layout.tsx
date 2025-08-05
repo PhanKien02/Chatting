@@ -5,7 +5,7 @@ import { NavHeader } from "@/components/header";
 import { ScrollBar } from "@/components/ui/scroll-area";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { clientMenus } from "@/lib/menus";
-import { QueryProvider } from "@/provider/query-privider";
+import { QueryProvider } from "@/provider/query-provider";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {

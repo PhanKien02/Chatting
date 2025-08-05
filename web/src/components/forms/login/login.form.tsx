@@ -29,6 +29,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
     });
+    console.log({ errors });
+
     const onSubmit: SubmitHandler<LoginPayload> = data => {
         userService
             .login({ ...data, role: RoleType.ADMIN })

@@ -7,7 +7,7 @@ import { ResponseInterceptor } from './interceptor/custom.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: '*',
+      origin: 'http://localhost:3001',
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       credentials: true,
     },

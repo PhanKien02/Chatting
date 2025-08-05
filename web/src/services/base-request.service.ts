@@ -4,7 +4,7 @@ import { clearCookies, getCookie, setCookie } from "@/utils/cookies";
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-const BASE_URL = "http://gateway:3000/api";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 3000;
 const baseRequest = axios.create({
     baseURL: BASE_URL,

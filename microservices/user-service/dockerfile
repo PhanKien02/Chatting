@@ -2,7 +2,6 @@ FROM node:22.17.0-alpine3.22 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-COPY .env ./
 COPY . .
 RUN yarn build
 
