@@ -5,31 +5,28 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 
-
 interface GrpcUserService {
-    FindAll(query: IQuery<IUser>): Observable<IUser[]>;
-    Create(body: CreateUserDto): Observable<IUser>
+        FindAll(query: IQuery<IUser>): Observable<IUser[]>;
+        Create(body: CreateUserDto): Observable<IUser>;
 }
 
 @Injectable()
 export class UserService implements OnModuleInit {
-    private userService: GrpcUserService;
+        private userService: GrpcUserService;
 
-    constructor(
-        @Inject('USER_PACKAGE') private readonly userClient: ClientGrpc,
-    ) { }
+        constructor(@Inject('USER_PACKAGE') private readonly userClient: ClientGrpc) {}
 
-    onModuleInit() {
-        this.userService = this.userClient.getService<GrpcUserService>('UserService');
-    }
+        onModuleInit() {
+                this.userService = this.userClient.getService<GrpcUserService>('UserService');
+        }
 
-    async getAllUsers(query: IQuery<IUser>) {
-        const data = await firstValueFrom(this.userService.FindAll(query))
-        return data;
-    }
-    async createUser(body: CreateUserDto) {
-        const data = this.userService.Create(body);
-        const result = await firstValueFrom(data);
-        return result;
-    }
+        async getAllUsers(query: IQuery<IUser>) {
+                const data = await firstValueFrom(this.userService.FindAll(query));
+                return data;
+        }
+        async createUser(body: CreateUserDto) {
+                const data = this.userService.Create(body);
+                const result = await firstValueFrom(data);
+                return result;
+        }
 }

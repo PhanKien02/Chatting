@@ -8,20 +8,20 @@ import { UploadModule } from './modules/upload/upload.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
-    }),
-    CacheModule.register({
-      isGlobal: true,
-      stores: [createKeyv(process.env.REDIS_URL)],
-    }),
-    UserModule,
-    AuthModule,
-    UploadModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+        imports: [
+                ConfigModule.forRoot({
+                        envFilePath: '.env',
+                        isGlobal: true,
+                }),
+                CacheModule.register({
+                        isGlobal: true,
+                        stores: [createKeyv(process.env.REDIS_URL)],
+                }),
+                UserModule,
+                AuthModule,
+                UploadModule,
+        ],
+        controllers: [AppController],
+        providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

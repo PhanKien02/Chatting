@@ -1,10 +1,9 @@
 // Original file: src/proto/auth.proto
 
-
 export interface ResendOtpResponse {
-  'token'?: (string);
+        token?: string;
 }
 
 export interface ResendOtpResponse__Output {
-  'token'?: (string);
+        token?: string;
 }

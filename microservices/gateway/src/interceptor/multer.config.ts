@@ -26,8 +26,10 @@ export const multerOptions = {
 
                 if (!allowedMimeTypes.includes(file.mimetype)) {
                         return callback(
-                                new BadRequestException(`File type ${file.mimetype} is not allowed.`),
-                                false,
+                                new BadRequestException(
+                                        `File type ${file.mimetype} is not allowed.`
+                                ),
+                                false
                         );
                 }
                 callback(null, true);

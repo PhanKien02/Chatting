@@ -10,20 +10,20 @@ import { AuthGuard } from '@/security/guards/auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
-@Controller("user")
+@Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+        constructor(private readonly userService: UserService) {}
 
-  @Get("/")
-  @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
-  @Role([RoleType.ADMIN])
-  async findALl(@Query() query: IQuery<IUser>) {
-    const data = await this.userService.getAllUsers(query);
-    return data;
-  }
+        @Get('/')
+        @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
+        @Role([RoleType.ADMIN])
+        async findALl(@Query() query: IQuery<IUser>) {
+                const data = await this.userService.getAllUsers(query);
+                return data;
+        }
 
-  @Post('/')
-  create(@Body() userDto: CreateUserDto) {
-    return this.userService.createUser(userDto);
-  }
+        @Post('/')
+        create(@Body() userDto: CreateUserDto) {
+                return this.userService.createUser(userDto);
+        }
 }

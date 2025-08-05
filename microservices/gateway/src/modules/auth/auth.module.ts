@@ -8,31 +8,36 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from '@/security/passport.jwt.strategy';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      global: true,
-      secret: process.env.ACCESS_TOKEN_SCRECT,
-      signOptions: { expiresIn: 2 * 60000 },
-    }),
-    ClientsModule.register([
-      {
-        name: 'AUTH_PACKAGE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'auth',
-          protoPath: join(__dirname, '../../proto/auth.proto'),
-          loader: {
-            includeDirs: [
-              join(__dirname, '../proto'),
-              join(__dirname, '../node_modules/google-proto-files'),
-            ],
-          },
-          url: 'auth-service:3000',
-        },
-      },
-    ]), UserModule],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtService],
-  exports: [AuthService]
+        imports: [
+                JwtModule.register({
+                        global: true,
+                        secret: process.env.ACCESS_TOKEN_SCRECT,
+                        signOptions: { expiresIn: 2 * 60000 },
+                }),
+                ClientsModule.register([
+                        {
+                                name: 'AUTH_PACKAGE',
+                                transport: Transport.GRPC,
+                                options: {
+                                        package: 'auth',
+                                        protoPath: join(__dirname, '../../proto/auth.proto'),
+                                        loader: {
+                                                includeDirs: [
+                                                        join(__dirname, '../proto'),
+                                                        join(
+                                                                __dirname,
+                                                                '../node_modules/google-proto-files'
+                                                        ),
+                                                ],
+                                        },
+                                        url: 'auth-service:3000',
+                                },
+                        },
+                ]),
+                UserModule,
+        ],
+        controllers: [AuthController],
+        providers: [AuthService, JwtStrategy, JwtService],
+        exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}
