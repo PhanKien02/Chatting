@@ -27,8 +27,8 @@ export class IQuery<T> {
 export const buildFilterSortAndPaginate = <T>(query: IQuery<T>) => {
     const { limit, page, sort, searchKeyword, ...rest } = query;
     let filter: { $text?: { $search: string } } = {};
-    if (query.searchKeyword) {
-        filter.$text = { $search: query.searchKeyword };
+    if (searchKeyword) {
+        filter.$text = { $search: searchKeyword };
     }
     if (rest) {
         filter = { ...filter, ...rest };
@@ -36,10 +36,10 @@ export const buildFilterSortAndPaginate = <T>(query: IQuery<T>) => {
 
     return {
         filter,
-        sort: { ...query.sort, created_at: -1 },
-        limit: +query.limit || 10,
-        skip: (+query.page - 1) * query.limit || 0,
-        page: query.page || 1
+        sort: { ...sort, created_at: -1 },
+        limit: +limit || 10,
+        skip: (+page - 1) * limit || 0,
+        page: page || 1
     };
 };
 
