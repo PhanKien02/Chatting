@@ -5,7 +5,6 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "type": "module",
   "scripts": {
     "proto:gen": "node generate-proto.js",
     "build": "npm run lint && nest build",

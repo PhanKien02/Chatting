@@ -1,8 +1,8 @@
 // eslint.config.js
-import path from 'node:path';
-import pluginTs from '@typescript-eslint/eslint-plugin';
-import parserTs from '@typescript-eslint/parser';
-import pluginPrettier from 'eslint-plugin-prettier';
+const path = require('node:path');
+const pluginTs = require('@typescript-eslint/eslint-plugin');
+const parserTs = require('@typescript-eslint/parser');
+const pluginPrettier = require('eslint-plugin-prettier');
 
 const config = [
   {
@@ -32,4 +32,4 @@ const config = [
   },
 ];
 
-export default config;
+module.exports = config;

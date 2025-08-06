@@ -5,7 +5,6 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "type": "module",
   "scripts": {
     "proto:gen": "yarn proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=./src/proto ./src/proto/project.proto",
     "build": "npm run lint && nest build",
