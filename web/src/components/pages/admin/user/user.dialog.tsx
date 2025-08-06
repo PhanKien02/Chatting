@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 import UserForm from "@/components/forms/user/user.form";
 type DialogProps = {
     data?: IUser;
-    refetch: Function;
+    refetch: () => void;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 };

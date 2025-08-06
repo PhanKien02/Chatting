@@ -27,7 +27,8 @@ export default function ImageUpload({ setFile, setFiles, mode = "image" }: FileU
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result as string);
                 reader.readAsDataURL(file);
-                files.length > 1 ? setFiles?.(files) : setFile?.(file);
+                if (files.length > 1) setFiles?.(files);
+                else setFile?.(file);
             });
         });
 
