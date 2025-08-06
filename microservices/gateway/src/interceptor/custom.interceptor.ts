@@ -1,14 +1,14 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { Observable, map, catchError, throwError } from 'rxjs';
 import { HttpException } from '@nestjs/common';
-import { IResponse } from '@/interfaces/response.interface';
+import { IResponse } from '@/interfaces/response.interface.js';
 import { mapGrpcCodeToHttpStatus } from '@/utils/mappingerror';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
         intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+
                 return next.handle().pipe(
-                        // ✅ Nếu thành công, bạn có thể chỉnh sửa format response tại đây
                         map((data: IResponse<unknown> | any) => {
                                 if (
                                         !data ||
@@ -32,11 +32,10 @@ export class ResponseInterceptor implements NestInterceptor {
                                 };
                         }),
 
-                        // ❌ Nếu có lỗi, xử lý tại đây
                         catchError(err => {
                                 const timestamp = new Date().toISOString();
                                 const statusCode =
-                                        err?.status || mapGrpcCodeToHttpStatus(err?.error?.code);
+                                        err?.status || mapGrpcCodeToHttpStatus(err?.code);
                                 return throwError(
                                         () =>
                                                 new HttpException(
