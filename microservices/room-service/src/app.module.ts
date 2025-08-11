@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { RoomModule } from './room/room.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -17,7 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     database: 'taleNet',
     synchronize: true,
     autoLoadEntities: true
-  }),],
+  }), RoomModule,],
   controllers: [AppController],
   providers: [AppService],
 })

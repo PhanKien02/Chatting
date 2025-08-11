@@ -4,7 +4,7 @@ package Room;
 
 import "google/protobuf/empty.proto";
 
-service ProjectService {
+service RoomService {
   rpc FindAll(Query) returns (PaginationResponse);
   rpc Create(Room) returns (Room);
   rpc Update() returns (Room);
@@ -15,34 +15,32 @@ service ProjectService {
 
 message Room {
     string id = 1;
-    string name = 2;
-    bool status = 3;
-    string idUser = 4;
-    bool isDefault = 5;
+    string creator_id = 2;
+    repeated Member members = 3;
+    string status = 4;
+    bool type = 5;
     string created_at= 6;
     string updated_at= 7;
-    string deleted_at=8;
+    string deleted_at= 8;
 }
 
+message Member {
+    string roomId = 1;
+    string userId = 2;
+    string role =3;
+    string created_at= 6;
+    string updated_at= 7;
+    string deleted_at= 8;
+}
 message Query {
     string searchKeyword =1;
     int32 page =2;
     int32 limit =3;
     string sort =4;
-    bool isActive =5;
 }
 
-message RoomFindAll {
-    string id = 1;
-    string name = 2;
-    bool status = 3;
-    string idUser = 4;
-    string created_at= 5;
-    string updated_at= 6;
-    string deleted_at=7;
-}
 message PaginationResponse {
-  repeated RoomFindAll datas = 1;
+  repeated Room datas = 1;
   int32 page =2;
   int32 limit = 3;
   int32 totalPages = 4;
@@ -51,4 +49,8 @@ message PaginationResponse {
 
 message OneRoomBody {
   string roomId =1;
+}
+
+message FindRoomByUser {
+        string userId : 1
 }
