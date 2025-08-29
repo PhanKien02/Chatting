@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package Room;
+
+import "google/protobuf/empty.proto";
+
+service RoomService {
+  rpc FindAll(Query) returns (PaginationResponse);
+  rpc Create(Room) returns (Room);
+  rpc Update(Room) returns (Room);
+  rpc Block(OneRoomBody) returns (Room);
+  rpc Unblock(OneRoomBody) returns (Room);
+  rpc FindOne(OneRoomBody) returns (Room);
+  rpc FindRoomByUser (FindRoomByUser) returns (PaginationResponse);
+}
+
+message Room {
+    string id = 1;
+    string creator_id = 2;
+    repeated Member members = 3;
+    string status = 4;
+    bool type = 5;
+    string created_at= 6;
+    string updated_at= 7;
+    string deleted_at= 8;
+}
+
+message Member {
+    string roomId = 1;
+    string userId = 2;
+    string role =3;
+    string created_at= 6;
+    string updated_at= 7;
+    string deleted_at= 8;
+}
+message Query {
+    string searchKeyword =1;
+    int32 page =2;
+    int32 limit =3;
+    string sort =4;
+}
+
+message PaginationResponse {
+  repeated Room datas = 1;
+  int32 page =2;
+  int32 limit = 3;
+  int32 totalPages = 4;
+  int32 totalResults = 5;
+}
+
+message OneRoomBody {
+  string roomId =1;
+}
+
+message FindRoomByUser {
+        string userId = 1;
+}

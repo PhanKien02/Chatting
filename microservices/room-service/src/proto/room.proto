@@ -7,18 +7,19 @@ import "google/protobuf/empty.proto";
 service RoomService {
   rpc FindAll(Query) returns (PaginationResponse);
   rpc Create(Room) returns (Room);
-  rpc Update() returns (Room);
-  rpc Block() returns (Room);
+  rpc Update(Room) returns (Room);
+  rpc Block(OneRoomBody) returns (Room);
   rpc Unblock(OneRoomBody) returns (Room);
-  rpc FindOne()OneRoomBody returns (Room);
+  rpc FindOne(OneRoomBody) returns (Room);
+  rpc FindRoomByUser (FindRoomByUser) returns (PaginationResponse);
 }
 
 message Room {
     string id = 1;
     string creator_id = 2;
     repeated Member members = 3;
-    string status = 4;
-    bool type = 5;
+    bool status = 4;
+    int32 type = 5;
     string created_at= 6;
     string updated_at= 7;
     string deleted_at= 8;
@@ -52,5 +53,5 @@ message OneRoomBody {
 }
 
 message FindRoomByUser {
-        string userId : 1
+        string userId = 1;
 }

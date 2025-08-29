@@ -1,24 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { RoomModule } from './room/room.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [ConfigModule.forRoot({
     envFilePath: '.env',
     isGlobal: true,
-  }), TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3308,
-    username: 'root',
-    password: 'admin',
-    database: 'taleNet',
-    synchronize: true,
-    autoLoadEntities: true
-  }), RoomModule,],
+  }), MongooseModule.forRoot('mongodb://localhost/nest'), RoomModule,],
   controllers: [AppController],
   providers: [AppService],
 })
