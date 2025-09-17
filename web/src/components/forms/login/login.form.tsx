@@ -29,14 +29,13 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     } = useForm<LoginPayload>({
         resolver: zodResolver(LoginSchema),
     });
-    console.log({ errors });
 
     const onSubmit: SubmitHandler<LoginPayload> = data => {
         userService
             .login({ ...data, role: RoleType.ADMIN })
             .then(({ data }) => {
                 setUserLogin(data.user);
-                router.push("/");
+                router.replace("/");
                 setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
                 setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
                 setCookie(COOKIES.EXPIRES, data.expiresAt);

@@ -26,28 +26,41 @@ import { useAuthContext } from "@/contexts/auth.context";
 import { useEffect, useState } from "react";
 import { IUser } from "@/models/user.model";
 import { userService } from "@/services/user.service";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 // Menu items.
 
 export function AppSidebar({ menu }: { menu: Menu[] }) {
     const { toast } = useToast();
     const { user } = useAuthContext();
+    const router = useRouter();
     const [curentUser, setCurentUser] = useState<IUser | undefined>();
     useEffect(() => {
         if (user) setCurentUser(user);
     }, [user]);
     const logout = async () => {
-        if (user?.id)
-            await userService.logout(user?.id).then(() => {
-                clearCookies();
-                toast({
-                    title: "Đăng Xuất",
-                    description: "Đăng xuất thành công",
-                    variant: "success",
-                });
-                redirect("/auth/login");
+        if (!user?.id) return;
+
+        try {
+            const data = await userService.logout(user.id);
+            console.log(data);
+
+            clearCookies();
+            toast({
+                title: "Đăng Xuất",
+                description: "Đăng xuất thành công",
+                variant: "success",
             });
+            router.refresh();
+        } catch (error) {
+            toast({
+                title: "Đăng Xuất",
+                description: "Đăng xuất thất bại",
+                variant: "destructive",
+            });
+            console.error("Logout error:", error);
+        }
     };
+
     return (
         <Sidebar collapsible='offcanvas'>
             <SidebarHeader>
