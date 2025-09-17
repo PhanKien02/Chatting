@@ -22,7 +22,7 @@ import { join } from 'path';
                                                         ),
                                                 ],
                                         },
-                                        url: 'user-service:3000',
+                                        url: 'localhost:3002',
                                 },
                         },
                 ]),
@@ -31,4 +31,4 @@ import { join } from 'path';
         providers: [UserService],
         exports: [UserService],
 })
-export class UserModule {}
+export class UserModule { }

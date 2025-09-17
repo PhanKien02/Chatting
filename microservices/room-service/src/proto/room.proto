@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Room;
+package room;
 
 import "google/protobuf/empty.proto";
 

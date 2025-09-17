@@ -30,7 +30,7 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
                                                         ),
                                                 ],
                                         },
-                                        url: 'auth-service:3000',
+                                        url: 'localhost:3003',
                                 },
                         },
                 ]),
@@ -40,4 +40,4 @@ import { JwtStrategy } from '@/security/passport.jwt.strategy';
         providers: [AuthService, JwtStrategy, JwtService],
         exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }

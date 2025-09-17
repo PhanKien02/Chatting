@@ -1,9 +1,9 @@
 // Original file: src/proto/room.proto
 
-import type { Room as _Room_Room, Room__Output as _Room_Room__Output } from '../Room/Room';
+import type { Room as _room_Room, Room__Output as _room_Room__Output } from '../room/Room';
 
 export interface PaginationResponse {
-  'datas'?: (_Room_Room)[];
+  'datas'?: (_room_Room)[];
   'page'?: (number);
   'limit'?: (number);
   'totalPages'?: (number);
@@ -11,7 +11,7 @@ export interface PaginationResponse {
 }
 
 export interface PaginationResponse__Output {
-  'datas'?: (_Room_Room__Output)[];
+  'datas'?: (_room_Room__Output)[];
   'page'?: (number);
   'limit'?: (number);
   'totalPages'?: (number);
