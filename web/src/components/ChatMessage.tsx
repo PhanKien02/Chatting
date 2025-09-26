@@ -16,27 +16,21 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 }) => {
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: isOwnMessage ? "flex-end" : "flex-start",
-        marginBottom: "12px",
-      }}
+      className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"} mb-3`}
     >
       <div
-        style={{
-          background: isOwnMessage ? "#daf8cb" : "#f1f0f0",
-          padding: "10px 14px",
-          borderRadius: "8px",
-          maxWidth: "65%",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
-        }}
+        className={`
+          px-4 py-2 rounded-lg max-w-[65%] shadow
+          ${isOwnMessage
+            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+            : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"}
+        `}
       >
         <strong>{sender}</strong>
-        <div style={{ marginTop: "4px" }}>{message}</div>
+        <div className="mt-1">{message}</div>
       </div>
       {timestamp && (
-        <span style={{ fontSize: "0.75rem", color: "#888", marginTop: "2px" }}>
+        <span className="text-xs text-gray-400 dark:text-gray-500 mt-1">
           {timestamp}
         </span>
       )}

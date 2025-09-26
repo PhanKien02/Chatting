@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Image, File } from "lucide-react";
@@ -20,7 +21,9 @@ const files = [
 
 export default function Directory() {
   return (
-    <aside className="w-[320px] bg-white h-full rounded-r-3xl p-8 shadow flex flex-col gap-8">
+    <aside className={`w-[320px] h-full rounded-r-3xl p-8 flex flex-col gap-8
+     dark:bg-gray-900 dark:text-white shadow-nonebg-white text-gray-900 shadow
+    `}>
       <div>
         <div className="font-semibold text-lg mb-2">Directory</div>
         <div>
@@ -46,14 +49,16 @@ export default function Directory() {
         </div>
         <div className="flex flex-col gap-3">
           {files.map((f, i) => (
-            <div key={i} className="flex items-center gap-3 bg-gray-100 rounded-lg px-3 py-2">
+            <div key={i} className={`flex items-center gap-3 rounded-lg px-3 py-2
+              dark:bg-gray-800 bg-gray-100
+            `}>
               {f.icon}
               <div className="flex-1">
                 <div className="font-semibold text-sm">{f.name}</div>
                 <div className="text-xs text-gray-500">{f.type} {f.size}</div>
               </div>
               <button>
-                <svg width="20" height="20" fill="none"><path d="M5 10h10M10 5v10" stroke="#888" strokeWidth="2" strokeLinecap="round"/></svg>
+                <svg width="20" height="20" fill="none"><path d="M5 10h10M10 5v10" stroke="#888" strokeWidth="2" strokeLinecap="round" /></svg>
               </button>
             </div>
           ))}
