@@ -5,8 +5,8 @@ import { join } from 'path';
 export const grpcClientOptions: GrpcOptions = {
     transport: Transport.GRPC,
     options: {
-        package: 'user',
-        protoPath: join(__dirname, './proto/project.proto'),
+        package: 'room',
+        protoPath: join(__dirname, './proto/room.proto'),
         loader: {
             includeDirs: [
                 join(__dirname, './proto'),
@@ -16,6 +16,6 @@ export const grpcClientOptions: GrpcOptions = {
         onLoadPackageDefinition: (pkg, server) => {
             new ReflectionService(pkg).addToServer(server);
         },
-        url: '0.0.0.0:3003',
+        url: '0.0.0.0:3004',
     },
 };

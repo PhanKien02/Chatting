@@ -5,10 +5,11 @@ import { IQuery } from '@/utils/buildFilterSortAndPaginate';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IRoom } from '@/interfaces/room.interface';
 import { ClientGrpc } from '@nestjs/microservices';
+import { CreateRoomResponse } from '@/proto/room/CreateRoomResponse';
 
 interface GrpcRoomService {
   FindAll(query: IQuery<IRoom>): Observable<IRoom[]>;
-  Create(body: CreateRoomDto): Observable<IRoom>;
+  Create(body: CreateRoomDto): Observable<CreateRoomResponse>;
 }
 
 @Injectable()
@@ -21,6 +22,8 @@ export class RoomService {
 
   async create(createRoomDto: CreateRoomDto) {
     const data = this.roomService.Create(createRoomDto);
+    console.log({ data });
+
     const result = await firstValueFrom(data);
     return result;
   }

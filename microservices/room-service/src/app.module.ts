@@ -6,10 +6,13 @@ import { RoomModule } from './room/room.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    envFilePath: '.env',
-    isGlobal: true,
-  }), MongooseModule.forRoot('mongodb://localhost/nest'), RoomModule,],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(process.env.MONGODB_URL || 'mongodb://admin:admin@localhost:27019/'),
+    RoomModule,],
   controllers: [AppController],
   providers: [AppService],
 })

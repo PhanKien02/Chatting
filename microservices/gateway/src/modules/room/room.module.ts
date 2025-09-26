@@ -22,7 +22,7 @@ import { join } from 'path';
               ),
             ],
           },
-          url: 'room-service:3002',
+          url: 'localhost:3004',
         },
       },
     ]),

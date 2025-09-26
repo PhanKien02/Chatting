@@ -37,7 +37,7 @@ async function bootstrap() {
         SwaggerModule.setup('/document/swagger', app, documentFactory);
         await app.listen(process.env.POST ?? 3000).then(() => {
                 console.log(
-                        `api gateway is running on http://localhost:${process.env.POST ?? 3000}/api`
+                        `api gateway is running on http://localhost:${process.env.POST ?? 3001}/api`
                 );
         });
 }

@@ -8,12 +8,14 @@ export class Room {
         id: ObjectId;
         @Prop()
         creator_id: string;
-        @Prop([String])
-        members: string[];
+        @Prop()
+        name: string;
+        @Prop([Number])
+        members: number[];
         @Prop()
         status: boolean;
         @Prop()
-        type: string;
+        isGroup: boolean;
         @Prop()
         created_at: Date;
         @Prop()

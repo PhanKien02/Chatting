@@ -14,11 +14,9 @@ export interface ProtoGrpcType {
     }
   }
   room: {
-    FindRoomByUser: MessageTypeDefinition
-    Member: MessageTypeDefinition
+    CreateRoomRequest: MessageTypeDefinition
+    CreateRoomResponse: MessageTypeDefinition
     OneRoomBody: MessageTypeDefinition
-    PaginationResponse: MessageTypeDefinition
-    Query: MessageTypeDefinition
     Room: MessageTypeDefinition
     RoomService: SubtypeConstructor<typeof grpc.Client, _room_RoomServiceClient> & { service: _room_RoomServiceDefinition }
   }
