@@ -17,18 +17,20 @@ export class UserController {
 
   @GrpcMethod('UserService', 'FindOne')
   async findOne(data: { id: string }) {
-
     const result = await this.userService.findOne(+data.id);
     return result
 
   }
-  // @GrpcStreamMethod()
-  // update(@Payload() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(updateUserDto.id, updateUserDto);
-  // }
 
   @GrpcStreamMethod()
   remove(@Payload() id: number) {
     return this.userService.remove(id);
+  }
+
+  @GrpcMethod('UserService', 'FindUserByIds')
+  async findUserByIds(data: { ids: string[] }) {
+    const result = await this.userService.findUserByIds(data.ids.map(e => parseInt(e)));
+    return { success: result }
+
   }
 }

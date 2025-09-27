@@ -11,6 +11,7 @@ service UserService {
   rpc Block(UserBlockPayLoad) returns (User);
   rpc Unblock(User) returns (User);
   rpc FindOne(UserBlockPayLoad) returns (User);
+  rpc FindUserByIds(FindUserByIdsReq) returns (FindUserByIdsRes);
 }
 
 message User {
@@ -63,4 +64,12 @@ message UserUpdatePayLoad {
 
 message UserBlockPayLoad {
   string id = 1;
+}
+
+message FindUserByIdsReq {
+  repeated string ids = 1 ;
+}
+
+message FindUserByIdsRes {
+   bool success = 1;
 }

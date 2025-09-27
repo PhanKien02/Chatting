@@ -2,6 +2,8 @@
 
 import type * as grpc from '@grpc/grpc-js'
 import type { MethodDefinition } from '@grpc/proto-loader'
+import type { FindUserByIdsReq as _user_FindUserByIdsReq, FindUserByIdsReq__Output as _user_FindUserByIdsReq__Output } from '../user/FindUserByIdsReq';
+import type { FindUserByIdsRes as _user_FindUserByIdsRes, FindUserByIdsRes__Output as _user_FindUserByIdsRes__Output } from '../user/FindUserByIdsRes';
 import type { PaginationResponse as _user_PaginationResponse, PaginationResponse__Output as _user_PaginationResponse__Output } from '../user/PaginationResponse';
 import type { Query as _user_Query, Query__Output as _user_Query__Output } from '../user/Query';
 import type { User as _user_User, User__Output as _user_User__Output } from '../user/User';
@@ -45,6 +47,15 @@ export interface UserServiceClient extends grpc.Client {
   findOne(argument: _user_UserBlockPayLoad, options: grpc.CallOptions, callback: grpc.requestCallback<_user_User__Output>): grpc.ClientUnaryCall;
   findOne(argument: _user_UserBlockPayLoad, callback: grpc.requestCallback<_user_User__Output>): grpc.ClientUnaryCall;
   
+  FindUserByIds(argument: _user_FindUserByIdsReq, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  FindUserByIds(argument: _user_FindUserByIdsReq, metadata: grpc.Metadata, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  FindUserByIds(argument: _user_FindUserByIdsReq, options: grpc.CallOptions, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  FindUserByIds(argument: _user_FindUserByIdsReq, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  findUserByIds(argument: _user_FindUserByIdsReq, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  findUserByIds(argument: _user_FindUserByIdsReq, metadata: grpc.Metadata, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  findUserByIds(argument: _user_FindUserByIdsReq, options: grpc.CallOptions, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  findUserByIds(argument: _user_FindUserByIdsReq, callback: grpc.requestCallback<_user_FindUserByIdsRes__Output>): grpc.ClientUnaryCall;
+  
   Unblock(argument: _user_User, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_user_User__Output>): grpc.ClientUnaryCall;
   Unblock(argument: _user_User, metadata: grpc.Metadata, callback: grpc.requestCallback<_user_User__Output>): grpc.ClientUnaryCall;
   Unblock(argument: _user_User, options: grpc.CallOptions, callback: grpc.requestCallback<_user_User__Output>): grpc.ClientUnaryCall;
@@ -74,6 +85,8 @@ export interface UserServiceHandlers extends grpc.UntypedServiceImplementation {
   
   FindOne: grpc.handleUnaryCall<_user_UserBlockPayLoad__Output, _user_User>;
   
+  FindUserByIds: grpc.handleUnaryCall<_user_FindUserByIdsReq__Output, _user_FindUserByIdsRes>;
+  
   Unblock: grpc.handleUnaryCall<_user_User__Output, _user_User>;
   
   Update: grpc.handleUnaryCall<_user_UserUpdatePayLoad__Output, _user_User>;
@@ -85,6 +98,7 @@ export interface UserServiceDefinition extends grpc.ServiceDefinition {
   Create: MethodDefinition<_user_User, _user_User, _user_User__Output, _user_User__Output>
   FindAll: MethodDefinition<_user_Query, _user_PaginationResponse, _user_Query__Output, _user_PaginationResponse__Output>
   FindOne: MethodDefinition<_user_UserBlockPayLoad, _user_User, _user_UserBlockPayLoad__Output, _user_User__Output>
+  FindUserByIds: MethodDefinition<_user_FindUserByIdsReq, _user_FindUserByIdsRes, _user_FindUserByIdsReq__Output, _user_FindUserByIdsRes__Output>
   Unblock: MethodDefinition<_user_User, _user_User, _user_User__Output, _user_User__Output>
   Update: MethodDefinition<_user_UserUpdatePayLoad, _user_User, _user_UserUpdatePayLoad__Output, _user_User__Output>
 }

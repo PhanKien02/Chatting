@@ -14,6 +14,8 @@ export interface ProtoGrpcType {
     }
   }
   user: {
+    FindUserByIdsReq: MessageTypeDefinition
+    FindUserByIdsRes: MessageTypeDefinition
     PaginationResponse: MessageTypeDefinition
     Query: MessageTypeDefinition
     User: MessageTypeDefinition

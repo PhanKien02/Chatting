@@ -3,6 +3,7 @@ import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { join } from 'path';
         },
       },
     ]),
+    UserModule
   ],
   controllers: [RoomController],
   providers: [RoomService],

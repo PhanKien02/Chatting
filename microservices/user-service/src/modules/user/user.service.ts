@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 import { IResponseRabbitmq } from './user.rabbitmq';
@@ -61,11 +61,12 @@ export class UserService {
     }
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async findUserByIds(ids: number[]): Promise<boolean> {
+    const hasUser = await this.usersRepository.exists({ where: { id: In(ids) } })
+    return hasUser;
   }
 }

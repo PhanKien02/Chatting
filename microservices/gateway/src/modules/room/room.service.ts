@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { IQuery } from '@/utils/buildFilterSortAndPaginate';
@@ -6,6 +6,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { IRoom } from '@/interfaces/room.interface';
 import { ClientGrpc } from '@nestjs/microservices';
 import { CreateRoomResponse } from '@/proto/room/CreateRoomResponse';
+import { UserService } from '../user/user.service';
 
 interface GrpcRoomService {
   FindAll(query: IQuery<IRoom>): Observable<IRoom[]>;
@@ -15,15 +16,15 @@ interface GrpcRoomService {
 @Injectable()
 export class RoomService {
   private roomService: GrpcRoomService;
-  constructor(@Inject('ROOM_PACKAGE') private readonly userClient: ClientGrpc) { }
+  constructor(@Inject('ROOM_PACKAGE') private readonly userClient: ClientGrpc, private readonly userService: UserService) { }
   onModuleInit() {
     this.roomService = this.userClient.getService<GrpcRoomService>('RoomService');
   }
 
   async create(createRoomDto: CreateRoomDto) {
+    const hasUser = await this.userService.hasUsers(createRoomDto.members);
+    if (!hasUser) throw new BadRequestException("Người dùng không tồn tại");
     const data = this.roomService.Create(createRoomDto);
-    console.log({ data });
-
     const result = await firstValueFrom(data);
     return result;
   }
