@@ -22,8 +22,7 @@ const chat = [
 
 export default function ChatArea() {
   return (
-    <section className={`flex-1 flex flex-col h-full
-      dark:bg-gray-900 bg-white
+    <section className={`flex-1 flex flex-col h-full dark:bg-gray-900 bg-white relative
     `}>
       <header className={`flex items-center px-8 py-5 border-b
         dark:border-gray-800 border-gray-100
@@ -61,7 +60,7 @@ export default function ChatArea() {
           </div>
         ))}
       </div>
-      <footer className={`px-8 py-5 flex gap-3
+      <footer className={`px-8 flex gap-3 mb-16 items-start absolute left-0 right-0 bottom-0
         border-t dark:border-gray-800 dark:bg-gray-900 border-gray-100 bg-white
       `}>
         <input

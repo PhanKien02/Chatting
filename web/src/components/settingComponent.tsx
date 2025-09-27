@@ -11,8 +11,8 @@ export default function SettingPopover() {
         const [lang, setLang] = useState<"vi" | "en">("vi");
 
         return (
-                <Popover>
-                        <PopoverTrigger asChild>
+                <Popover >
+                        <PopoverTrigger asChild >
                                 <Button variant="ghost" aria-label="Settings">
                                         <Settings className="w-6 h-6" />
                                 </Button>
@@ -41,12 +41,12 @@ export default function SettingPopover() {
                                                         {lang === "vi" ? "EN" : "VI"}
                                                 </Button>
                                         </div>
-                                        <div className="flex items-center gap-2">
+                                        <button className="flex items-center gap-2">
                                                 <User className="w-4 h-4" /> <span>Thông tin tài khoản</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
+                                        </button>
+                                        <button className="flex items-center gap-2" >
                                                 <LogOut className="w-4 h-4" /> <span>Đăng xuất</span>
-                                        </div>
+                                        </button>
                                 </div>
                         </PopoverContent>
                 </Popover>

@@ -5,7 +5,7 @@
             "error",
             {
                 "singleQuote": false,
-                "trailingComma": "es5",
+                "trailingComma": "es6",
                 "printWidth": 180,
                 "tabWidth": 4,
                 "useTabs": false,
@@ -16,7 +16,6 @@
                 "bracketSameLine": false,
                 "arrowParens": "avoid",
                 "proseWrap": "preserve"
-                
             }
         ],
         "@typescript-eslint/no-empty-object-type": "error",
