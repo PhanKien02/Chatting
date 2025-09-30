@@ -17,7 +17,8 @@ Dự án được triển khai bằng **Docker Compose** và hỗ trợ **CI/CD*
 - **Frontend**
   - [Next.js](https://nextjs.org/) - React framework hỗ trợ SSR & CSR
   - [TypeScript](https://www.typescriptlang.org/)
-  - [Socket.IO / gRPC-web] - Kết nối thời gian thực với backend
+- ** 
+  - [Socket.IO] - Kết nối thời gian thực với backend
 
 - **Hạ tầng**
   - Docker + Docker Compose
