@@ -9,6 +9,7 @@ Dự án được triển khai bằng **Docker Compose** và hỗ trợ **CI/CD*
 ## 🚀 Công nghệ sử dụng
 
 - **Backend**
+  - [TypeScript](https://www.typescriptlang.org)
   - [NestJS](https://nestjs.com/) - Framework Node.js mạnh mẽ
   - [gRPC](https://grpc.io/) - Giao tiếp giữa các microservice với tốc độ cao
   - [RabbitMQ](https://www.rabbitmq.com/) - Message broker dùng cho event-driven
@@ -16,9 +17,8 @@ Dự án được triển khai bằng **Docker Compose** và hỗ trợ **CI/CD*
   
 - **Frontend**
   - [Next.js](https://nextjs.org/) - React framework hỗ trợ SSR & CSR
-  - [TypeScript](https://www.typescriptlang.org/)
-- ** 
-  - [Socket.IO] - Kết nối thời gian thực với backend
+  - [TypeScript](https://www.typescriptlang.org)
+  - [Socket.IO](https://socket.io/) - Kết nối thời gian thực với backend
 
 - **Hạ tầng**
   - Docker + Docker Compose
