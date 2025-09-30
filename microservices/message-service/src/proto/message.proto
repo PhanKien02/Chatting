@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package message;
+
+import "google/protobuf/empty.proto";
+
+service MessageService {
+  rpc Create(CreateMessageReq) returns (CreateMessageRes);
+  rpc GetMessage(GetMessageQuery) returns (PaginationResponse);
+}
+
+message CreateMessageReq {
+  string senderId = 1;
+  string roomId = 2;
+  string content = 3;
+  string typeMessage = 4;
+}
+
+message CreateMessageRes {
+  bool isSuccess = 1;
+}
+
+message GetMessageQuery {
+  int32 page= 1;
+  int32 limit = 2;
+  string roomId = 3;
+}
+
+message MessageRes {
+  string id =1;
+  string senderId= 2;
+  string roomId = 3;
+  string content = 4;
+  string typeMessage = 5;
+  string isRead = 6;
+}
+
+message PaginationResponse {
+int32 page=1;
+int32 limit= 2;
+repeated MessageRes messages =3;
+int32 totalResult = 4;
+int32 totalPage = 5;
+}
