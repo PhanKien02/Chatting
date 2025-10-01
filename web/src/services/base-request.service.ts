@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 3000;
 const baseRequest = axios.create({
-    baseURL: BASE_URL,
+    baseURL: BASE_URL + "/api",
     timeout: TIMEOUT, // Thời gian chờ (ms)
     headers: {
         "Content-Type": "application/json",
