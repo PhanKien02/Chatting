@@ -8,6 +8,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { RoomModule } from './modules/room/room.module';
+import { SocketModule } from './modules/socket/socket.module';
 @Module({
         imports: [
                 ConfigModule.forRoot({
@@ -22,6 +23,7 @@ import { RoomModule } from './modules/room/room.module';
                 AuthModule,
                 UploadModule,
                 RoomModule,
+                SocketModule,
         ],
         controllers: [AppController],
         providers: [AppService],
