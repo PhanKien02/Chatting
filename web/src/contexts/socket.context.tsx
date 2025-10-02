@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, PropsWithChildren, useState } from "react";
+import React, { createContext, useContext, PropsWithChildren, useState, useEffect } from "react";
 import SocketService from "@/socket/socket.service";
 
 interface SocketContextType {
@@ -9,11 +9,12 @@ interface SocketContextType {
 export const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const SocketContextProvider = ({ children }: PropsWithChildren) => {
-        const socketService = SocketService.getInstance();
-        const contextValue: SocketContextType = {
-                socketService
-        };
-        return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
+        const [socketService, setSocketService] = useState<SocketService | null>(null);
+        useEffect(() => {
+                setSocketService(SocketService.getInstance());
+        }, []);
+        if (socketService)
+                return <SocketContext.Provider value={{ socketService }}>{children}</SocketContext.Provider>;
 };
 
 export const useSocketContext = (): SocketContextType => {

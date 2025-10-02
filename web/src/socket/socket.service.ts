@@ -1,21 +1,13 @@
 'use client'
 import { COOKIES } from "@/lib/cookieName";
 import { getCookie } from "@/utils/cookies";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 class SocketService {
         private static instance: SocketService;
-
-
-        constructor(
-                private socket = io(process.env.NEXT_PUBLIC_API_URL, {
-                        reconnectionDelayMax: 10000,
-                        withCredentials: true,
-                        auth: {
-                                Authorization: `Bearer ${getCookie(COOKIES.ACCESSTOKEN)}`
-                        },
-                })) {
-                this.connection();
+        private socket: Socket | null = null;
+        constructor() {
+                this.connect()
         }
         public static getInstance(): SocketService {
                 if (!SocketService.instance) {
@@ -23,13 +15,19 @@ class SocketService {
                 }
                 return SocketService.instance;
         }
-        async connection() {
-                console.log("url", process.env.NEXT_PUBLIC_API_URL);
-                this.socket.on('hello', () => {
-                        console.log('Connected to WebSocket server');
+        private connect() {
+                const token = getCookie(COOKIES.ACCESSTOKEN);
+                this.socket = io(process.env.NEXT_PUBLIC_API_URL!, {
+                        reconnectionDelayMax: 10000,
+                        withCredentials: true,
+                        transports: ["polling", "websocket"],
+                        reconnection: true,
+                        timeout: 5000,
+                        autoConnect: true,
+                        auth: token ? { Authorization: `Bearer ${token}` } : undefined,
                 });
-
         }
+
 }
 
 export default SocketService

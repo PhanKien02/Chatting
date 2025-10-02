@@ -24,8 +24,4 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
                 console.log(`Client disconnected: ${client.id}`);
         }
 
-        @SubscribeMessage('hello')
-        handleEvent(client: Socket, data: any): void {
-                this.server.emit('events', data);
-        }
 }
