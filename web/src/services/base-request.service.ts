@@ -42,9 +42,9 @@ baseRequest.interceptors.response.use(
     }
 );
 
-async function refreshToken() {
+export async function refreshToken() {
     const refreshToken = getCookie(COOKIES.REFRESHTOKEN);
-    const response = await baseRequest.post("/auth/refresh-token", { refreshToken });
+    const response = await baseRequest.post("/v1/auth/refresh-token", { token: refreshToken });
     const { data } = response.data;
     setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
     setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);

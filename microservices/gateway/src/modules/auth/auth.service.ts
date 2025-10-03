@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { RegisterDto } from './dto/create-auth.dto';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
@@ -85,9 +85,7 @@ export class AuthService implements OnModuleInit {
                                 secret: process.env.REFRESH_TOKEN_SCRECT,
                                 ignoreExpiration: false,
                         });
-                        const key = REDIS_KEY.TOKEN.REFRESH + decode['userId'];
-                        const hasToken = (await this.cacheManager.get(key)) as IUser;
-                        if (!hasToken) throw new UnauthorizedException('Token không tồn tại');
+
                         return await firstValueFrom(
                                 this.authService.RefreshToken({ idUser: decode.userId })
                         );
