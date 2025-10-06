@@ -4,6 +4,7 @@ import { RoomController } from './room.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { UserModule } from '../user/user.module';
+import { CurrentUserService } from '@/utils/current-user';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { UserModule } from '../user/user.module';
     UserModule
   ],
   controllers: [RoomController],
-  providers: [RoomService],
+  providers: [RoomService, CurrentUserService],
 })
 export class RoomModule { }

@@ -1,19 +1,30 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 
 export type RoomDocument = HydratedDocument<Room>;
 @Schema()
 export class Room {
         id: ObjectId;
-        @Prop()
-        creator_id: string;
-        @Prop()
+        @Prop({
+                index: 1
+        })
+        creator_id: number;
+        @Prop({
+                index: "text"
+        })
         name: string;
-        @Prop([Number])
+        @Prop({
+                index: 1,
+                type: mongoose.Schema.Types.Array
+        })
         members: number[];
-        @Prop()
+        @Prop({
+                index: -1,
+                default: true
+        })
         status: boolean;
+
         @Prop()
         isGroup: boolean;
         @Prop()

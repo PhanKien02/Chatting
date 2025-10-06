@@ -6,16 +6,35 @@ import { Room } from './entities/room.entity';
 import { Model } from 'mongoose';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { GetRoomQuery } from './dto/get-room-query.dto';
+import { normalize } from 'src/utils/normalize';
+import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 
 @Injectable()
 export class RoomService {
   constructor(@InjectModel(Room.name) private roomModel: Model<Room>) { }
-  create(createRoomDto: CreateRoomDto) {
-    return this.roomModel.create(createRoomDto)
+  async create(createRoomDto: CreateRoomDto) {
+    const result = await this.roomModel.create(createRoomDto);
+    return result;
   }
 
-  findAll() {
-    return `This action returns all room`;
+  async findAll(query: GetRoomQuery) {
+    const { limit, page, searchKeyword, idUser } = query;
+    const filter = {};
+    if (searchKeyword) {
+      filter["$text"] = { $search: normalize(query.searchKeyword) }
+    }
+    const [rooms, totalResults] = await Promise.all([
+      this.roomModel.find({
+        ...filter,
+        $or: [
+          { members: idUser },
+          { creator_id: idUser }
+        ]
+      }).limit(query.limit || 10).skip((query.page - 1) * query.limit || 0),
+      this.roomModel.countDocuments(filter)
+    ])
+    return paginateResponse({ datas: rooms, limit, page, totalResults })
   }
 
   async findOne(_id: string) {

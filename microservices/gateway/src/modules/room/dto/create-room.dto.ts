@@ -3,8 +3,6 @@ import { IsArray, IsBoolean, IsString } from "class-validator";
 
 export class CreateRoomDto {
 
-        @ApiProperty()
-        @IsString()
         creator_id: string;
 
         @ApiProperty()
@@ -16,10 +14,6 @@ export class CreateRoomDto {
         })
         @IsArray()
         members: number[];
-
-        @IsBoolean()
-        @ApiProperty()
-        status: boolean;
 
         @IsBoolean()
         @ApiProperty()
