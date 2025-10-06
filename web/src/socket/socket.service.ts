@@ -23,6 +23,8 @@ class SocketService {
                         withCredentials: true,
                         transports: ["polling", "websocket"],
                         timeout: 5000,
+                        reconnection: true,
+                        autoConnect: true,
                         auth: token ? { Authorization: `Bearer ${token}` } : undefined,
                 }).on("connect_error", async (err: any) => {
                         console.error("❌ Connect error:", err.message);
@@ -40,7 +42,13 @@ class SocketService {
         }
 
         demo() {
-                this.socket?.emit("hello", { name: "Hello", age: 10 })
+                try {
+                        console.log("aaaaaa");
+
+                        this.socket?.emit("hello", { name: "Hello", age: 10 })
+                } catch (error) {
+
+                }
         }
 
 
