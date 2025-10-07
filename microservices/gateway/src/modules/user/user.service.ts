@@ -5,6 +5,7 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindUserByIdsRes } from '@/proto/user/FindUserByIdsRes';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 interface GrpcUserService {
         FindAll(query: IQuery<IUser>): Observable<IUser[]>;
@@ -36,6 +37,12 @@ export class UserService implements OnModuleInit {
                 const data = this.userService.FindUserByIds({ ids: ids.map(e => e.toString()) });
                 const result = await firstValueFrom(data);
                 return result.success || false
+
+        }
+
+        async updateUser(id: number, file: Express.Multer.File, user: UpdateUserDto) {
+                console.log({ id, file, user });
+
 
         }
 }

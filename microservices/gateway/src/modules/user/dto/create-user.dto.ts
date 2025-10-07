@@ -21,10 +21,6 @@ export class CreateUserDto {
         })
         phone: string;
 
-        @IsString()
-        @ApiProperty({
-                default: 'http://localhost:3000/avatar',
-                required: false,
-        })
-        avatarUrl?: string;
+        @ApiProperty({ type: 'string', format: 'binary', description: 'File ảnh avatar mới (tuỳ chọn)' })
+        avatar?: string;
 }
