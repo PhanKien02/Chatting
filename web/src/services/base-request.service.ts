@@ -9,6 +9,7 @@ const TIMEOUT = 3000;
 const baseRequest = axios.create({
     baseURL: BASE_URL + "/api",
     timeout: TIMEOUT, // Thời gian chờ (ms)
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
@@ -47,7 +48,6 @@ export async function refreshToken() {
     const response = await baseRequest.post("/v1/auth/refresh-token", { token: refreshToken });
     const { data } = response.data;
     setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
-    setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
     setCookie(COOKIES.EXPIRES, data.expires);
     return data.accessToken ? data.accessToken : null;
 }

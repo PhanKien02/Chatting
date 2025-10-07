@@ -37,7 +37,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 setUserLogin(data.user);
                 router.replace("/");
                 setCookie(COOKIES.ACCESSTOKEN, data.accessToken);
-                setCookie(COOKIES.REFRESHTOKEN, data.refreshToken);
                 setCookie(COOKIES.EXPIRES, data.expiresAt);
                 setCookie(COOKIES.USER, data.user);
                 toast({
