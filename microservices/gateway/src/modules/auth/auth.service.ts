@@ -40,7 +40,7 @@ export class AuthService implements OnModuleInit {
                 return user;
         }
 
-        async login(loginDto: LoginDto) {
+        async login(loginDto: LoginDto): Promise<LoginResponse> {
                 const user = await firstValueFrom(this.authService.Login(loginDto));
                 if (user.user?.id !== undefined) {
                         await this.cacheManager.set(
