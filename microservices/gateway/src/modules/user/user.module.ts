@@ -3,6 +3,8 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { UploadModule } from '../upload/upload.module';
+import { UploadService } from '../upload/upload.service';
 
 @Module({
         imports: [
@@ -26,9 +28,10 @@ import { join } from 'path';
                                 },
                         },
                 ]),
+                UploadModule
         ],
         controllers: [UserController],
-        providers: [UserService],
+        providers: [UserService, UploadService],
         exports: [UserService],
 })
 export class UserModule { }

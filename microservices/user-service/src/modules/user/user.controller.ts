@@ -2,6 +2,8 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { Query } from 'src/proto/user/Query';
+import { UserEntity } from './entities/user.entity';
+
 @Controller('user')
 export class UserController {
 
@@ -30,6 +32,12 @@ export class UserController {
   @GrpcMethod('UserService', 'FindUserByIds')
   async findUserByIds(data: { ids: string[] }) {
     const result = await this.userService.findUserByIds(data.ids.map(e => parseInt(e)));
+    return { success: result }
+
+  }
+  @GrpcMethod('UserService', 'Update')
+  async updateUser(data: { id: string, user: UserEntity }) {
+    const result = await this.userService.updateUser(+data.id, data.user);
     return { success: result }
 
   }

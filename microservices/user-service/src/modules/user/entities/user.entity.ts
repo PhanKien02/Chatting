@@ -14,9 +14,7 @@ export class UserEntity extends BaseEntity {
     @Column()
     fullName: string;
 
-    @Column({
-        length: 10
-    })
+    @Column()
     phone: string;
 
     @Column()

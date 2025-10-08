@@ -6,18 +6,21 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindUserByIdsRes } from '@/proto/user/FindUserByIdsRes';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UploadService } from '../upload/upload.service';
+import { UserUpdatePayLoad, UserUpdatePayLoad__Output } from '@/proto/user/UserUpdatePayLoad';
 
 interface GrpcUserService {
         FindAll(query: IQuery<IUser>): Observable<IUser[]>;
         Create(body: CreateUserDto): Observable<IUser>;
         FindUserByIds(body: { ids: string[] }): Observable<FindUserByIdsRes>;
+        Update(body: UserUpdatePayLoad): Observable<UserUpdatePayLoad__Output>
 }
 
 @Injectable()
 export class UserService implements OnModuleInit {
         private userService: GrpcUserService;
 
-        constructor(@Inject('USER_PACKAGE') private readonly userClient: ClientGrpc) { }
+        constructor(@Inject('USER_PACKAGE') private readonly userClient: ClientGrpc, private uploadService: UploadService) { }
 
         onModuleInit() {
                 this.userService = this.userClient.getService<GrpcUserService>('UserService');
@@ -40,9 +43,14 @@ export class UserService implements OnModuleInit {
 
         }
 
-        async updateUser(id: number, file: Express.Multer.File, user: UpdateUserDto) {
-                console.log({ id, file, user });
-
+        async updateUser(id: string, file: Express.Multer.File, user: UpdateUserDto) {
+                if (file) {
+                        const fileResponse = await this.uploadService.uploadImage({
+                                file, forder: "avatar", fileName: id
+                        })
+                        user.avatarUrl = fileResponse.secure_url;
+                }
+                return this.userService.Update({ id, user })
 
         }
 }

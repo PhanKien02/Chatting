@@ -29,13 +29,13 @@ export class UserController {
         @Put(':id')
         @ApiConsumes('multipart/form-data')
         @UseInterceptors(
-                FileInterceptor('avatar', { limits: { fileSize: 5 * 1024 * 1024 } }),
+                FileInterceptor('avatarUrl', { limits: { fileSize: 5 * 1024 * 1024 } }),
         )
         update(
-                @Param('id') id: number,
+                @Param('id') id: string,
                 @UploadedFile() file: Express.Multer.File,
                 @Body() user: CreateUserDto,
         ) {
-                return this.userService.updateUser(+id, file, user);
+                return this.userService.updateUser(id, file, user);
         }
 }

@@ -22,5 +22,5 @@ export class CreateUserDto {
         phone: string;
 
         @ApiProperty({ type: 'string', format: 'binary', description: 'File ảnh avatar mới (tuỳ chọn)' })
-        avatar?: string;
+        avatarUrl?: string;
 }

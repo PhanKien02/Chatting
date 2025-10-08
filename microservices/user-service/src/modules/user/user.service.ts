@@ -69,4 +69,13 @@ export class UserService {
     const hasUser = await this.usersRepository.exists({ where: { id: In(ids) } })
     return hasUser;
   }
+
+  async updateUser(id: number, data: UserEntity) {
+    return this.usersRepository.update({ id }, {
+      avatarUrl: data.avatarUrl,
+      email: data.email,
+      fullName: data.fullName,
+      phone: data.fullName,
+    });
+  }
 }
