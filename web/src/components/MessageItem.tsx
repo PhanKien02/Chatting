@@ -23,11 +23,12 @@ export default function MessageItem({
   selected,
   theme
 }: {
-  avatar: string;
+  avatar?: string;
+  id: string,
   name: string;
-  preview: string;
-  time: string;
-  tags: string[];
+  preview?: string;
+  time?: string;
+  tags?: string[];
   selected?: boolean;
   theme: "light" | "dark";
 }) {
@@ -44,12 +45,12 @@ export default function MessageItem({
             : "hover:bg-gray-50"
       )}
     >
-      <Image width={100} height={100} src={avatar} alt={name} className="w-9 h-9 rounded-full object-cover" />
+      <Image width={100} height={100} src={avatar || ""} alt={name} className="w-9 h-9 rounded-full object-cover" />
       <div className="flex-1">
         <div className="font-semibold">{name}</div>
         <div className={theme === "dark" ? "text-xs text-gray-400" : "text-xs text-gray-500"}>{preview}</div>
         <div className="flex gap-1 mt-1">
-          {tags.map((tag) => (
+          {tags?.length && tags.map((tag) => (
             <Badge
               key={tag}
               className={clsx(

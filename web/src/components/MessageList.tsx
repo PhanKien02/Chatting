@@ -3,58 +3,32 @@
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import MessageItem from "./MessageItem";
-const messages = [
-  // {
-  //   avatar: "/avatars/elmer.png",
-  //   name: "Elmer Laverty",
-  //   preview: "Haha oh man",
-  //   time: "12m",
-  //   tags: ["Question", "Help wanted"],
-  //   selected: false,
-  // },
-  // {
-  //   avatar: "/avatars/florencio.png",
-  //   name: "Florencio Dorrance",
-  //   preview: "woohoooo",
-  //   time: "24m",
-  //   tags: ["Some content"],
-  //   selected: true,
-  // },
-  // {
-  //   avatar: "/avatars/lavern.png",
-  //   name: "Lavern Laboy",
-  //   preview: "Haha that's terrifying 😱",
-  //   time: "1h",
-  //   tags: ["Bug", "Hacktoberfest"],
-  //   selected: false,
-  // },
-  // {
-  //   avatar: "/avatars/titus.png",
-  //   name: "Titus Kitamura",
-  //   preview: "omg, this is amazing",
-  //   time: "5h",
-  //   tags: ["Question", "Some content"],
-  //   selected: false,
-  // },
-  // {
-  //   avatar: "/avatars/geoffrey.png",
-  //   name: "Geoffrey Mott",
-  //   preview: "aww 💚",
-  //   time: "2d",
-  //   tags: ["Request"],
-  //   selected: false,
-  // },
-  // {
-  //   avatar: "/avatars/alfonso.png",
-  //   name: "Alfonso Schuessler",
-  //   preview: "perfect!",
-  //   time: "1m",
-  //   tags: ["Follow up"],
-  //   selected: false,
-  // },
-];
+import { useGetAllRoom } from "@/hooks/queries/useGetAllRoom";
+import { useEffect, useState } from "react";
+
+
+type Message = {
+  avatar?: string,
+  name: string,
+  preview?: string,
+  time?: string,
+  tags?: string[],
+  selected: false,
+  id: string,
+}
 
 export default function MessageList() {
+  const { rooms } = useGetAllRoom({})
+  const [messages, setMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    const mes = rooms?.datas.map(e => ({
+      name: e.name,
+      id: e.id
+    })) as Message[]
+    setMessages(mes)
+  }, [rooms])
+  console.log({ messages });
+
   return (
     <section
       className={`w-[320px] border-r bg-white flex flex-col
@@ -81,9 +55,11 @@ export default function MessageList() {
         />
       </div>
       <div className="flex-1 overflow-y-auto px-2">
-        {messages.length > 0 && messages.map((msg, i) => (
+        {messages.length > 0 ? messages.map((msg, i) => (
           <MessageItem theme={"light"} key={i} {...msg} />
-        ))}
+        )) : <>
+          <p>Trống</p>
+        </>}
       </div>
     </section >
   );
