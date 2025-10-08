@@ -10,12 +10,12 @@ import { Role } from '@/security/decorators/roles.decorator';
 import { AuthGuard } from '@/security/guards/auth.guard';
 import { ApiBearerAuth, ApiConsumes, } from '@nestjs/swagger';
 @ApiBearerAuth()
+@UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
 @Controller('user')
 export class UserController {
         constructor(private readonly userService: UserService) { }
 
         @Get('/')
-        @UseGuards(AuthGuard, RolesGuard) // Bảo vệ bằng JWT
         @Role([RoleType.ADMIN])
         async findALl(@Query() query: IQuery<IUser>) {
                 const data = await this.userService.getAllUsers(query);

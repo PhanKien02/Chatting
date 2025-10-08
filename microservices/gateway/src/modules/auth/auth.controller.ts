@@ -1,9 +1,9 @@
-import { Controller, Post, Body, Delete, Param, Res } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Param, Res, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-auth.dto';
-import { LoginDto, RefreshTokenDto } from './dto/login.dto';
+import { LoginDto } from './dto/login.dto';
 import { ActiveOTPDto, ReActive } from './dto/active-account';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -37,8 +37,9 @@ export class AuthController {
         }
 
         @Post('/refresh-token')
-        async refreshToken(@Body() body: RefreshTokenDto, @Res({ passthrough: true }) response: Response) {
-                const result = await this.authService.refreshToken(body.token);
+        async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+                const token = request.cookies["refreshToken"]
+                const result = await this.authService.refreshToken(token);
                 const { refreshToken, ...data } = result;
                 response.cookie('refreshToken', refreshToken, {
                         httpOnly: true,       // không cho JS đọc

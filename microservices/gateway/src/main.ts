@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ResponseInterceptor } from './interceptor/custom.interceptor.js';
 import { AppModule } from './app.module.js';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
         const app = await NestFactory.create(AppModule, {
@@ -21,6 +22,7 @@ async function bootstrap() {
                         transform: true, // Tự động chuyển đổi payload thành instance của DTO
                 })
         );
+        app.use(cookieParser());
         // version api config
         app.enableVersioning({
                 type: VersioningType.URI,

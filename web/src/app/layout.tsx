@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthContextProvider } from "@/contexts/auth.context";
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     disableTransitionOnChange
                     enableColorScheme
                     themes={["light", "dark"]}>
-                    <main className='min-h-screen flex items-center justify-center bg-gradient-to-r from-[#4e54c8] to-[#ee9ca7] p-4'>{children}</main>
+                    <AuthContextProvider>
+                        <main className='min-h-screen flex items-center justify-center bg-gradient-to-r from-[#4e54c8] to-[#ee9ca7] p-4'>{children}</main>
+                    </AuthContextProvider>
                     <Toaster duration={2000} />
                 </ThemeProvider>
             </body>

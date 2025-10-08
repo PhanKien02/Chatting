@@ -86,9 +86,24 @@ export class AuthService implements OnModuleInit {
                                 ignoreExpiration: false,
                         });
 
-                        return await firstValueFrom(
+                        const result = await firstValueFrom(
                                 this.authService.RefreshToken({ idUser: decode.userId })
                         );
+                        if (result.accessToken !== undefined) {
+                                await this.cacheManager.set(
+                                        buildRedisKey(REDIS_KEY.TOKEN.ACCESS, result.accessToken),
+                                        result.accessToken,
+                                        120 * 1000
+                                );
+                        }
+                        if (result.refreshToken !== undefined) {
+                                await this.cacheManager.set(
+                                        buildRedisKey(REDIS_KEY.TOKEN.REFRESH, decode.userId),
+                                        result.refreshToken,
+                                        7 * 24 * 3600 * 1000
+                                );
+                        }
+                        return result;
                 } catch (error) {
                         throw new RpcException({
                                 message: error,
