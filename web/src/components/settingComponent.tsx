@@ -5,11 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Sun, Moon, User, LogOut, Globe, Settings } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
+import { clearCookies } from "@/utils/cookies";
+import { redirect } from "next/navigation";
+import { userService } from "@/services/user.service";
+import { useAuthContext } from "@/contexts/auth.context";
 
 export default function SettingPopover() {
+        const { user } = useAuthContext()
         const { setTheme, theme } = useTheme();
         const [lang, setLang] = useState<"vi" | "en">("vi");
-
+        const handleLogout = () => {
+                if (user && user.id)
+                        userService.logout(user?.id).then(() => {
+                                clearCookies()
+                                redirect("/")
+                        })
+        }
         return (
                 <Popover >
                         <PopoverTrigger asChild >
@@ -41,10 +53,10 @@ export default function SettingPopover() {
                                                         {lang === "vi" ? "EN" : "VI"}
                                                 </Button>
                                         </div>
-                                        <button className="flex items-center gap-2">
+                                        <Link href={"/profile"} className="flex items-center gap-2" >
                                                 <User className="w-4 h-4" /> <span>Thông tin tài khoản</span>
-                                        </button>
-                                        <button className="flex items-center gap-2" >
+                                        </Link>
+                                        <button className="flex items-center gap-2" onClick={handleLogout} >
                                                 <LogOut className="w-4 h-4" /> <span>Đăng xuất</span>
                                         </button>
                                 </div>
