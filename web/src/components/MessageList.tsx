@@ -21,7 +21,7 @@ export default function MessageList() {
   const { rooms } = useGetAllRoom({})
   const [messages, setMessages] = useState<Message[]>([]);
   useEffect(() => {
-    const mes = rooms?.datas.map(e => ({
+    const mes = rooms?.data.datas.map(e => ({
       name: e.name,
       id: e.id
     })) as Message[]
@@ -55,11 +55,9 @@ export default function MessageList() {
         />
       </div>
       <div className="flex-1 overflow-y-auto px-2">
-        {messages.length > 0 ? messages.map((msg, i) => (
+        {messages && messages.length > 0 && messages.map((msg, i) => (
           <MessageItem theme={"light"} key={i} {...msg} />
-        )) : <>
-          <p>Trống</p>
-        </>}
+        ))}
       </div>
     </section >
   );

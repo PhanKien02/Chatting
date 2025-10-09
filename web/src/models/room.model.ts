@@ -8,5 +8,10 @@ export interface IRoom {
         creator_id: number
 
 }
-
+export interface PaginationResponseRoom<T> {
+        data: { datas: T[] };
+        limit: number;
+        page: number;
+        totalResults: number;
+}
 export interface IRoomQuery extends IQuery<IRoom> { }

@@ -1,5 +1,4 @@
-import { PaginationResponse } from "@/models/response";
-import { IRoom, IRoomQuery } from "@/models/room.model";
+import { IRoom, IRoomQuery, PaginationResponseRoom } from "@/models/room.model";
 import { roomService } from "@/services/room.service";
 import { useQuery } from "@tanstack/react-query";
 
@@ -10,7 +9,7 @@ export const useGetAllRoom = (query: IRoomQuery) => {
                 isError,
                 refetch,
                 isFetching,
-        } = useQuery<PaginationResponse<IRoom>, Error>({
+        } = useQuery<PaginationResponseRoom<IRoom>, Error>({
                 queryKey: ["getAllRoom", query],
                 queryFn: async () => {
                         const response = await roomService.getAllRoom(query)

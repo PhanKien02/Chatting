@@ -45,7 +45,7 @@ export default function MessageItem({
             : "hover:bg-gray-50"
       )}
     >
-      <Image width={100} height={100} src={avatar || ""} alt={name} className="w-9 h-9 rounded-full object-cover" />
+      <Image width={100} height={100} src={avatar || "https://i.pravatar.cc/150?u=a042581f4e29026704d"} alt={name} className="w-9 h-9 rounded-full object-cover" />
       <div className="flex-1">
         <div className="font-semibold">{name}</div>
         <div className={theme === "dark" ? "text-xs text-gray-400" : "text-xs text-gray-500"}>{preview}</div>
