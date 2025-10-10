@@ -5,8 +5,11 @@ import { join } from 'path';
 export const grpcClientOptions: GrpcOptions = {
     transport: Transport.GRPC,
     options: {
-        package: 'message',
-        protoPath: join(__dirname, './proto/message.proto'),
+        package: ['conversation', 'message'],
+        protoPath: [
+            join(__dirname, './proto/message.proto'),
+            join(__dirname, './proto/conversation.proto'),
+        ],
         loader: {
             includeDirs: [
                 join(__dirname, './proto'),
@@ -16,6 +19,6 @@ export const grpcClientOptions: GrpcOptions = {
         onLoadPackageDefinition: (pkg, server) => {
             new ReflectionService(pkg).addToServer(server);
         },
-        url: '0.0.0.0:3005',
+        url: '0.0.0.0:3004',
     },
 };

@@ -1,3 +1,4 @@
+import { IUser } from '@/interfaces/user.interface';
 import { RoleType } from '@/modules/user/enum/role-type';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
@@ -47,4 +48,9 @@ export class RegisterDto {
                 default: RoleType.ADMIN,
         })
         role: RoleType;
+}
+
+export class RegisterResponse {
+        user: IUser;
+        accessToken: string;
 }

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package conversation;
+
+service ConversationService {
+  rpc Create(CreateConversationRequest) returns (CreateConversationResponse);
+  rpc FindOne(OneConversationBody) returns (Conversation);
+  rpc FindAllConversation (FindAllConversationReq) returns (FindAllConversationRes);
+}
+
+message CreateConversationRequest {
+    string creator_id =1;
+    repeated string members = 2;
+    bool isGroup = 3;
+    string name = 4;
+}
+
+message CreateConversationResponse {
+  string id = 1;
+    bool isSuccess = 2;
+}
+
+message OneConversationBody {
+  string id =1;
+}
+
+message Conversation {
+  string _id =1;
+  string name = 2;
+  bool isGroup=3;
+  repeated string members = 4;
+  string created_at=5;
+  string updated_at=6;
+  string deleted_at = 7;
+  bool status = 8;
+}
+
+message FindAllConversationReq {
+  int32 page =1;
+  int32 limit =2;
+  string searchKeyword =3;
+  string idUser =4;
+}
+
+message FindAllConversationRes {
+ repeated Conversation datas =1;
+ int32 page =2;
+ int32 limit = 3;
+ int32 totalResult = 4;
+ int32 totalPage = 5;
+}
