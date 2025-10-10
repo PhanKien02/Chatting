@@ -1,18 +1,17 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
 import { firstValueFrom, Observable } from 'rxjs';
-import { IRoom } from '@/interfaces/room.interface';
 import { ClientGrpc } from '@nestjs/microservices';
-import { CreateRoomResponse } from '@/proto/room/CreateRoomResponse';
 import { UserService } from '../user/user.service';
-import { FindRoomByQuery } from './dto/find-room-byUser';
 import { CurrentUserService } from '@/utils/current-user';
 import { IPaginated } from '@/utils/buildFilterSortAndPaginate';
+import { CreateConversationDto } from '../conversation/dto/create-conversation.dto';
+import { IConversation } from '@/interfaces/conversation.interface';
+import { FindConversationByQuery } from '../conversation/dto/find-conversation-byUser';
+import { UpdateConversationDto } from '../conversation/dto/update-conversation.dto';
 
 interface GrpcRoomService {
-  Create(body: CreateRoomDto): Observable<CreateRoomResponse>;
-  FindAllRoom(query: FindRoomByQuery): Observable<IPaginated<IRoom>>;
+  Create(body: CreateConversationDto): Observable<{}>;
+  FindAllRoom(query: FindConversationByQuery): Observable<IPaginated<IConversation>>;
 }
 
 @Injectable()
@@ -25,7 +24,7 @@ export class RoomService {
     this.roomService = this.userClient.getService<GrpcRoomService>('RoomService');
   }
 
-  async create(createRoomDto: CreateRoomDto) {
+  async create(createRoomDto: CreateConversationDto) {
     const currentUser = this.currentUserService.getUser()
     const hasUser = await this.userService.hasUsers(createRoomDto.members);
     if (!hasUser) throw new BadRequestException("Người dùng không tồn tại");
@@ -34,7 +33,7 @@ export class RoomService {
     return result;
   }
 
-  async findAll(query: FindRoomByQuery): Promise<IPaginated<IRoom>> {
+  async findAll(query: FindConversationByQuery): Promise<IPaginated<IConversation>> {
     const currentUser = this.currentUserService.getUser()
     if (currentUser) {
       const data = this.roomService.FindAllRoom({ ...query, idUser: currentUser?.id });
@@ -54,7 +53,7 @@ export class RoomService {
     return `This action returns a #${id} room`;
   }
 
-  update(id: number, updateRoomDto: UpdateRoomDto) {
+  update(id: number, updateRoomDto: UpdateConversationDto) {
     return updateRoomDto;
   }
 

@@ -1,14 +1,9 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { RegisterDto } from './dto/create-auth.dto';
+import { RegisterDto, RegisterResponse } from './dto/create-auth.dto';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
-import { LoginDto } from './dto/login.dto';
+import { FindOnePayLoad, LoginDto, LoginResponse } from './dto/login.dto';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IUser } from '@/interfaces/user.interface';
-import { RegisterResponse } from '@/proto/auth/RegisterResponse';
-import { LoginResponse } from '@/proto/auth/LoginResponse';
-import { Register } from '@/proto/auth/Register';
-import { Login } from '@/proto/auth/Login';
-import { RefreshToken } from '@/proto/auth/RefreshToken';
 import { JwtService } from '@nestjs/jwt';
 import { ActiveOTPDto } from './dto/active-account';
 import { status } from '@grpc/grpc-js';
@@ -17,12 +12,12 @@ import { Cache } from 'cache-manager';
 import { buildRedisKey, REDIS_KEY } from '@/common/redis-key';
 
 interface GrpcAuthService {
-        Register(body: Register): Observable<RegisterResponse>;
-        Login(body: Login): Observable<LoginResponse>;
-        FindByUserId(data: RefreshToken): Observable<IUser>;
+        Register(body: RegisterDto): Observable<RegisterResponse>;
+        Login(body: LoginDto): Observable<LoginResponse>;
+        FindByUserId(data: FindOnePayLoad): Observable<IUser>;
         VerifyOTP(data: { token: string; otp: string }): Observable<IUser>;
-        ResendOtp(data: RefreshToken): Observable<{ token: string }>;
-        RefreshToken(data: RefreshToken): Observable<LoginResponse>;
+        ResendOtp(data: FindOnePayLoad): Observable<{ token: string }>;
+        RefreshToken(data: FindOnePayLoad): Observable<LoginResponse>;
 }
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -114,7 +109,6 @@ export class AuthService implements OnModuleInit {
 
         async logout(id: number) {
                 await this.cacheManager.del(buildRedisKey(REDIS_KEY.TOKEN.REFRESH, id));
-
                 return true;
         }
 }

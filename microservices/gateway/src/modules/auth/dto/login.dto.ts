@@ -1,3 +1,4 @@
+import { IUser } from '@/interfaces/user.interface';
 import { RoleType } from '@/modules/user/enum/role-type';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, } from 'class-validator';
@@ -34,4 +35,14 @@ export class RefreshTokenDto {
         @ApiProperty()
         @IsString()
         token: string;
+}
+
+export class LoginResponse {
+        user: IUser;
+        accessToken: string;
+        refreshToken: string
+}
+
+export class FindOnePayLoad {
+        idUser: number
 }

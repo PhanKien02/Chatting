@@ -4,16 +4,14 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
-import { FindUserByIdsRes } from '@/proto/user/FindUserByIdsRes';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, UserUpdatedRes, UserUpdatePayLoad } from './dto/update-user.dto';
 import { UploadService } from '../upload/upload.service';
-import { UserUpdatePayLoad, UserUpdatePayLoad__Output } from '@/proto/user/UserUpdatePayLoad';
 
 interface GrpcUserService {
         FindAll(query: IQuery<IUser>): Observable<IUser[]>;
         Create(body: CreateUserDto): Observable<IUser>;
-        FindUserByIds(body: { ids: string[] }): Observable<FindUserByIdsRes>;
-        Update(body: UserUpdatePayLoad): Observable<UserUpdatePayLoad__Output>
+        FindUserByIds(body: { ids: string[] }): Observable<UserUpdatedRes>;
+        Update(body: UserUpdatePayLoad): Observable<UserUpdatedRes>
 }
 
 @Injectable()
