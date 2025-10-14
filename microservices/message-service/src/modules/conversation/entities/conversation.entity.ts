@@ -11,7 +11,7 @@ export class Conversation {
         creator_id: number;
 
         @Prop({
-                index: "text"
+                index: "text",
         })
         name: string;
 

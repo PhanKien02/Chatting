@@ -9,10 +9,15 @@ import { GetConversationQuery } from './dto/get-conversation-query.dto';
 import { normalize } from '../../utils/normalize';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { IResponseRabbitmq } from '@/interfaces/rabbitmq.interface';
+import { IUser } from '@/interfaces/user.interface';
 
 @Injectable()
 export class ConversationService {
-  constructor(@InjectModel(Conversation.name) private conversationModel: Model<Conversation>) { }
+  constructor(
+    @InjectModel(Conversation.name) private conversationModel: Model<Conversation>,
+    private readonly amqpConnection: AmqpConnection,) { }
   async create(createConversationDto: CreateConversationDto) {
     const result = await this.conversationModel.create(createConversationDto);
     return result;
@@ -31,10 +36,42 @@ export class ConversationService {
           { members: idUser },
           { creator_id: idUser }
         ]
-      }).limit(query.limit || 10).skip((query.page - 1) * query.limit || 0),
+      }).limit(query.limit || 10).skip((query.page - 1) * query.limit || 0).lean(),
       this.conversationModel.countDocuments(filter)
-    ])
-    return paginateResponse({ datas: conversations, limit, page, totalResults })
+    ]);
+
+    const datas = await Promise.all(
+      conversations.map(async (conversation) => {
+        // Nếu là group chat => bỏ qua luôn
+        if (conversation.isGroup) return conversation;
+
+        const idUser = conversation.members.find((e) => e !== query.idUser);
+        if (!idUser) return conversation; // tránh undefined
+
+        try {
+          const response = await this.amqpConnection.request<IResponseRabbitmq<IUser>>({
+            exchange: 'user_exchange',
+            routingKey: 'user.find.one',
+            payload: Buffer.from(JSON.stringify({ id: idUser })),
+          });
+
+          if (response.success && response.message?.avatarUrl) {
+            return {
+              ...conversation,
+              avatar: response.message.avatarUrl,
+            };
+          }
+
+          return conversation;
+        } catch (error) {
+          // Nếu có lỗi RabbitMQ thì log nhẹ và giữ nguyên conversation
+          console.error(`Failed to fetch user ${idUser}:`, error);
+          return conversation;
+        }
+      })
+    );
+
+    return paginateResponse({ datas, limit, page, totalResults })
   }
 
   async findOne(_id: string) {

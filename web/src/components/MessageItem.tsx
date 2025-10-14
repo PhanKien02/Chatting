@@ -32,6 +32,8 @@ export default function MessageItem({
   selected?: boolean;
   theme: "light" | "dark";
 }) {
+  console.log({ avatar });
+
   return (
     <div
       className={clsx(

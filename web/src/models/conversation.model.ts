@@ -5,6 +5,7 @@ export interface ICreateConversation {
         name: string
         isGroup: number
         members: string[];
+        avatar: string;
         creator_id: number
 
 }

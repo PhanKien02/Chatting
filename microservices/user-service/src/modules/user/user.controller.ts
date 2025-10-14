@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
-import { Query } from 'src/proto/user/Query';
 import { UserEntity } from './entities/user.entity';
+import { IQuery } from 'src/utils/buildFilterSortAndPaginate';
 
 @Controller('user')
 export class UserController {
@@ -12,7 +12,7 @@ export class UserController {
   ) { }
 
   @GrpcMethod('UserService', 'FindAll')
-  async findAll(query: Query) {
+  async findAll(query: IQuery<UserEntity>) {
     const result = await this.userService.findAll(query);
     return result;
   }

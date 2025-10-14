@@ -11,13 +11,17 @@ export class Message {
         @Prop()
         _id: ObjectId;
 
-        @Prop()
+        @Prop({
+                index: 1
+        })
         senderId: string;
 
-        @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' })
+        @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', index: 1 })
         conversation: Conversation;
 
-        @Prop()
+        @Prop({
+                index: "text"
+        })
         content: string;
 
         @Prop({

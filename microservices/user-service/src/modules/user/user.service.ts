@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import { paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
+import { IQuery, paginateResponse } from 'src/utils/buildFilterSortAndPaginate';
 import { IResponseRabbitmq } from './user.rabbitmq';
 
 @Injectable()
@@ -28,17 +28,27 @@ export class UserService {
     return { success: true, message: newUser };
   }
 
-  async findAll(query: any) {
+  async findAll(query: IQuery<UserEntity>) {
     const { page, limit, ...res } = query
-    const [datas, totalResults] = await this.usersRepository.findAndCount({
-      where: res,
-      skip: (page - 1) * limit || 0,
-      take: limit || 10,
-      order: {
-        id: 'DESC'
-      }
-    });
+    const queryBuilder = this.usersRepository.createQueryBuilder("user").where(res).skip((page - 1) * limit || 0).take(limit || 10)
+    if (query.searchKeyword) {
+      const keywords = query.searchKeyword
+        .trim()
+        .split(/\s+/)
+        .map((kw) => kw.toLowerCase())
 
+      keywords.forEach((kw, i) => {
+        queryBuilder.andWhere(
+          `(
+        LOWER(email) LIKE :kw${i}
+        OR LOWER(fullName) LIKE :kw${i}
+        OR LOWER(phone) LIKE :kw${i}
+      )`,
+          { [`kw${i}`]: `%${kw}%` },
+        )
+      })
+    }
+    const [datas, totalResults] = await queryBuilder.getManyAndCount();
     return paginateResponse({
       datas, page, limit, totalResults
     });

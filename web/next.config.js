@@ -4,7 +4,7 @@ const nextConfig = {
         turbo: {},
     },
     images: {
-        domains: ["i.pravatar.cc"],
+        domains: ["i.pravatar.cc", "plus.unsplash.com"],
     },
 };
 
