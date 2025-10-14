@@ -35,7 +35,7 @@ export default function MessageList() {
   }, [rooms])
   return (
     <section
-      className={`w-[320px] border-r bg-white flex flex-col
+      className={`w-full h-full border-r bg-white flex flex-col
           dark:bg-gray-900 dark:border-gray-800 dark:text-white
           border-gray-100 text-gray-900
       `}
