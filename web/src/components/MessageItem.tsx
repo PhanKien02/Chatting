@@ -2,6 +2,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import clsx from "clsx";
+import { User } from "lucide-react";
 import Image from "next/image";
 
 const tagColor: Record<string, string> = {
@@ -32,7 +33,6 @@ export default function MessageItem({
   selected?: boolean;
   theme: "light" | "dark";
 }) {
-  console.log({ avatar });
 
   return (
     <div
@@ -47,23 +47,12 @@ export default function MessageItem({
             : "hover:bg-gray-50"
       )}
     >
-      <Image width={100} height={100} src={avatar || "https://i.pravatar.cc/150?u=a042581f4e29026704d"} alt={name} className="w-9 h-9 rounded-full object-cover" />
+    {
+        avatar ? <Image width={250} height={250} src={avatar} alt={name} className="w-9 h-9 rounded-full object-cover" /> : <div className="border-1 bg-gray-100 rounded-full p-2"><User  width={20} height={20} /></div>
+    }
       <div className="flex-1">
         <div className="font-semibold">{name}</div>
         <div className={theme === "dark" ? "text-xs text-gray-400" : "text-xs text-gray-500"}>{preview}</div>
-        <div className="flex gap-1 mt-1">
-          {tags?.length && tags.map((tag) => (
-            <Badge
-              key={tag}
-              className={clsx(
-                "rounded px-2 py-0.5 text-xs",
-                tagColor[tag] || (theme === "dark" ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-700")
-              )}
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
       </div>
       <div className={theme === "dark" ? "text-xs text-gray-500" : "text-xs text-gray-400"}>{time}</div>
     </div>

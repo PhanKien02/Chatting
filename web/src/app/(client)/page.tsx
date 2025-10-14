@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import MessageList from "@/components/MessageList";
 import ChatArea from "@/components/ChatArea";
-import Directory from "@/components/directory";
+import Directory from '@/components/directory';
 
 export default function ChatPage() {
   return (
